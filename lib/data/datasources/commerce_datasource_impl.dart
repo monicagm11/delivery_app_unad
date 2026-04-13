@@ -20,7 +20,6 @@ class CommerceDatasourceImpl extends BaseFirestoreDatasource<CommerceModel>
   Future<void> create(CommerceModel model) async {
     try {
       final map = model.toMap();
-      map.remove('id');
       await add(map);
     } catch (e) {
       rethrow;
@@ -30,7 +29,8 @@ class CommerceDatasourceImpl extends BaseFirestoreDatasource<CommerceModel>
   @override
   Future<void> update(String id, CommerceModel model) async {
     try {
-      await firestore.collection(collectionName).doc(id).update(model.toMap());
+      final map = model.toMap();
+      await updateDoc(id, map);
     } catch (e) {
       rethrow;
     }

@@ -6,7 +6,7 @@ import 'package:delivery_app/domain/usecases/commerce/get_all_commercers_usecase
 import 'package:delivery_app/domain/usecases/commerce/get_commerce_by_id_usecase.dart';
 import 'package:delivery_app/domain/usecases/commerce/update_commerce_usecase.dart';
 import 'package:delivery_app/domain/usecases/get_departments_usecase.dart';
-import 'package:delivery_app/presentation/notifier/commerce_state.dart';
+import 'package:delivery_app/presentation/notifier/commerce/commerce_state.dart';
 import 'package:delivery_app/presentation/utils/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

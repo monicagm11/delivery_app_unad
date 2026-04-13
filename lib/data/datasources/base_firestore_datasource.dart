@@ -19,6 +19,7 @@ class BaseFirestoreDatasource<T> {
 
   Future<void> add(Map<String, dynamic> data) async {
     try {
+      data.remove('id');
       await firestore.collection(collectionName).add(data);
     } catch (e) {
       rethrow;
@@ -40,6 +41,15 @@ class BaseFirestoreDatasource<T> {
           await firestore.collection(collectionName).doc(id).get();
       if (!doc.exists || doc.data() == null) return null;
       return mapper(doc.data()!);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> updateDoc(String id, Map<String, dynamic> map) async {
+    try {
+      map.remove('id');
+      await firestore.collection(collectionName).doc(id).update(map);
     } catch (e) {
       rethrow;
     }
