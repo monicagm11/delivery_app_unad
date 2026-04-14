@@ -75,7 +75,6 @@ class _IdentificationFieldState extends State<_IdentificationField> {
         Expanded(
               child: TextField(
                 controller: controller,
-                keyboardType: TextInputType.phone,
                 enabled: isEnabled,
                 onChanged: (_) => _update(),
                 decoration: InputDecoration(

@@ -11,6 +11,7 @@ class FormFieldConfig {
   final TextDynamicInputType? textDynamicInputType;
   final List<DropdownOption>? options;
   final List<dynamic>? optionsData;
+  final String? folder;
 
   const FormFieldConfig({
     required this.label,
@@ -21,6 +22,7 @@ class FormFieldConfig {
     required this.updateEnable,
     this.textDynamicInputType,
     this.options,
-    this.optionsData
+    this.optionsData,
+    this.folder,
   });
 }

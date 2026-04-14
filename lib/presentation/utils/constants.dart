@@ -2,6 +2,9 @@ import 'package:delivery_app/domain/entities/dropdown_option.dart';
 import 'package:delivery_app/domain/entities/table_column_config.dart';
 
 class Constants {
+  static const String productsFolder = 'products';
+  static const String bucketName = 'delivery-flutter-app-unad.firebasestorage.app';
+  
   static const statusOptions = [
     DropdownOption(label: 'Activo', value: 'ACTIVO'),
     DropdownOption(label: 'Inactivo', value: 'INACTIVO')

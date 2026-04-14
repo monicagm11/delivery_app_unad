@@ -2,7 +2,10 @@ enum FormFieldType {
   list,
   textInput,
   identificationInput,
-  departmentCitySelector
+  departmentCitySelector,
+  imagePicker,
+  datePicker,
+  priceCalculator
 }
 
 enum TextDynamicInputType {

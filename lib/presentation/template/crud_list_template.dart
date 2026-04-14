@@ -69,8 +69,6 @@ class _CrudListTemplateState extends State<CrudListTemplate> {
                 showForm = true;
                 
               });
-              //widget.onCreate?.call();
-              //ref.read(productNotifierProvider.notifier).openForm();
             },
             child: const Text("Nuevo"),
           ),
@@ -80,7 +78,7 @@ class _CrudListTemplateState extends State<CrudListTemplate> {
             child: DataTable(
               columns: [
                 ...widget.crudConfig.columns.map(
-                  (c) => DataColumn(label: Text(c.label)),
+                  (c) => DataColumn(label: Text(c.label, overflow: TextOverflow.ellipsis)),
                 ),
                 const DataColumn(label: Text("")),
               ],
@@ -89,7 +87,7 @@ class _CrudListTemplateState extends State<CrudListTemplate> {
                   cells: [
                     ...widget.state.columns.map(
                       (c) => DataCell(
-                        Text('${row[c.code] ?? '-'}'),
+                        Text('${row[c.code] ?? '-'}', overflow: TextOverflow.ellipsis),
                       ),
                     ),
                     DataCell(

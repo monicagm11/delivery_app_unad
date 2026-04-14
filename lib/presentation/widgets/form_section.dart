@@ -1,13 +1,18 @@
+import 'package:delivery_app/domain/entities/calculator_price_data.dart';
 import 'package:delivery_app/domain/entities/city_data.dart';
 import 'package:delivery_app/domain/entities/department.dart';
 import 'package:delivery_app/domain/entities/dropdown_option.dart';
 import 'package:delivery_app/domain/entities/form_field_config.dart';
 import 'package:delivery_app/domain/entities/form_field_type.dart';
 import 'package:delivery_app/domain/entities/identification_data.dart';
+import 'package:delivery_app/domain/entities/image_data.dart';
 import 'package:delivery_app/presentation/widgets/city_selector_field.dart';
+import 'package:delivery_app/presentation/widgets/date_picker_field.dart';
 import 'package:delivery_app/presentation/widgets/dynamic_dropdown.dart';
 import 'package:delivery_app/presentation/widgets/dynamic_field_input.dart';
 import 'package:delivery_app/presentation/widgets/identification_field.dart';
+import 'package:delivery_app/presentation/widgets/image_picker_field.dart';
+import 'package:delivery_app/presentation/widgets/price_calculator_field.dart';
 import 'package:flutter/material.dart';
 
 class FormSection extends StatefulWidget {
@@ -52,7 +57,8 @@ class _FormSectionState extends State<FormSection> {
     currentId = rowSelected?['id'];
     controllers = Map.fromEntries(widget.fields
         .where((field) => (field.type == FormFieldType.textInput))
-        .map((field) => MapEntry(field.id, TextEditingController(text: rowSelected?[field.id] ?? ''))));
+        .map((field) => MapEntry(field.id,
+            TextEditingController(text: rowSelected?[field.id] ?? ''))));
     formValues = {};
   }
 
@@ -98,7 +104,8 @@ class _FormSectionState extends State<FormSection> {
                                 if (formKey.currentState!.validate()) {
                                   formKey.currentState?.save();
                                   if (isUpdate) {
-                                    await widget.onUpdate(currentId!, formValues);
+                                    await widget.onUpdate(
+                                        currentId!, formValues);
                                   } else {
                                     await widget.onCreate(formValues);
                                   }
@@ -199,6 +206,44 @@ class _FormSectionState extends State<FormSection> {
           isEnabled:
               isUpdate ? formFieldConfig.updateEnable : formFieldConfig.enabled,
         );
+      case FormFieldType.imagePicker:
+        return ImagePickerFormField(
+          initialValue: getImageInitialValue(formFieldConfig.folder!),
+          onSaved: (value) {
+            formValues[formFieldConfig.id] = value;
+          },
+          validator: (value) {
+            if ((value?.path == null) &&
+                formFieldConfig.isRequired) {
+              return 'Campo requerido';
+            }
+            return null;
+          },
+          isEnabled:
+              isUpdate ? formFieldConfig.updateEnable : formFieldConfig.enabled,
+        );
+      case FormFieldType.datePicker:
+        return DatePickerField(
+          formFieldConfig: formFieldConfig,
+          isEnabled:
+              isUpdate ? formFieldConfig.updateEnable : formFieldConfig.enabled,
+          onSaved: (value) {
+            formValues[formFieldConfig.id] = value;
+          },
+        );
+      case FormFieldType.priceCalculator:
+        return PriceCalculatorFormField(
+          initialValue: CalculatorPriceData(
+              priceBase: rowSelected?['priceBase'] ?? 0,
+              ivaPercentage: rowSelected?['percentageIva'] ?? 0,
+              ivaValue: rowSelected?['valueIva'] ?? 0,
+              priceTotal: rowSelected?['totalPrice'] ?? 0),
+          onSaved: (value) {
+            formValues[formFieldConfig.id] = value;
+          },
+          isEnabled:
+              isUpdate ? formFieldConfig.updateEnable : formFieldConfig.enabled,
+        );
     }
   }
 
@@ -206,7 +251,9 @@ class _FormSectionState extends State<FormSection> {
     final currentId = rowSelected?['document'];
     final currentIdType = rowSelected?['identificationType'];
 
-    if (currentId != null && currentIdType != null) return IdentificationData(code: currentIdType, number: currentId);
+    if (currentId != null && currentIdType != null) {
+      return IdentificationData(code: currentIdType, number: currentId);
+    }
 
     return null;
   }
@@ -214,7 +261,9 @@ class _FormSectionState extends State<FormSection> {
   DropdownOption? getDropdownInitialValue(String id) {
     final currentValue = rowSelected?[id];
 
-    if (currentValue != null) return DropdownOption(label: currentValue, value: currentValue);
+    if (currentValue != null) {
+      return DropdownOption(label: currentValue, value: currentValue);
+    }
 
     return null;
   }
@@ -223,8 +272,15 @@ class _FormSectionState extends State<FormSection> {
     final currentDepartment = rowSelected?['department'];
     final currentCity = rowSelected?['city'];
 
-    if (currentDepartment != null && currentCity != null) return CityData(department: currentDepartment, city: currentCity);
+    if (currentDepartment != null && currentCity != null) {
+      return CityData(department: currentDepartment, city: currentCity);
+    }
 
     return null;
+  }
+
+  ImageData? getImageInitialValue(String folder) {
+    final currentImage = rowSelected?['urlImage'];
+    return ImageData(path: currentImage, folder: folder);
   }
 }
