@@ -26,87 +26,84 @@ class _CommerceCrudScreenState extends ConsumerState<CommerceCrudScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(commerceNotifierProvider);
-    return Scaffold(
-      appBar: AppBar(title: const Text('Products')),
-      body: CrudListTemplate(
-        state: state,
-        onCreate: (row) async {
-           ref.read(commerceNotifierProvider.notifier).create(row);
-        },
-        onUpdate: (id, row) async {
-          ref.read(commerceNotifierProvider.notifier).update(id, row);
-        },
-        crudConfig: CrudConfig(columns: Constants.headersCommerce, formConfig: [
-          FormFieldConfig(
-              label: 'ID',
-              id: 'id',
-              enabled: false,
-              type: FormFieldType.textInput,
-              isRequired: true,
-              updateEnable: false),
-          FormFieldConfig(
-              label: 'Nombre',
-              id: 'name',
-              enabled: true,
-              type: FormFieldType.textInput,
-              isRequired: true,
-              updateEnable: true),
-          FormFieldConfig(
-              label: 'Identificación',
-              id: 'identification',
-              enabled: true,
-              type: FormFieldType.identificationInput,
-              isRequired: true,
-              updateEnable: false),
-          FormFieldConfig(
-              label: '',
-              id: 'cityDepartment',
-              enabled: true,
-              type: FormFieldType.departmentCitySelector,
-              isRequired: true,
-              updateEnable: true,
-              optionsData: state.departmentOptions),
-          FormFieldConfig(
-              label: 'Contacto',
-              id: 'contactName',
-              enabled: true,
-              type: FormFieldType.textInput,
-              isRequired: true,
-              updateEnable: true),
-          FormFieldConfig(
-              label: 'Teléfono',
-              id: 'phone',
-              enabled: true,
-              updateEnable: true,
-              type: FormFieldType.textInput,
-              textDynamicInputType: TextDynamicInputType.phone,
-              isRequired: true),
-          FormFieldConfig(
-              label: 'Dirección',
-              id: 'address',
-              enabled: true,
-              updateEnable: true,
-              type: FormFieldType.textInput,
-              isRequired: true),
-          FormFieldConfig(
-              label: 'Email',
-              id: 'email',
-              enabled: true,
-              updateEnable: true,
-              type: FormFieldType.textInput,
-              isRequired: true,
-              textDynamicInputType: TextDynamicInputType.email),
-          FormFieldConfig(
-              label: 'Estado',
-              id: 'status',
-              enabled: true,
-              updateEnable: true,
-              type: FormFieldType.list,
-              isRequired: true,
-              options: Constants.statusOptions,
-              )
-        ]),
-      ),
+    return CrudListTemplate(
+      state: state,
+      onCreate: (row) async {
+        ref.read(commerceNotifierProvider.notifier).create(row);
+      },
+      onUpdate: (id, row) async {
+        ref.read(commerceNotifierProvider.notifier).update(id, row);
+      },
+      crudConfig: CrudConfig(columns: Constants.headersCommerce, formConfig: [
+        FormFieldConfig(
+            label: 'ID',
+            id: 'id',
+            enabled: false,
+            type: FormFieldType.textInput,
+            isRequired: true,
+            updateEnable: false),
+        FormFieldConfig(
+            label: 'Nombre',
+            id: 'name',
+            enabled: true,
+            type: FormFieldType.textInput,
+            isRequired: true,
+            updateEnable: true),
+        FormFieldConfig(
+            label: 'Identificación',
+            id: 'identification',
+            enabled: true,
+            type: FormFieldType.identificationInput,
+            isRequired: true,
+            updateEnable: false),
+        FormFieldConfig(
+            label: '',
+            id: 'cityDepartment',
+            enabled: true,
+            type: FormFieldType.departmentCitySelector,
+            isRequired: true,
+            updateEnable: true,
+            optionsData: state.departmentOptions),
+        FormFieldConfig(
+            label: 'Contacto',
+            id: 'contactName',
+            enabled: true,
+            type: FormFieldType.textInput,
+            isRequired: true,
+            updateEnable: true),
+        FormFieldConfig(
+            label: 'Teléfono',
+            id: 'phone',
+            enabled: true,
+            updateEnable: true,
+            type: FormFieldType.textInput,
+            textDynamicInputType: TextDynamicInputType.phone,
+            isRequired: true),
+        FormFieldConfig(
+            label: 'Dirección',
+            id: 'address',
+            enabled: true,
+            updateEnable: true,
+            type: FormFieldType.textInput,
+            isRequired: true),
+        FormFieldConfig(
+            label: 'Email',
+            id: 'email',
+            enabled: true,
+            updateEnable: true,
+            type: FormFieldType.textInput,
+            isRequired: true,
+            textDynamicInputType: TextDynamicInputType.email),
+        FormFieldConfig(
+          label: 'Estado',
+          id: 'status',
+          enabled: true,
+          updateEnable: true,
+          type: FormFieldType.list,
+          isRequired: true,
+          options: Constants.statusOptions,
+        )
+      ]),
     );
   }
 }

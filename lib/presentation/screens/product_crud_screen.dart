@@ -26,9 +26,7 @@ class _ProductCrudScreenState extends ConsumerState<ProductCrudScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(productNotifierProvider);
-    return Scaffold(
-      appBar: AppBar(title: const Text('Products')),
-      body: CrudListTemplate(
+    return CrudListTemplate(
         state: state,
         onCreate: (row) async {
            ref.read(productNotifierProvider.notifier).create(row);
@@ -92,7 +90,6 @@ class _ProductCrudScreenState extends ConsumerState<ProductCrudScreen> {
               options: Constants.statusOptions,
               ),
         ]),
-      ),
-    );
+      );
   }
 }

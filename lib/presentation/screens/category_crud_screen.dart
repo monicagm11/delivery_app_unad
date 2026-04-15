@@ -26,49 +26,46 @@ class _CategoryCrudScreenState extends ConsumerState<CategoryCrudScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(categoryNotifierProvider);
-    return Scaffold(
-      appBar: AppBar(title: const Text('Products')),
-      body: CrudListTemplate(
-        state: state,
-        onCreate: (row) async {
-           ref.read(categoryNotifierProvider.notifier).create(row);
-        },
-        onUpdate: (id, row) async {
-          ref.read(categoryNotifierProvider.notifier).update(id, row);
-        },
-        crudConfig: CrudConfig(columns: Constants.headersCategory, formConfig: [
-          FormFieldConfig(
-              label: 'ID',
-              id: 'id',
-              enabled: false,
-              type: FormFieldType.textInput,
-              isRequired: false,
-              updateEnable: false),
-          FormFieldConfig(
-              label: 'Nombre',
-              id: 'name',
-              enabled: true,
-              type: FormFieldType.textInput,
-              isRequired: true,
-              updateEnable: true),
-          FormFieldConfig(
-              label: 'Descripción',
-              id: 'description',
-              enabled: true,
-              type: FormFieldType.textInput,
-              isRequired: true,
-              updateEnable: false),
-          FormFieldConfig(
-              label: 'Estado',
-              id: 'status',
-              enabled: true,
-              updateEnable: true,
-              type: FormFieldType.list,
-              isRequired: true,
-              options: Constants.statusOptions,
-              )
-        ]),
-      ),
+    return CrudListTemplate(
+      state: state,
+      onCreate: (row) async {
+        ref.read(categoryNotifierProvider.notifier).create(row);
+      },
+      onUpdate: (id, row) async {
+        ref.read(categoryNotifierProvider.notifier).update(id, row);
+      },
+      crudConfig: CrudConfig(columns: Constants.headersCategory, formConfig: [
+        FormFieldConfig(
+            label: 'ID',
+            id: 'id',
+            enabled: false,
+            type: FormFieldType.textInput,
+            isRequired: false,
+            updateEnable: false),
+        FormFieldConfig(
+            label: 'Nombre',
+            id: 'name',
+            enabled: true,
+            type: FormFieldType.textInput,
+            isRequired: true,
+            updateEnable: true),
+        FormFieldConfig(
+            label: 'Descripción',
+            id: 'description',
+            enabled: true,
+            type: FormFieldType.textInput,
+            isRequired: true,
+            updateEnable: false),
+        FormFieldConfig(
+          label: 'Estado',
+          id: 'status',
+          enabled: true,
+          updateEnable: true,
+          type: FormFieldType.list,
+          isRequired: true,
+          options: Constants.statusOptions,
+        )
+      ]),
     );
   }
 }
