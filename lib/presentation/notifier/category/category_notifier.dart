@@ -1,4 +1,5 @@
 import 'package:delivery_app/data/models/category_model.dart';
+import 'package:delivery_app/domain/entities/rol.dart';
 import 'package:delivery_app/domain/usecases/category/create_category_usecase.dart';
 import 'package:delivery_app/domain/usecases/category/get_categories_by_commerce_usecase.dart';
 import 'package:delivery_app/domain/usecases/category/update_category_usecase.dart';
@@ -13,12 +14,14 @@ class CategoryNotifier extends StateNotifier<CategoryState> {
   final UpdateCategoryUseCase updateUseCase;
   final GetCategoriesByCommerceUseCase getCategoriesByCommerceUseCase;
   final String commerceId;
+  final Rol rolConfig;
 
   CategoryNotifier({
       required this.createUseCase,
       required this.updateUseCase,
       required this.getCategoriesByCommerceUseCase,
       required this.commerceId,
+      required this.rolConfig
   }) : super(CategoryState.initial(Constants.headersCategory));
 
   Future<void> init() async {
@@ -28,9 +31,10 @@ class CategoryNotifier extends StateNotifier<CategoryState> {
   Future<void> loadAll() async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
+      final functionConfig = rolConfig.functionConfig[Constants.categoryFunction];
       final items = await getCategoriesByCommerceUseCase(commerceId);
       final data = items.map((e) => e.toMap()).toList();
-      state = state.copyWith(isLoading: false, data: data);
+      state = state.copyWith(isLoading: false, data: data, functionConfig: functionConfig);
     } catch (e) {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
     }
@@ -72,10 +76,12 @@ class CategoryNotifier extends StateNotifier<CategoryState> {
 final categoryNotifierProvider =
     StateNotifierProvider<CategoryNotifier, CategoryState>((ref) {
     final commerceId = ref.read(sessionNotifierProvider).commerceId ?? '2G9IlFqKCL36mMaFF4Jg';
+    final rolConfig = ref.read(sessionNotifierProvider).rolConfig ?? Constants.defaultRol;
   return CategoryNotifier(
       createUseCase: ref.read(createCategoryUseCaseProvider),
       updateUseCase: ref.read(updateCategoryUseCaseProvider),
       getCategoriesByCommerceUseCase: ref.read(getCategoriesByCommerceUseCaseProvider),
       commerceId: commerceId,
+      rolConfig: rolConfig 
       );
 });

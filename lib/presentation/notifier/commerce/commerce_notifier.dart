@@ -1,12 +1,14 @@
 import 'package:delivery_app/data/models/commerce_model.dart';
 import 'package:delivery_app/domain/entities/city_data.dart';
 import 'package:delivery_app/domain/entities/identification_data.dart';
+import 'package:delivery_app/domain/entities/rol.dart';
 import 'package:delivery_app/domain/usecases/commerce/create_commerce_usecase.dart';
 import 'package:delivery_app/domain/usecases/commerce/get_all_commercers_usecase.dart';
 import 'package:delivery_app/domain/usecases/commerce/get_commerce_by_id_usecase.dart';
 import 'package:delivery_app/domain/usecases/commerce/update_commerce_usecase.dart';
 import 'package:delivery_app/domain/usecases/get_departments_usecase.dart';
 import 'package:delivery_app/presentation/notifier/commerce/commerce_state.dart';
+import 'package:delivery_app/presentation/notifier/session/session_notifier.dart';
 import 'package:delivery_app/presentation/utils/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -16,20 +18,24 @@ class CommerceNotifier extends StateNotifier<CommerceState> {
   final CreateCommerceUseCase createUseCase;
   final UpdateCommerceUseCase updateUseCase;
   final GetDepartmentsUseCase getDepartmentsUseCase;
+  final Rol rolConfig;
 
   CommerceNotifier(
       {required this.getAllUseCase,
       required this.getByIdUseCase,
       required this.createUseCase,
       required this.updateUseCase,
-      required this.getDepartmentsUseCase})
+      required this.getDepartmentsUseCase,
+      required this.rolConfig,
+      })
       : super(CommerceState.initial(Constants.headersCommerce));
 
   Future<void> init() async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
       final departments = await getDepartmentsUseCase();
-      state = state.copyWith(departmentOptions: departments);
+      final functionConfig = rolConfig.functionConfig[Constants.commerceFunction];
+      state = state.copyWith(departmentOptions: departments, functionConfig: functionConfig);
       await loadAll();
     } catch (e) {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
@@ -99,10 +105,12 @@ class CommerceNotifier extends StateNotifier<CommerceState> {
 
 final commerceNotifierProvider =
     StateNotifierProvider<CommerceNotifier, CommerceState>((ref) {
+      final rolConfig = ref.read(sessionNotifierProvider).rolConfig ?? Constants.defaultRol;
   return CommerceNotifier(
       getAllUseCase: ref.read(getAllCommercesUseCaseProvider),
       getByIdUseCase: ref.read(getCommerceByIdUseCaseProvider),
       createUseCase: ref.read(createCommerceUseCaseProvider),
       updateUseCase: ref.read(updateCommerceUseCaseProvider),
-      getDepartmentsUseCase: ref.read(getDepartmentsUseCaseProvider));
+      getDepartmentsUseCase: ref.read(getDepartmentsUseCaseProvider),
+      rolConfig: rolConfig );
 });

@@ -1,10 +1,17 @@
 import 'package:delivery_app/domain/entities/dropdown_option.dart';
+import 'package:delivery_app/domain/entities/menu_item.dart';
 import 'package:delivery_app/domain/entities/rol.dart';
 import 'package:delivery_app/domain/entities/table_column_config.dart';
+import 'package:delivery_app/presentation/screens/category_crud_screen.dart';
+import 'package:delivery_app/presentation/screens/commerce_crud_screen.dart';
+import 'package:delivery_app/presentation/screens/product_crud_screen.dart';
+import 'package:delivery_app/presentation/screens/user_crud_screen.dart';
+import 'package:flutter/material.dart';
 
 class Constants {
   static const String productsFolder = 'products';
-  static const String bucketName = 'delivery-flutter-app-unad.firebasestorage.app';
+  static const String bucketName =
+      'delivery-flutter-app-unad.firebasestorage.app';
 
   static const String adminRolCode = 'ADMINISTRADOR';
 
@@ -24,6 +31,7 @@ class Constants {
       rolEnableToCreate: []);
 
   static FunctionConfig defaultFunctionConfig = FunctionConfig(
+      functionName: 'UNKNOWN',
       readData: false,
       createData: false,
       updateData: false,
@@ -33,7 +41,7 @@ class Constants {
     DropdownOption(label: 'Activo', value: 'ACTIVO'),
     DropdownOption(label: 'Inactivo', value: 'INACTIVO')
   ];
-  
+
   static const headersCommerce = [
     TableColumnConfig(label: "Nombre", code: "name"),
     TableColumnConfig(label: 'Identificación', code: 'fullDocument'),
@@ -74,5 +82,32 @@ class Constants {
     TableColumnConfig(label: 'Email', code: 'email'),
     TableColumnConfig(label: 'Dirección', code: 'address'),
     TableColumnConfig(label: "Estado", code: "status"),
+  ];
+
+  static const menuItems = [
+    MenuItem(
+      title: 'Comercios',
+      icon: Icons.store_outlined,
+      code: Constants.commerceFunction,
+      screen: CommerceCrudScreen(),
+    ),
+    MenuItem(
+      title: 'Categorías',
+      icon: Icons.category_outlined,
+      code: Constants.categoryFunction,
+      screen: CategoryCrudScreen(),
+    ),
+    MenuItem(
+      title: 'Productos',
+      code: Constants.productFunction,
+      icon: Icons.inventory_2_outlined,
+      screen: ProductCrudScreen(),
+    ),
+    MenuItem(
+      title: 'Usuarios',
+      code: Constants.userFunction,
+      icon: Icons.people_outline,
+      screen: UserCrudScreen(),
+    ),
   ];
 }

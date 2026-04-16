@@ -1,47 +1,8 @@
+import 'package:delivery_app/domain/entities/menu_item.dart';
 import 'package:delivery_app/presentation/notifier/login/auth_notifier.dart';
 import 'package:delivery_app/presentation/notifier/session/session_notifier.dart';
-import 'package:delivery_app/presentation/screens/category_crud_screen.dart';
-import 'package:delivery_app/presentation/screens/commerce_crud_screen.dart';
-import 'package:delivery_app/presentation/screens/product_crud_screen.dart';
-import 'package:delivery_app/presentation/screens/user_crud_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-// Definición de items del menú
-class _MenuItem {
-  final String title;
-  final IconData icon;
-  final Widget screen;
-
-  const _MenuItem({
-    required this.title,
-    required this.icon,
-    required this.screen,
-  });
-}
-
-final _menuItems = [
-  _MenuItem(
-    title: 'Comercios',
-    icon: Icons.store_outlined,
-    screen: const CommerceCrudScreen(),
-  ),
-  _MenuItem(
-    title: 'Categorías',
-    icon: Icons.category_outlined,
-    screen: const CategoryCrudScreen(),
-  ),
-  _MenuItem(
-    title: 'Productos',
-    icon: Icons.inventory_2_outlined,
-    screen: const ProductCrudScreen(),
-  ),
-  _MenuItem(
-    title: 'Usuarios',
-    icon: Icons.people_outline,
-    screen: const UserCrudScreen(),
-  ),
-];
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -52,6 +13,13 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   int _selectedIndex = 0;
+  late List<MenuItem> _menuItems;
+
+  @override
+  void initState() {
+    super.initState();
+    _menuItems = ref.read(sessionNotifierProvider.notifier).getMenuItems();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +57,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           Navigator.of(context).pop();
         },
         onLogout: _logout,
+        menuItems: _menuItems,
       ),
       body: isWide
           ? Row(
@@ -97,6 +66,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   selectedIndex: _selectedIndex,
                   onSelect: (i) => setState(() => _selectedIndex = i),
                   onLogout: _logout,
+                  menuItems: _menuItems,
                 ),
                 Expanded(child: selectedItem.screen),
               ],
@@ -116,11 +86,13 @@ class _SideNav extends StatelessWidget {
   final int selectedIndex;
   final ValueChanged<int> onSelect;
   final VoidCallback onLogout;
+  final List<MenuItem> menuItems;
 
   const _SideNav({
     required this.selectedIndex,
     required this.onSelect,
     required this.onLogout,
+    required this.menuItems
   });
 
   @override
@@ -133,9 +105,9 @@ class _SideNav extends StatelessWidget {
           const _DrawerHeader(),
           Expanded(
             child: ListView.builder(
-              itemCount: _menuItems.length,
+              itemCount: menuItems.length,
               itemBuilder: (_, i) => _NavItem(
-                item: _menuItems[i],
+                item: menuItems[i],
                 selected: selectedIndex == i,
                 onTap: () => onSelect(i),
               ),
@@ -159,11 +131,13 @@ class _Drawer extends StatelessWidget {
   final int selectedIndex;
   final ValueChanged<int> onSelect;
   final VoidCallback onLogout;
+  final List<MenuItem> menuItems;
 
   const _Drawer({
     required this.selectedIndex,
     required this.onSelect,
     required this.onLogout,
+    required this.menuItems
   });
 
   @override
@@ -175,9 +149,9 @@ class _Drawer extends StatelessWidget {
           const _DrawerHeader(),
           Expanded(
             child: ListView.builder(
-              itemCount: _menuItems.length,
+              itemCount: menuItems.length,
               itemBuilder: (_, i) => _NavItem(
-                item: _menuItems[i],
+                item: menuItems[i],
                 selected: selectedIndex == i,
                 onTap: () => onSelect(i),
               ),
@@ -196,8 +170,6 @@ class _Drawer extends StatelessWidget {
     );
   }
 }
-
-// ── Componentes compartidos ──────────────────────────────────────────────────
 
 class _DrawerHeader extends StatelessWidget {
   const _DrawerHeader();
@@ -227,7 +199,7 @@ class _DrawerHeader extends StatelessWidget {
 }
 
 class _NavItem extends StatelessWidget {
-  final _MenuItem item;
+  final MenuItem item;
   final bool selected;
   final VoidCallback onTap;
 

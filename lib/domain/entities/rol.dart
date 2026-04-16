@@ -30,18 +30,21 @@ class Rol {
 }
 
 class FunctionConfig {
+  final String functionName;
   final bool enabled;
   final bool readData;
   final bool createData;
   final bool updateData;
 
   FunctionConfig(
-      {required this.readData,
+      {required this.functionName,
+      required this.readData,
       required this.createData,
       required this.updateData,
       required this.enabled});
 
   factory FunctionConfig.fromMap(Map<String, dynamic> map) => FunctionConfig(
+        functionName: map['functionName'] as String? ?? '',
         enabled: map['enabled'] as bool? ?? false,
         readData: map['readData'] as bool? ?? false,
         createData: map['createData'] as bool? ?? false,

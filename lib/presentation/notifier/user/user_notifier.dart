@@ -51,11 +51,15 @@ class UserNotifier extends StateNotifier<UserState> {
       final roles = rolConfig.rolEnableToCreate;
       final rolOptions =
           roles.map((e) => DropdownOption(label: e, value: e)).toList();
+      
+      final functionConfig = rolConfig.functionConfig[Constants.userFunction];
 
       state = state.copyWith(
           departmentOptions: departments,
           commerceOptions: commerceOptions,
-          rolOptions: rolOptions);
+          rolOptions: rolOptions,
+          functionConfig: functionConfig ?? Constants.defaultFunctionConfig
+          );
       await loadAll();
     } catch (e) {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());

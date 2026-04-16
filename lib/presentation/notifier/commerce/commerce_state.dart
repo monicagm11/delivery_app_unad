@@ -1,6 +1,8 @@
 import 'package:delivery_app/domain/entities/department.dart';
+import 'package:delivery_app/domain/entities/rol.dart';
 import 'package:delivery_app/domain/entities/table_column_config.dart';
 import 'package:delivery_app/presentation/notifier/crud_state.dart';
+import 'package:delivery_app/presentation/utils/constants.dart';
 
 class CommerceState extends CrudState {
   List<Department> departmentOptions;
@@ -10,7 +12,8 @@ class CommerceState extends CrudState {
     super.errorMessage,
     required super.showForm,
     required super.columns,
-    required super.data
+    required super.data,
+    required super.functionConfig,
   });
 
   factory CommerceState.initial(List<TableColumnConfig> columns) => CommerceState(
@@ -19,7 +22,8 @@ class CommerceState extends CrudState {
         showForm: false,
         columns: columns,
         data: [],
-        departmentOptions: []
+        departmentOptions: [],
+        functionConfig: Constants.defaultFunctionConfig
       );
 
   @override
@@ -29,7 +33,8 @@ class CommerceState extends CrudState {
     bool? showForm,
     List<TableColumnConfig>? columns,
     List<Map<String, dynamic>>? data,
-    List<Department>? departmentOptions
+    List<Department>? departmentOptions,
+    FunctionConfig? functionConfig
   }) =>
       CommerceState(
         isLoading: isLoading ?? this.isLoading,
@@ -37,6 +42,7 @@ class CommerceState extends CrudState {
         showForm: showForm ?? this.showForm,
         columns: columns ?? this.columns,
         data: data ?? this.data,
-        departmentOptions: departmentOptions ?? this.departmentOptions
+        departmentOptions: departmentOptions ?? this.departmentOptions,
+        functionConfig: functionConfig ?? this.functionConfig
       );
 }

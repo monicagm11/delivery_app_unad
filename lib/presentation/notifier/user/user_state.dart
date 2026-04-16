@@ -1,7 +1,9 @@
 import 'package:delivery_app/domain/entities/department.dart';
 import 'package:delivery_app/domain/entities/dropdown_option.dart';
+import 'package:delivery_app/domain/entities/rol.dart';
 import 'package:delivery_app/domain/entities/table_column_config.dart';
 import 'package:delivery_app/presentation/notifier/crud_state.dart';
+import 'package:delivery_app/presentation/utils/constants.dart';
 
 class UserState extends CrudState {
   List<Department> departmentOptions;
@@ -15,6 +17,7 @@ class UserState extends CrudState {
       required this.departmentOptions,
       required this.commerceOptions,
       required this.rolOptions,
+      required super.functionConfig,
       super.errorMessage,});
 
   factory UserState.initial(List<TableColumnConfig> columns) =>
@@ -26,7 +29,8 @@ class UserState extends CrudState {
           columns: columns,
           data: [],
           commerceOptions: [],
-          rolOptions: []);
+          rolOptions: [],
+          functionConfig: Constants.defaultFunctionConfig);
 
   @override
   UserState copyWith({
@@ -38,6 +42,7 @@ class UserState extends CrudState {
     List<Department>? departmentOptions,
     List<DropdownOption>? commerceOptions,
     List<DropdownOption>? rolOptions,
+    FunctionConfig? functionConfig
   }) =>
       UserState(
         isLoading: isLoading ?? this.isLoading,
@@ -47,6 +52,7 @@ class UserState extends CrudState {
         data: data ?? this.data,
         departmentOptions: departmentOptions ?? this.departmentOptions,
         commerceOptions: commerceOptions ?? this.commerceOptions,
-        rolOptions: rolOptions ?? this.rolOptions
+        rolOptions: rolOptions ?? this.rolOptions,
+        functionConfig: functionConfig ?? this.functionConfig
       );
 }
