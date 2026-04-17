@@ -9,7 +9,7 @@ class DatePickerField extends FormField<DateData> {
     required FormFieldConfig formFieldConfig,
     super.onSaved,
     bool isEnabled = true,
-    bool showHourSelector = false,
+    bool showHourSelector = true,
     super.initialValue,
   }) : super(
           validator: (value) {
@@ -67,7 +67,8 @@ class _DatePickerFieldContentState extends State<_DatePickerFieldContent> {
     widget.state.didChange(
       DateData(
         date: dateSelected,
-        hour: hourSelected
+        hour: hourSelected,
+        fullDate: '$dateSelected $hourSelected'
       ),
     );
     Form.of(context).validate();

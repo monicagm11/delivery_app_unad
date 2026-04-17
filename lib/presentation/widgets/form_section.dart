@@ -6,12 +6,14 @@ import 'package:delivery_app/domain/entities/form_field_config.dart';
 import 'package:delivery_app/domain/entities/form_field_type.dart';
 import 'package:delivery_app/domain/entities/identification_data.dart';
 import 'package:delivery_app/domain/entities/image_data.dart';
+import 'package:delivery_app/presentation/widgets/checkbox_list_field.dart';
 import 'package:delivery_app/presentation/widgets/city_selector_field.dart';
 import 'package:delivery_app/presentation/widgets/date_picker_field.dart';
 import 'package:delivery_app/presentation/widgets/dynamic_dropdown.dart';
 import 'package:delivery_app/presentation/widgets/dynamic_field_input.dart';
 import 'package:delivery_app/presentation/widgets/identification_field.dart';
 import 'package:delivery_app/presentation/widgets/image_picker_field.dart';
+import 'package:delivery_app/presentation/widgets/map_location_field.dart';
 import 'package:delivery_app/presentation/widgets/price_calculator_field.dart';
 import 'package:flutter/material.dart';
 
@@ -146,7 +148,7 @@ class _FormSectionState extends State<FormSection> {
           formFieldConfig: formFieldConfig,
           controller: controllers[formFieldConfig.id],
           isEnabled:
-              isUpdate ? formFieldConfig.updateEnable : formFieldConfig.enabled,
+              isUpdate ? (formFieldConfig.updateEnable?.call(rowSelected!) ?? false) : formFieldConfig.enabled,
           onChanged: (p0) {
             setState(() {
               isFormValid = formKey.currentState?.validate() ?? false;
@@ -161,7 +163,7 @@ class _FormSectionState extends State<FormSection> {
           formFieldConfig: formFieldConfig,
           initialValue: getDropdownInitialValue(formFieldConfig.id),
           isEnabled:
-              isUpdate ? formFieldConfig.updateEnable : formFieldConfig.enabled,
+              isUpdate ? (formFieldConfig.updateEnable?.call(rowSelected!) ?? false) : formFieldConfig.enabled,
           onChanged: (_, value) {
             setState(() {
               isFormValid = formKey.currentState?.validate() ?? false;
@@ -186,7 +188,7 @@ class _FormSectionState extends State<FormSection> {
           },
           initialValue: getIdInitialValue(),
           isEnabled:
-              isUpdate ? formFieldConfig.updateEnable : formFieldConfig.enabled,
+              isUpdate ? (formFieldConfig.updateEnable?.call(rowSelected!) ?? false) : formFieldConfig.enabled,
         );
       case FormFieldType.departmentCitySelector:
         return CitySelectorFormField(
@@ -204,7 +206,7 @@ class _FormSectionState extends State<FormSection> {
           initialValue: getCityInitialValue(),
           departments: formFieldConfig.optionsData as List<Department>,
           isEnabled:
-              isUpdate ? formFieldConfig.updateEnable : formFieldConfig.enabled,
+              isUpdate ? (formFieldConfig.updateEnable?.call(rowSelected!) ?? false) : formFieldConfig.enabled,
         );
       case FormFieldType.imagePicker:
         return ImagePickerFormField(
@@ -220,13 +222,13 @@ class _FormSectionState extends State<FormSection> {
             return null;
           },
           isEnabled:
-              isUpdate ? formFieldConfig.updateEnable : formFieldConfig.enabled,
+              isUpdate ? (formFieldConfig.updateEnable?.call(rowSelected!) ?? false) : formFieldConfig.enabled,
         );
       case FormFieldType.datePicker:
         return DatePickerField(
           formFieldConfig: formFieldConfig,
           isEnabled:
-              isUpdate ? formFieldConfig.updateEnable : formFieldConfig.enabled,
+              isUpdate ? (formFieldConfig.updateEnable?.call(rowSelected!) ?? false) : formFieldConfig.enabled,
           onSaved: (value) {
             formValues[formFieldConfig.id] = value;
           },
@@ -242,7 +244,29 @@ class _FormSectionState extends State<FormSection> {
             formValues[formFieldConfig.id] = value;
           },
           isEnabled:
-              isUpdate ? formFieldConfig.updateEnable : formFieldConfig.enabled,
+              isUpdate ? (formFieldConfig.updateEnable?.call(rowSelected!) ?? false) : formFieldConfig.enabled,
+        );
+      case FormFieldType.mapSelector:
+        return MapLocationFormField(
+          initialValue: getMapInitialValue(),
+          onSaved: (value) {
+            formValues[formFieldConfig.id] = value;
+          }
+        );
+      case FormFieldType.checkboxListSelector:
+        return CheckboxListFormField(
+          options: formFieldConfig.checkboxOptions!,
+          label: formFieldConfig.label,
+          onSaved: (value) {
+            formValues[formFieldConfig.id] = value;
+          },
+          validator: (value) {
+            if ((value == null || value.isEmpty) &&
+                formFieldConfig.isRequired) {
+              return 'Campo requerido';
+            }
+            return null;
+          },
         );
     }
   }
@@ -282,5 +306,9 @@ class _FormSectionState extends State<FormSection> {
   ImageData? getImageInitialValue(String folder) {
     final currentImage = rowSelected?['urlImage'];
     return ImageData(path: currentImage, folder: folder);
+  }
+
+  MapLocationData getMapInitialValue() {
+    return MapLocationData(latitude: rowSelected?['latitude'] ?? 0, longitude: rowSelected?['longitude'] ?? 0, radious: rowSelected?['radious'] ?? 0);
   }
 }

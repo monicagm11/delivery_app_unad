@@ -345,8 +345,8 @@ class _CrudListTemplateState extends State<CrudListTemplate> {
                         Text('${row[c.code] ?? '-'}', overflow: TextOverflow.ellipsis),
                       ),
                     ),
-                    if (functionConfig.updateData)
-                      DataCell(
+                      DataCell(Row(children: [
+                      if (functionConfig.updateData)
                         IconButton(
                           icon: const Icon(Icons.edit),
                           onPressed: () {
@@ -357,7 +357,8 @@ class _CrudListTemplateState extends State<CrudListTemplate> {
                             });
                           },
                         ),
-                      ),
+                      ...widget.crudConfig.additionalOptions?.call(row) ?? []
+                    ])),
                   ],
                 );
               }).toList(),

@@ -22,6 +22,12 @@ class Constants {
   static const String globalEventFunction = 'globalEvents';
   static const String commerceFunction = 'commerces';
 
+  static const String programmedStatus = 'PROGRAMADO';
+  static const String publishedStatus = 'PUBLICADO';
+  static const String startedStatus = 'INICIADO';
+  static const String endedStatus = 'FINALIZADO';
+  static const String canceledStatus = 'CANCELADO';
+
   static Rol defaultRol = Rol(
       name: 'UNKNOWN',
       id: 'UNKNOWN',
