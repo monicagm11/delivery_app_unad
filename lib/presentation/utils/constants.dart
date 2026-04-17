@@ -4,6 +4,8 @@ import 'package:delivery_app/domain/entities/rol.dart';
 import 'package:delivery_app/domain/entities/table_column_config.dart';
 import 'package:delivery_app/presentation/screens/category_crud_screen.dart';
 import 'package:delivery_app/presentation/screens/commerce_crud_screen.dart';
+import 'package:delivery_app/presentation/screens/global_event_crud_screen.dart';
+import 'package:delivery_app/presentation/screens/local_event_crud_screen.dart';
 import 'package:delivery_app/presentation/screens/product_crud_screen.dart';
 import 'package:delivery_app/presentation/screens/user_crud_screen.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +77,7 @@ class Constants {
   static const headersEvents = [
     TableColumnConfig(label: "Nombre", code: "name"),
     TableColumnConfig(label: 'Descripción', code: 'description'),
-    TableColumnConfig(label: 'Fecha Programada', code: 'scheduleData'),
+    TableColumnConfig(label: 'Fecha Programada', code: 'scheduleDate'),
     TableColumnConfig(label: 'Fecha Inicio', code: 'startDate'),
     TableColumnConfig(label: 'Fecha Fin', code: 'endDate'),
     TableColumnConfig(label: "Estado", code: "status"),
@@ -96,6 +98,18 @@ class Constants {
       icon: Icons.store_outlined,
       code: Constants.commerceFunction,
       screen: CommerceCrudScreen(),
+    ),
+    MenuItem(
+      title: 'Eventos Globales',
+      icon: Icons.event_available,
+      code: Constants.globalEventFunction,
+      screen: GlobalEventCrudScreen(),
+    ),
+    MenuItem(
+      title: 'Eventos',
+      icon: Icons.fastfood,
+      code: Constants.eventFunction,
+      screen: LocalEventCrudScreen(),
     ),
     MenuItem(
       title: 'Categorías',
