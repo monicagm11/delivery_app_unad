@@ -2,6 +2,7 @@ import 'package:delivery_app/domain/entities/category.dart';
 import 'package:delivery_app/domain/entities/crud_config.dart';
 import 'package:delivery_app/domain/entities/rol.dart';
 import 'package:delivery_app/presentation/notifier/crud_state.dart';
+import 'package:delivery_app/presentation/utils/action_form_type.dart';
 import 'package:delivery_app/presentation/widgets/error_widget.dart';
 import 'package:delivery_app/presentation/widgets/form_section.dart';
 import 'package:flutter/material.dart';
@@ -12,12 +13,14 @@ class CrudListTemplate extends StatefulWidget {
   final Future<void> Function(Map<String, dynamic> row) onCreate;
   final List<Category>? categories;
   final CrudConfig crudConfig;
+  final Future<void> Function(Map<String, dynamic>? row)? onOpenForm;
   const CrudListTemplate(
       {super.key,
       required this.state,
       required this.crudConfig,
       required this.onUpdate,
       required this.onCreate,
+      this.onOpenForm,
       this.categories});
 
   @override
@@ -26,7 +29,7 @@ class CrudListTemplate extends StatefulWidget {
 
 class _CrudListTemplateState extends State<CrudListTemplate> {
   bool showForm = false;
-  bool isFormUpdate = false;
+  ActionFormType isFormUpdate = ActionFormType.create;
   Map<String, dynamic>? rowSelected;
   late final FunctionConfig functionConfig;
   final _searchController = TextEditingController();
@@ -34,6 +37,7 @@ class _CrudListTemplateState extends State<CrudListTemplate> {
   String? _filterStatus;
   String? _filterCategory;
   String? _filterCategoryName;
+  bool isViewDetails = false;
 
   @override
   void initState() {
@@ -281,17 +285,23 @@ class _CrudListTemplateState extends State<CrudListTemplate> {
               ),
               const SizedBox(width: 8),
               if (functionConfig.createData)
-                ElevatedButton.icon(
-                  onPressed: () {
+              Row(
+                children: [
+                  ElevatedButton.icon(
+                  onPressed: () async {
+                    await widget.onOpenForm?.call(null);
                     setState(() {
                       rowSelected = null;
-                      isFormUpdate = false;
+                      isFormUpdate = ActionFormType.create;
                       showForm = true;
                     });
                   },
                   icon: const Icon(Icons.add),
                   label: const Text('Nuevo'),
-                ),
+                ), 
+                widget.crudConfig.additionalCreateOptions?.call() ?? SizedBox.shrink()
+                ],
+              ),
             ],
           ),
         ),
@@ -330,7 +340,10 @@ class _CrudListTemplateState extends State<CrudListTemplate> {
         ),
         Expanded(
           child: SingleChildScrollView(
-            child: DataTable(
+            scrollDirection: Axis.vertical,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: DataTable(
               columns: [
                 ...widget.crudConfig.columns.map(
                   (c) => DataColumn(label: Text(c.label, overflow: TextOverflow.ellipsis)),
@@ -346,22 +359,34 @@ class _CrudListTemplateState extends State<CrudListTemplate> {
                       ),
                     ),
                       DataCell(Row(children: [
-                      if (functionConfig.updateData)
+                      (functionConfig.updateData && widget.crudConfig.showUpdateOption) ?
                         IconButton(
                           icon: const Icon(Icons.edit),
-                          onPressed: () {
+                          onPressed: () async {
+                            await widget.onOpenForm?.call(row);
                             setState(() {
                               rowSelected = row;
-                              isFormUpdate = true;
+                              isFormUpdate = ActionFormType.update;
+                              showForm = true;
+                            });
+                          },
+                        ) : IconButton(
+                          icon: const Icon(Icons.remove_red_eye),
+                          onPressed: () async {
+                            await widget.onOpenForm?.call(row);
+                            setState(() {
+                              rowSelected = row;
+                              isFormUpdate = ActionFormType.viewDetails;
                               showForm = true;
                             });
                           },
                         ),
-                      ...widget.crudConfig.additionalOptions?.call(row) ?? []
+                      if (functionConfig.updateData) ...widget.crudConfig.additionalUpdateOptions?.call(row) ?? []
                     ])),
                   ],
                 );
               }).toList(),
+            ),
             ),
           ),
         ),
@@ -390,7 +415,11 @@ class _CrudListTemplateState extends State<CrudListTemplate> {
               child: FormSection(
                   loading: state.isLoading,
                   fields: widget.crudConfig.formConfig,
-                  title: isFormUpdate ? 'Actualizar ${rowSelected?['name'] ?? 'Comercio'}' : 'Crear Comercio',
+                  title: isFormUpdate == ActionFormType.update
+                      ? 'Actualizar ${rowSelected?['name'] ?? widget.crudConfig.name}'
+                      : isFormUpdate == ActionFormType.create
+                          ? 'Crear Comercio'
+                          : 'Detalles ${rowSelected?['name'] ?? widget.crudConfig.name}',
                   isUpdate: isFormUpdate,
                   rowSelected: rowSelected,
                   onCreate:(row) async {

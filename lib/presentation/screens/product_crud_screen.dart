@@ -35,7 +35,9 @@ class _ProductCrudScreenState extends ConsumerState<ProductCrudScreen> {
           ref.read(productNotifierProvider.notifier).update(id, row);
         },
         categories: state.categories,
-        crudConfig: CrudConfig(columns: state.columns, formConfig: [
+        crudConfig: CrudConfig(columns: state.columns, 
+        name: 'Producto',
+        formConfig: [
           FormFieldConfig(
               label: '',
               id: 'image',

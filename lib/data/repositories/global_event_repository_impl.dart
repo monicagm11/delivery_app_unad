@@ -33,6 +33,11 @@ class GlobalEventRepositoryImpl implements GlobalEventRepository {
   Future<void> delete(String id) async {
     try { await datasource.delete(id); } catch (e) { rethrow; }
   }
+  
+  @override
+  Future<List<GlobalEvent>> getAllActive() async {
+     try { return await datasource.getAllActive(); } catch (e) { rethrow; }
+  }
 }
 
 final globalEventRepositoryProvider = Provider<GlobalEventRepository>((ref) {

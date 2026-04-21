@@ -1,11 +1,16 @@
 import 'package:delivery_app/domain/entities/calculator_price_data.dart';
+import 'package:delivery_app/domain/entities/checkbox_option.dart';
 import 'package:delivery_app/domain/entities/city_data.dart';
+import 'package:delivery_app/domain/entities/date_data.dart';
 import 'package:delivery_app/domain/entities/department.dart';
 import 'package:delivery_app/domain/entities/dropdown_option.dart';
 import 'package:delivery_app/domain/entities/form_field_config.dart';
 import 'package:delivery_app/domain/entities/form_field_type.dart';
+import 'package:delivery_app/domain/entities/global_event.dart';
 import 'package:delivery_app/domain/entities/identification_data.dart';
 import 'package:delivery_app/domain/entities/image_data.dart';
+import 'package:delivery_app/presentation/forms/event_request_form.dart';
+import 'package:delivery_app/presentation/utils/action_form_type.dart';
 import 'package:delivery_app/presentation/widgets/checkbox_list_field.dart';
 import 'package:delivery_app/presentation/widgets/city_selector_field.dart';
 import 'package:delivery_app/presentation/widgets/date_picker_field.dart';
@@ -22,7 +27,7 @@ class FormSection extends StatefulWidget {
   final bool loading;
   final String? title;
   final List<FormFieldConfig> fields;
-  final bool isUpdate;
+  final ActionFormType isUpdate;
   final Map<String, dynamic>? rowSelected;
   final Future<void> Function(String id, Map<String, dynamic> row) onUpdate;
   final Future<void> Function(Map<String, dynamic> row) onCreate;
@@ -33,7 +38,7 @@ class FormSection extends StatefulWidget {
       required this.loading,
       required this.fields,
       this.title,
-      this.isUpdate = false,
+      this.isUpdate = ActionFormType.create,
       this.rowSelected,
       required this.onCreate,
       required this.onUpdate});
@@ -47,7 +52,7 @@ class _FormSectionState extends State<FormSection> {
   final formKey = GlobalKey<FormState>();
   bool isFormValid = false;
   late Map<String, dynamic> formValues;
-  late bool isUpdate;
+  late ActionFormType isUpdate;
   late Map<String, dynamic>? rowSelected;
   late final String? currentId;
   bool isLoading = false;
@@ -98,17 +103,17 @@ class _FormSectionState extends State<FormSection> {
                           ...widget.fields.map((field) {
                             return buildInnerWidget(field);
                           }),
-                          ElevatedButton(
+                          if (isUpdate != ActionFormType.viewDetails) ElevatedButton(
                               onPressed: () async {
                                 setState(() {
                                   isLoading = true;
                                 });
                                 if (formKey.currentState!.validate()) {
                                   formKey.currentState?.save();
-                                  if (isUpdate) {
+                                  if (isUpdate == ActionFormType.update) {
                                     await widget.onUpdate(
                                         currentId!, formValues);
-                                  } else {
+                                  } else if (isUpdate == ActionFormType.create){
                                     await widget.onCreate(formValues);
                                   }
                                 }
@@ -148,7 +153,7 @@ class _FormSectionState extends State<FormSection> {
           formFieldConfig: formFieldConfig,
           controller: controllers[formFieldConfig.id],
           isEnabled:
-              isUpdate ? (formFieldConfig.updateEnable?.call(rowSelected!) ?? false) : formFieldConfig.enabled,
+              (isUpdate == ActionFormType.update) ? (formFieldConfig.updateEnable?.call(rowSelected!) ?? false) : (isUpdate == ActionFormType.create)? formFieldConfig.enabled : false,
           onChanged: (p0) {
             setState(() {
               isFormValid = formKey.currentState?.validate() ?? false;
@@ -163,7 +168,7 @@ class _FormSectionState extends State<FormSection> {
           formFieldConfig: formFieldConfig,
           initialValue: getDropdownInitialValue(formFieldConfig.id),
           isEnabled:
-              isUpdate ? (formFieldConfig.updateEnable?.call(rowSelected!) ?? false) : formFieldConfig.enabled,
+              (isUpdate == ActionFormType.update) ? (formFieldConfig.updateEnable?.call(rowSelected!) ?? false) : (isUpdate == ActionFormType.create)? formFieldConfig.enabled : false,
           onChanged: (_, value) {
             setState(() {
               isFormValid = formKey.currentState?.validate() ?? false;
@@ -188,7 +193,7 @@ class _FormSectionState extends State<FormSection> {
           },
           initialValue: getIdInitialValue(),
           isEnabled:
-              isUpdate ? (formFieldConfig.updateEnable?.call(rowSelected!) ?? false) : formFieldConfig.enabled,
+              (isUpdate == ActionFormType.update) ? (formFieldConfig.updateEnable?.call(rowSelected!) ?? false) : (isUpdate == ActionFormType.create)? formFieldConfig.enabled : false,
         );
       case FormFieldType.departmentCitySelector:
         return CitySelectorFormField(
@@ -206,7 +211,7 @@ class _FormSectionState extends State<FormSection> {
           initialValue: getCityInitialValue(),
           departments: formFieldConfig.optionsData as List<Department>,
           isEnabled:
-              isUpdate ? (formFieldConfig.updateEnable?.call(rowSelected!) ?? false) : formFieldConfig.enabled,
+              (isUpdate == ActionFormType.update) ? (formFieldConfig.updateEnable?.call(rowSelected!) ?? false) : (isUpdate == ActionFormType.create)? formFieldConfig.enabled : false,
         );
       case FormFieldType.imagePicker:
         return ImagePickerFormField(
@@ -222,16 +227,17 @@ class _FormSectionState extends State<FormSection> {
             return null;
           },
           isEnabled:
-              isUpdate ? (formFieldConfig.updateEnable?.call(rowSelected!) ?? false) : formFieldConfig.enabled,
+              (isUpdate == ActionFormType.update) ? (formFieldConfig.updateEnable?.call(rowSelected!) ?? false) : (isUpdate == ActionFormType.create)? formFieldConfig.enabled : false,
         );
       case FormFieldType.datePicker:
         return DatePickerField(
           formFieldConfig: formFieldConfig,
           isEnabled:
-              isUpdate ? (formFieldConfig.updateEnable?.call(rowSelected!) ?? false) : formFieldConfig.enabled,
+              (isUpdate == ActionFormType.update) ? (formFieldConfig.updateEnable?.call(rowSelected!) ?? false) : (isUpdate == ActionFormType.create)? formFieldConfig.enabled : false,
           onSaved: (value) {
             formValues[formFieldConfig.id] = value;
           },
+          initialValue: getDateInitialValue(formFieldConfig.id),
         );
       case FormFieldType.priceCalculator:
         return PriceCalculatorFormField(
@@ -244,7 +250,7 @@ class _FormSectionState extends State<FormSection> {
             formValues[formFieldConfig.id] = value;
           },
           isEnabled:
-              isUpdate ? (formFieldConfig.updateEnable?.call(rowSelected!) ?? false) : formFieldConfig.enabled,
+              (isUpdate == ActionFormType.update) ? (formFieldConfig.updateEnable?.call(rowSelected!) ?? false) : (isUpdate == ActionFormType.create)? formFieldConfig.enabled : false,
         );
       case FormFieldType.mapSelector:
         return MapLocationFormField(
@@ -260,6 +266,8 @@ class _FormSectionState extends State<FormSection> {
           onSaved: (value) {
             formValues[formFieldConfig.id] = value;
           },
+          isEnabled:
+              (isUpdate == ActionFormType.update) ? (formFieldConfig.updateEnable?.call(rowSelected!) ?? false) : (isUpdate == ActionFormType.create)? formFieldConfig.enabled : false,
           validator: (value) {
             if ((value == null || value.isEmpty) &&
                 formFieldConfig.isRequired) {
@@ -267,7 +275,23 @@ class _FormSectionState extends State<FormSection> {
             }
             return null;
           },
+          initialValue: getOptionsChecked(formFieldConfig),
         );
+      case FormFieldType.eventSelector:
+        return EventRequestFormField(
+            options: formFieldConfig.optionsData as List<GlobalEvent>,
+            onSaved: (value) {
+              formValues[formFieldConfig.id] = value;
+            },
+            isEnabled:
+              (isUpdate == ActionFormType.update) ? (formFieldConfig.updateEnable?.call(rowSelected!) ?? false) : (isUpdate == ActionFormType.create)? formFieldConfig.enabled : false,
+            initialValue: getEventInitialValue(formFieldConfig),
+            validator: (value) {
+              if ((value == null) && formFieldConfig.isRequired) {
+                return 'Campo requerido';
+              }
+              return null;
+            });
     }
   }
 
@@ -310,5 +334,31 @@ class _FormSectionState extends State<FormSection> {
 
   MapLocationData getMapInitialValue() {
     return MapLocationData(latitude: rowSelected?['latitude'] ?? 0, longitude: rowSelected?['longitude'] ?? 0, radious: rowSelected?['radious'] ?? 0);
+  }
+
+  DateData? getDateInitialValue(String key) {
+    final currentDate = rowSelected?[key] as String?;
+    if (currentDate != null && currentDate.trim().isNotEmpty && currentDate.contains(':')) {
+      final dateData = currentDate.split(' ');
+      return DateData(date: dateData[0], hour: dateData[1], fullDate: currentDate);
+    }
+    return null;
+  }
+
+  List<CheckboxOption> getOptionsChecked(FormFieldConfig formFieldConfig) {
+    final options = rowSelected? [formFieldConfig.id];
+    if(options!= null && options is List<String>) {
+      return formFieldConfig.checkboxOptions!.where((e) => options.contains(e.value)).toList();
+    }
+    return [];
+  }
+
+  GlobalEvent? getEventInitialValue(FormFieldConfig formFieldConfig) {
+    final options = formFieldConfig.optionsData;
+    final optionSelected = rowSelected? ['eventId'];
+    if(options != null && options is List<GlobalEvent> ) {
+      return options.cast<GlobalEvent>().where((e) => e.id == optionSelected).firstOrNull;
+    }
+    return null;
   }
 }

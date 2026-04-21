@@ -54,6 +54,29 @@ class BaseFirestoreDatasource<T> {
       rethrow;
     }
   }
+
+  Future<List<T>> fetchByIds(
+      List<String> ids, T Function(Map<String, dynamic>) mapper) async {
+    if (ids.isEmpty) return [];
+    try {
+      // Firestore limita whereIn a 30 elementos por consulta
+      const chunkSize = 30;
+      final results = <T>[];
+      for (var i = 0; i < ids.length; i += chunkSize) {
+        final chunk = ids.sublist(i, (i + chunkSize).clamp(0, ids.length));
+        final snapshot = await firestore
+            .collection(collectionName)
+            .where(FieldPath.documentId, whereIn: chunk)
+            .get();
+        results.addAll(
+          snapshot.docs.map((e) => mapper({...e.data(), 'id': e.id})),
+        );
+      }
+      return results;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
 
 final firebaseFirestoreProvider =

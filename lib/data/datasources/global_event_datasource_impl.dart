@@ -42,6 +42,10 @@ class GlobalEventDatasourceImpl extends BaseFirestoreDatasource<GlobalEventModel
       rethrow;
     }
   }
+  
+  @override
+  Future<List<GlobalEventModel>> getAllActive() async =>
+      await fetchWhere(GlobalEventModel.fromMap, 'status', 'PUBLICADO') ?? [];
 }
 
 final globalEventDatasourceProvider = Provider<GlobalEventDatasource>((ref) {

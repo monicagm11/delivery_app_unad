@@ -142,10 +142,10 @@ class _MapDialogState extends State<_MapDialog> {
   void initState() {
     super.initState();
     _mapController = MapController();
-    _marker = widget.initial != null
+    _marker = widget.initial != null && (widget.initial!.latitude != 0 && widget.initial!.longitude != 0)
         ? LatLng(widget.initial!.latitude, widget.initial!.longitude)
         : _defaultCenter;
-    _radius = widget.initial?.radious ?? _defaultRadius;
+    _radius = (widget.initial?.radious != null && widget.initial!.radious >= 10 )? widget.initial!.radious : _defaultRadius;
   }
 
   @override

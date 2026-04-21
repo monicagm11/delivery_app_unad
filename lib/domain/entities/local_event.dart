@@ -11,6 +11,7 @@ class LocalEvent {
   final String department;
   final String city;
   final String status;
+  final List<String> productsIdList;
 
   LocalEvent({
     required this.id,
@@ -25,6 +26,7 @@ class LocalEvent {
     required this.department,
     required this.city,
     required this.status,
+    required this.productsIdList
   });
 
   Map<String, dynamic> toMap() => {
@@ -40,5 +42,6 @@ class LocalEvent {
         'department': department,
         'city': city,
         'status': status,
+        'products': productsIdList
       };
 }

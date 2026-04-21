@@ -2,6 +2,7 @@ import 'package:delivery_app/domain/entities/crud_config.dart';
 import 'package:delivery_app/domain/entities/form_field_config.dart';
 import 'package:delivery_app/domain/entities/form_field_type.dart';
 import 'package:delivery_app/presentation/notifier/local_event/local_event_notifier.dart';
+import 'package:delivery_app/presentation/screens/create_request_screen.dart';
 import 'package:delivery_app/presentation/template/crud_list_template.dart';
 import 'package:delivery_app/presentation/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -36,8 +37,9 @@ class _LocalEventCrudScreenState extends ConsumerState<LocalEventCrudScreen> {
         ref.read(localEventNotifierProvider.notifier).update(id, row);
       },
       crudConfig: CrudConfig(
-          columns: Constants.headersEvents,
-          formConfig: [
+        name: 'Evento',
+        columns: Constants.headersEvents,
+        formConfig: [
             FormFieldConfig(
                 label: 'ID',
                 id: 'id',
@@ -104,7 +106,7 @@ class _LocalEventCrudScreenState extends ConsumerState<LocalEventCrudScreen> {
                 checkboxOptions: state.productOptions,
                 updateEnable: (_) => true),
           ],
-          additionalOptions: (row) {
+          additionalUpdateOptions: (row) {
             String currentStatus = row['status'];
             if (currentStatus != Constants.canceledStatus &&
                 currentStatus != Constants.endedStatus) {
@@ -137,7 +139,27 @@ class _LocalEventCrudScreenState extends ConsumerState<LocalEventCrudScreen> {
               ];
             }
             return [];
-          }),
+          },
+          additionalCreateOptions: () {
+            return ElevatedButton.icon(
+              onPressed: () async {
+                await showDialog(
+                  context: context,
+                  builder: (_) => Dialog(
+                    insetPadding: const EdgeInsets.all(24),
+                    child: SizedBox(
+                      width: 800,
+                      height: 600,
+                      child: CreateRequestEventCrudScreen(),
+                    ),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.add_task_sharp),
+              label: const Text('Solicitar'),
+            )
+            ;
+          },),
     );
   }
 }

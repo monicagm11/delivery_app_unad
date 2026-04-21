@@ -6,6 +6,7 @@ import 'package:delivery_app/presentation/screens/category_crud_screen.dart';
 import 'package:delivery_app/presentation/screens/commerce_crud_screen.dart';
 import 'package:delivery_app/presentation/screens/global_event_crud_screen.dart';
 import 'package:delivery_app/presentation/screens/local_event_crud_screen.dart';
+import 'package:delivery_app/presentation/screens/manage_request_screen.dart';
 import 'package:delivery_app/presentation/screens/product_crud_screen.dart';
 import 'package:delivery_app/presentation/screens/user_crud_screen.dart';
 import 'package:flutter/material.dart';
@@ -23,12 +24,15 @@ class Constants {
   static const String eventFunction = 'events';
   static const String globalEventFunction = 'globalEvents';
   static const String commerceFunction = 'commerces';
+  static const String eventRequestFunction = 'eventRequest';
 
   static const String programmedStatus = 'PROGRAMADO';
   static const String publishedStatus = 'PUBLICADO';
   static const String startedStatus = 'INICIADO';
   static const String endedStatus = 'FINALIZADO';
   static const String canceledStatus = 'CANCELADO';
+  static const String pendindStatus = 'PENDIENTE';
+  static const String rejectedStatus = 'RECHAZADO';
 
   static Rol defaultRol = Rol(
       name: 'UNKNOWN',
@@ -92,6 +96,13 @@ class Constants {
     TableColumnConfig(label: "Estado", code: "status"),
   ];
 
+  static const headersCreateRequestEvents = [
+    TableColumnConfig(label: "Nombre", code: "eventName"),
+    TableColumnConfig(label: 'Descripción', code: 'eventDescription'),
+    TableColumnConfig(label: 'Fecha Programada', code: 'scheduleDate'),
+    TableColumnConfig(label: "Estado", code: "status"),
+  ];
+
   static const menuItems = [
     MenuItem(
       title: 'Comercios',
@@ -110,6 +121,12 @@ class Constants {
       icon: Icons.fastfood,
       code: Constants.eventFunction,
       screen: LocalEventCrudScreen(),
+    ),
+    MenuItem(
+      title: 'Solicitudes de Eventos',
+      icon: Icons.fastfood,
+      code: Constants.eventRequestFunction,
+      screen: ManageRequestEventCrudScreen(),
     ),
     MenuItem(
       title: 'Categorías',

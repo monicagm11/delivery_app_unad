@@ -34,8 +34,11 @@ class _UserCrudScreenState extends ConsumerState<UserCrudScreen> {
       onUpdate: (id, row) async {
         ref.read(userNotifierProvider.notifier).update(id, row);
       },
-      crudConfig: CrudConfig(columns: Constants.headersUsers, formConfig: [
-        FormFieldConfig(
+      crudConfig: CrudConfig(
+          columns: Constants.headersUsers,
+          name: 'Usuario',
+          formConfig: [
+            FormFieldConfig(
             label: 'ID',
             id: 'id',
             enabled: false,

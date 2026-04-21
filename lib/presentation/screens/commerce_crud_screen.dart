@@ -34,7 +34,9 @@ class _CommerceCrudScreenState extends ConsumerState<CommerceCrudScreen> {
       onUpdate: (id, row) async {
         ref.read(commerceNotifierProvider.notifier).update(id, row);
       },
-      crudConfig: CrudConfig(columns: Constants.headersCommerce, formConfig: [
+      crudConfig: CrudConfig(columns: Constants.headersCommerce,
+      name: 'Comercio', 
+      formConfig: [
         FormFieldConfig(
             label: 'ID',
             id: 'id',

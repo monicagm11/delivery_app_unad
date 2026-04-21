@@ -113,7 +113,7 @@ class GlobalEventNotifier extends StateNotifier<GlobalEventState> {
           name: map['name'] as String? ?? '',
           department: cityData.department,
           city: cityData.city,
-          status: Constants.programmedStatus, 
+          status:  map['status'] as String? ?? Constants.programmedStatus, 
           description: map['description'] as String? ?? '',
           latitude: mapLocationData.latitude,
           longitude: mapLocationData.longitude,

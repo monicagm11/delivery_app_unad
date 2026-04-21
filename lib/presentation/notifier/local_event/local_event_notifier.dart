@@ -117,12 +117,15 @@ class LocalEventNotifier extends StateNotifier<LocalEventState> {
       CityData cityData = map['cityDepartment'] as CityData;
       DateData programmedDate = map['scheduleDate'] as DateData;
       MapLocationData mapLocationData = map['location'] as MapLocationData;
+      List<CheckboxOption> productList = map['products'] as List<CheckboxOption>? ?? [];
+      List<String> productIdList = productList.map((e) => e.value).toList();
+
       return LocalEventModel(
           id: map['id'] as String? ?? '',
           name: map['name'] as String? ?? '',
           department: cityData.department,
           city: cityData.city,
-          status: Constants.programmedStatus, 
+          status:  map['status'] as String? ??  Constants.programmedStatus, 
           description: map['description'] as String? ?? '',
           latitude: mapLocationData.latitude,
           longitude: mapLocationData.longitude,
@@ -130,6 +133,7 @@ class LocalEventNotifier extends StateNotifier<LocalEventState> {
           startDate: map['startDate'] as String? ?? '',
           endDate: map['endDate'] as String? ?? '',
           scheduleDate: programmedDate.fullDate,
+          productsIdList: productIdList
           );
   }
 }

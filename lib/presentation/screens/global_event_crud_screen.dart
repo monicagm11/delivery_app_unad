@@ -36,6 +36,7 @@ class _GlobalEventCrudScreenState extends ConsumerState<GlobalEventCrudScreen> {
         ref.read(globalEventNotifierProvider.notifier).update(id, row);
       },
       crudConfig: CrudConfig(
+          name: 'Evento',
           columns: Constants.headersEvents,
           formConfig: [
             FormFieldConfig(
@@ -96,7 +97,7 @@ class _GlobalEventCrudScreenState extends ConsumerState<GlobalEventCrudScreen> {
                 isRequired: false,
                 updateEnable: (_) => false),
           ],
-          additionalOptions: (row) {
+          additionalUpdateOptions: (row) {
             String currentStatus = row['status'];
             if (currentStatus != Constants.canceledStatus &&
                 currentStatus != Constants.endedStatus) {

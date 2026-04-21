@@ -7,7 +7,11 @@ class GetAllLocalEventsUseCase {
   final LocalEventRepository repository;
   GetAllLocalEventsUseCase({required this.repository});
   Future<List<LocalEvent>> call() async {
-    try { return await repository.getAll(); } catch (e) { rethrow; }
+    try {
+      return await repository.getAll();
+    } catch (e) {
+      rethrow;
+    }
   }
 }
 

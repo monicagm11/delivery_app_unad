@@ -14,6 +14,7 @@ class LocalEventModel extends LocalEvent {
     required super.department,
     required super.city,
     required super.status,
+    required super.productsIdList
   });
 
   factory LocalEventModel.fromMap(Map<String, dynamic> map) => LocalEventModel(
@@ -29,6 +30,7 @@ class LocalEventModel extends LocalEvent {
         department: map['department'] as String? ?? '',
         city: map['city'] as String? ?? '',
         status: map['status'] as String? ?? '',
+        productsIdList: List<String>.from(map['products'] as List? ?? []),
       );
 
   

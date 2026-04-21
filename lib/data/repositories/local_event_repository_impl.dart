@@ -11,7 +11,11 @@ class LocalEventRepositoryImpl implements LocalEventRepository {
 
   @override
   Future<List<LocalEvent>> getAll() async {
-    try { return await datasource.getAll(); } catch (e) { rethrow; }
+    try {
+      return await datasource.getAll();
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override

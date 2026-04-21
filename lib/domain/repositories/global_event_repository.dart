@@ -3,6 +3,7 @@ import 'package:delivery_app/domain/entities/global_event.dart';
 
 abstract class GlobalEventRepository {
   Future<List<GlobalEvent>> getAll();
+  Future<List<GlobalEvent>> getAllActive();
   Future<GlobalEvent?> getById(String id);
   Future<void> create(GlobalEventModel model);
   Future<void> update(String id, GlobalEventModel model);
