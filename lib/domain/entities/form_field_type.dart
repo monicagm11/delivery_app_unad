@@ -8,7 +8,8 @@ enum FormFieldType {
   priceCalculator,
   mapSelector,
   checkboxListSelector,
-  eventSelector
+  eventSelector,
+  rolSelector
 }
 
 enum TextDynamicInputType {

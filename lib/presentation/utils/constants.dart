@@ -13,6 +13,9 @@ import 'package:flutter/material.dart';
 
 class Constants {
   static const String productsFolder = 'products';
+  static const String qrFolder = 'qr';
+  static const String commerceFolder = 'commerce';
+
   static const String bucketName =
       'delivery-flutter-app-unad.firebasestorage.app';
 
@@ -25,6 +28,7 @@ class Constants {
   static const String globalEventFunction = 'globalEvents';
   static const String commerceFunction = 'commerces';
   static const String eventRequestFunction = 'eventRequest';
+  static const String settingsFunction = 'settings';
 
   static const String programmedStatus = 'PROGRAMADO';
   static const String publishedStatus = 'PUBLICADO';

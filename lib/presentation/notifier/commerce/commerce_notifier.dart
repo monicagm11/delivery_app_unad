@@ -1,12 +1,14 @@
 import 'package:delivery_app/data/models/commerce_model.dart';
 import 'package:delivery_app/domain/entities/city_data.dart';
 import 'package:delivery_app/domain/entities/identification_data.dart';
+import 'package:delivery_app/domain/entities/image_data.dart';
 import 'package:delivery_app/domain/entities/rol.dart';
 import 'package:delivery_app/domain/usecases/commerce/create_commerce_usecase.dart';
 import 'package:delivery_app/domain/usecases/commerce/get_all_commercers_usecase.dart';
 import 'package:delivery_app/domain/usecases/commerce/get_commerce_by_id_usecase.dart';
 import 'package:delivery_app/domain/usecases/commerce/update_commerce_usecase.dart';
 import 'package:delivery_app/domain/usecases/get_departments_usecase.dart';
+import 'package:delivery_app/domain/usecases/upload_image_usecase.dart';
 import 'package:delivery_app/presentation/notifier/commerce/commerce_state.dart';
 import 'package:delivery_app/presentation/notifier/session/session_notifier.dart';
 import 'package:delivery_app/presentation/utils/constants.dart';
@@ -18,6 +20,7 @@ class CommerceNotifier extends StateNotifier<CommerceState> {
   final CreateCommerceUseCase createUseCase;
   final UpdateCommerceUseCase updateUseCase;
   final GetDepartmentsUseCase getDepartmentsUseCase;
+  final UploadImageUseCase uploadImageUseCase;
   final Rol rolConfig;
 
   CommerceNotifier(
@@ -26,6 +29,7 @@ class CommerceNotifier extends StateNotifier<CommerceState> {
       required this.createUseCase,
       required this.updateUseCase,
       required this.getDepartmentsUseCase,
+      required this.uploadImageUseCase,
       required this.rolConfig,
       })
       : super(CommerceState.initial(Constants.headersCommerce));
@@ -56,6 +60,12 @@ class CommerceNotifier extends StateNotifier<CommerceState> {
   Future<void> create(Map<String, dynamic> map) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
+      ImageData imageData = map['image'] as ImageData;
+      final urlImage = await uploadImageUseCase(path: imageData.path!, folder: imageData.folder, bytes: imageData.bytes);
+      ImageData imageDataQR = map['qr'] as ImageData;
+      final urlImageQR = await uploadImageUseCase(path: imageDataQR.path!, folder: imageDataQR.folder, bytes: imageDataQR.bytes);
+      map['urlImage'] = urlImage;
+      map['urlImageQR'] = urlImageQR;
       CommerceModel model = mapFromFormData(map);
       await createUseCase(model);
       await loadAll();
@@ -112,5 +122,6 @@ final commerceNotifierProvider =
       createUseCase: ref.read(createCommerceUseCaseProvider),
       updateUseCase: ref.read(updateCommerceUseCaseProvider),
       getDepartmentsUseCase: ref.read(getDepartmentsUseCaseProvider),
+      uploadImageUseCase: ref.read(uploadImageUseCaseProvider),
       rolConfig: rolConfig );
 });

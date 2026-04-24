@@ -9,8 +9,10 @@ import 'package:delivery_app/domain/entities/form_field_type.dart';
 import 'package:delivery_app/domain/entities/global_event.dart';
 import 'package:delivery_app/domain/entities/identification_data.dart';
 import 'package:delivery_app/domain/entities/image_data.dart';
+import 'package:delivery_app/domain/entities/rol_data.dart';
 import 'package:delivery_app/presentation/forms/event_request_form.dart';
 import 'package:delivery_app/presentation/utils/action_form_type.dart';
+import 'package:delivery_app/presentation/utils/constants.dart';
 import 'package:delivery_app/presentation/widgets/checkbox_list_field.dart';
 import 'package:delivery_app/presentation/widgets/city_selector_field.dart';
 import 'package:delivery_app/presentation/widgets/date_picker_field.dart';
@@ -20,6 +22,7 @@ import 'package:delivery_app/presentation/widgets/identification_field.dart';
 import 'package:delivery_app/presentation/widgets/image_picker_field.dart';
 import 'package:delivery_app/presentation/widgets/map_location_field.dart';
 import 'package:delivery_app/presentation/widgets/price_calculator_field.dart';
+import 'package:delivery_app/presentation/widgets/rol_selector_field.dart';
 import 'package:flutter/material.dart';
 
 class FormSection extends StatefulWidget {
@@ -216,6 +219,7 @@ class _FormSectionState extends State<FormSection> {
       case FormFieldType.imagePicker:
         return ImagePickerFormField(
           initialValue: getImageInitialValue(formFieldConfig.folder!),
+          label: formFieldConfig.label,
           onSaved: (value) {
             formValues[formFieldConfig.id] = value;
           },
@@ -292,6 +296,26 @@ class _FormSectionState extends State<FormSection> {
               }
               return null;
             });
+      case FormFieldType.rolSelector:
+        return RolSelectorFormField(
+          roles: formFieldConfig.options as List<DropdownOption>,
+          commerceOptions: formFieldConfig.optionsData  as List<DropdownOption>,
+          onSaved: (value) {
+            formValues[formFieldConfig.id] = value;
+          },
+          initialValue: getRolInitialValue(),
+          isEnabled: (isUpdate == ActionFormType.update)
+              ? (formFieldConfig.updateEnable?.call(rowSelected!) ?? false)
+              : (isUpdate == ActionFormType.create)
+                  ? formFieldConfig.enabled
+                  : false,
+          validator: (value) {
+              if ((value == null || value.rol.trim().isEmpty || (value.rol == Constants.adminRolCode && value.commerce == null)) && formFieldConfig.isRequired) {
+                return 'Campo requerido';
+              }
+              return null;
+            }
+        );
     }
   }
 
@@ -360,5 +384,11 @@ class _FormSectionState extends State<FormSection> {
       return options.cast<GlobalEvent>().where((e) => e.id == optionSelected).firstOrNull;
     }
     return null;
+  }
+
+  RolData? getRolInitialValue() {
+    final currentRol = rowSelected?['rol'];
+    final currentCommerce = rowSelected?['commerce'];
+    return RolData(rol: currentRol, commerce: currentCommerce);
   }
 }

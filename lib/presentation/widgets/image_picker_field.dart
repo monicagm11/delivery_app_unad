@@ -12,23 +12,28 @@ class ImagePickerFormField extends FormField<ImageData> {
     super.validator,
     this.isEnabled = true,
     super.initialValue,
+    required this.label
   }) : super(
           builder: (state) => _ImagePickerField(
             state: state,
             isEnabled: isEnabled,
+            label: label,
           ),
         );
 
   final bool isEnabled;
+  final String label;
 }
 
 class _ImagePickerField extends StatefulWidget {
   final FormFieldState<ImageData> state;
   final bool isEnabled;
+  final String label;
 
   const _ImagePickerField({
     required this.state,
     required this.isEnabled,
+    required this.label
   });
 
   @override
@@ -126,6 +131,9 @@ class _ImagePickerFieldState extends State<_ImagePickerField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Text(widget.label,
+            style: TextStyle(fontSize: 16)),
+        SizedBox(height: 8,),
         GestureDetector(
           onTap: () => _showSourceSheet(context),
           child: Container(

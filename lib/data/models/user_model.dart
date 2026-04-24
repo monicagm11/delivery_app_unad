@@ -16,7 +16,9 @@ class UserModel extends User {
     required super.status,
     super.department,
     super.city, 
-    required super.rol
+    required super.rol,
+    super.commerce,
+    super.occupation
   });
 
   factory UserModel.fromMap(Map<String, dynamic> map) => UserModel(
@@ -34,6 +36,8 @@ class UserModel extends User {
         status: map['status'] as String? ?? '',
         department: map['department'] as String? ?? '',
         city: map['city'] as String? ?? '',
-        rol: map['rol'] as String? ?? ''
+        rol: map['rol'] as String? ?? '',
+        commerce: map['commerce'] as String?,
+        occupation: map['occupation']
       );
 }

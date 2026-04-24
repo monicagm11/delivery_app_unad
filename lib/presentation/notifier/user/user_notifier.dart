@@ -3,8 +3,10 @@ import 'package:delivery_app/domain/entities/city_data.dart';
 import 'package:delivery_app/domain/entities/dropdown_option.dart';
 import 'package:delivery_app/domain/entities/identification_data.dart';
 import 'package:delivery_app/domain/entities/rol.dart';
+import 'package:delivery_app/domain/entities/rol_data.dart';
 import 'package:delivery_app/domain/usecases/commerce/get_all_commercers_usecase.dart';
 import 'package:delivery_app/domain/usecases/get_departments_usecase.dart';
+import 'package:delivery_app/domain/usecases/send_email_new_users_usecase.dart';
 import 'package:delivery_app/domain/usecases/user/create_user_usecase.dart';
 import 'package:delivery_app/domain/usecases/user/get_all_user_usecase.dart';
 import 'package:delivery_app/domain/usecases/user/update_user_usecase.dart';
@@ -19,6 +21,7 @@ class UserNotifier extends StateNotifier<UserState> {
   final UpdateUserUseCase updateUseCase;
   final GetDepartmentsUseCase getDepartmentsUseCase;
   final GetAllCommercesUseCase getAllCommercesUseCase;
+  final SendEmailNewUsersUsecase sendEmailNewUsersUsecase;
   final String commerceId;
   final Rol rolConfig;
 
@@ -28,6 +31,7 @@ class UserNotifier extends StateNotifier<UserState> {
       required this.updateUseCase,
       required this.getDepartmentsUseCase,
       required this.getAllCommercesUseCase,
+      required this.sendEmailNewUsersUsecase,
       required this.commerceId,
       required this.rolConfig
       })
@@ -80,6 +84,9 @@ class UserNotifier extends StateNotifier<UserState> {
   Future<void> create(Map<String, dynamic> map) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
+      String userId = await sendEmailNewUsersUsecase(email: map['email'], name: map['name']);
+      map['userId'] = userId;
+      map['isPending'] = true;
       UserModel model = mapFromFormData(map);
       await createUseCase(model);
       await loadAll();
@@ -111,6 +118,7 @@ class UserNotifier extends StateNotifier<UserState> {
     IdentificationData identificationData =
           map['identification'] as IdentificationData;
       CityData cityData = map['cityDepartment'] as CityData;
+      RolData rolData = map['rol'] as RolData;
       return UserModel(
           id: map['id'] as String? ?? '',
           userId: map['userId'] as String? ?? '',
@@ -126,7 +134,9 @@ class UserNotifier extends StateNotifier<UserState> {
           city: cityData.city,
           status: map['status'] as String? ?? '',
           fullDocument: identificationData.full,
-          rol: map['rol'] as String? ?? '' 
+          rol: rolData.rol,
+          commerce: rolData.commerce,
+          occupation: map['occupation']
           );
   }
 }
@@ -142,6 +152,7 @@ final userNotifierProvider =
       updateUseCase: ref.read(updateUserUseCaseProvider),
       getDepartmentsUseCase: ref.read(getDepartmentsUseCaseProvider),
       getAllCommercesUseCase: ref.read(getAllCommercesUseCaseProvider),
+      sendEmailNewUsersUsecase: ref.read(sendEmailNewUsersUseCaseProvider),
       commerceId: commerceId,
       rolConfig: rolConfig 
       );

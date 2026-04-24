@@ -5,7 +5,9 @@ import 'package:delivery_app/domain/usecases/commerce/get_commerce_by_id_usecase
 import 'package:delivery_app/domain/usecases/get_remote_config_usecase.dart';
 import 'package:delivery_app/domain/usecases/user/get_user_by_id_usecase.dart';
 import 'package:delivery_app/presentation/notifier/session/session_state.dart';
+import 'package:delivery_app/presentation/screens/settings_screen.dart';
 import 'package:delivery_app/presentation/utils/constants.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SessionNotifier extends StateNotifier<SessionState> {
@@ -44,11 +46,18 @@ class SessionNotifier extends StateNotifier<SessionState> {
     if (state.rolConfig == null) return [];
     final originalMapConfig = state.rolConfig!.functionConfig;
     final originalList = Constants.menuItems;
-    return originalList.where((obj1) {
+    List<MenuItem> items = originalList.where((obj1) {
       final obj2 = originalMapConfig[obj1.code];
       return obj2 != null && obj2.enabled;
     }).toList();
+    items.add(MenuItem(
+        title: 'Configuración',
+        icon: Icons.settings,
+        screen: SettingsScreen(),
+        code: Constants.settingsFunction));
+    return items;
   }
+
   void clear() => state = const SessionState();
 }
 

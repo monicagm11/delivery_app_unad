@@ -43,7 +43,7 @@ class _UserCrudScreenState extends ConsumerState<UserCrudScreen> {
             id: 'id',
             enabled: false,
             type: FormFieldType.textInput,
-            isRequired: true,
+            isRequired: false,
             updateEnable:(_) => false,),
         FormFieldConfig(
             label: 'Nombre',
@@ -61,7 +61,7 @@ class _UserCrudScreenState extends ConsumerState<UserCrudScreen> {
             updateEnable:(_) => true),
         FormFieldConfig(
             label: 'Cargo',
-            id: 'ocupation',
+            id: 'occupation',
             enabled: true,
             type: FormFieldType.textInput,
             isRequired: true,
@@ -71,8 +71,9 @@ class _UserCrudScreenState extends ConsumerState<UserCrudScreen> {
           id: 'rol',
           enabled: true,
           updateEnable: (_) => true,
-          type: FormFieldType.list,
+          type: FormFieldType.rolSelector,
           isRequired: true,
+          optionsData: state.commerceOptions,
           options: state.rolOptions,
         ),
         FormFieldConfig(

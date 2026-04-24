@@ -39,7 +39,7 @@ class _ProductCrudScreenState extends ConsumerState<ProductCrudScreen> {
         name: 'Producto',
         formConfig: [
           FormFieldConfig(
-              label: '',
+              label: 'Imagen del producto',
               id: 'image',
               enabled: true,
               type: FormFieldType.imagePicker,

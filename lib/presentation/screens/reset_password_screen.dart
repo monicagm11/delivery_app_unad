@@ -1,46 +1,40 @@
-import 'package:delivery_app/presentation/notifier/login/auth_notifier.dart';
 import 'package:delivery_app/presentation/notifier/login/auth_state.dart';
-import 'package:delivery_app/presentation/screens/home_screen.dart';
-import 'package:delivery_app/presentation/screens/reset_password_screen.dart';
+import 'package:delivery_app/presentation/notifier/reset_password/reset_password_notifer.dart';
+import 'package:delivery_app/presentation/notifier/reset_password/reset_password_state.dart';
 import 'package:delivery_app/presentation/widgets/left_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({super.key});
+class ResetPasswordScreen extends ConsumerStatefulWidget {
+  const ResetPasswordScreen({super.key});
 
   @override
-  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
 }
 
-class _LoginScreenState extends ConsumerState<LoginScreen> {
+class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
   bool _obscurePassword = true;
 
   @override
   void dispose() {
     _emailController.dispose();
-    _passwordController.dispose();
     super.dispose();
   }
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
-    await ref.read(authNotifierProvider.notifier).login(
+    await ref.read(resetPasswordNotifierProvider.notifier).reset(
           _emailController.text,
-          _passwordController.text,
         );
   }
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<AuthState>(authNotifierProvider, (_, state) {
+    ref.listen<ResetPasswordState>(resetPasswordNotifierProvider, (_, state) {
       if (state.status == AuthStatus.success) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
-        );
+        Navigator.of(context).pop();
       }
       if (state.status == AuthStatus.error && state.errorMessage != null) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -49,7 +43,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             backgroundColor: Colors.red,
           ),
         );
-        ref.read(authNotifierProvider.notifier).resetState();
+        ref.read(resetPasswordNotifierProvider.notifier).resetState();
       }
     });
 
@@ -60,14 +54,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           return isWide ? _WideLayout(
             formKey: _formKey,
             emailController: _emailController,
-            passwordController: _passwordController,
             obscurePassword: _obscurePassword,
             onTogglePassword: () => setState(() => _obscurePassword = !_obscurePassword),
             onSubmit: _submit,
           ) : _NarrowLayout(
             formKey: _formKey,
             emailController: _emailController,
-            passwordController: _passwordController,
             obscurePassword: _obscurePassword,
             onTogglePassword: () => setState(() => _obscurePassword = !_obscurePassword),
             onSubmit: _submit,
@@ -78,19 +70,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 }
 
-
-class _LoginForm extends StatelessWidget {
+class _ResetForm extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController emailController;
-  final TextEditingController passwordController;
   final bool obscurePassword;
   final VoidCallback onTogglePassword;
   final VoidCallback onSubmit;
 
-  const _LoginForm({
+  const _ResetForm({
     required this.formKey,
     required this.emailController,
-    required this.passwordController,
     required this.obscurePassword,
     required this.onTogglePassword,
     required this.onSubmit,
@@ -101,7 +90,7 @@ class _LoginForm extends StatelessWidget {
     return Consumer(
       builder: (context, ref, _) {
         final isLoading =
-            ref.watch(authNotifierProvider).status == AuthStatus.loading;
+            ref.watch(resetPasswordNotifierProvider).status == AuthStatus.loading;
 
         return Center(
           child: SingleChildScrollView(
@@ -112,7 +101,7 @@ class _LoginForm extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    'Iniciar sesión',
+                    'Cambio de contraseña',
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -132,41 +121,7 @@ class _LoginForm extends StatelessWidget {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: passwordController,
-                    obscureText: obscurePassword,
-                    decoration: InputDecoration(
-                      labelText: 'Contraseña',
-                      prefixIcon: const Icon(Icons.lock_outline),
-                      border: const OutlineInputBorder(),
-                      suffixIcon: IconButton(
-                        icon: Icon(obscurePassword
-                            ? Icons.visibility_outlined
-                            : Icons.visibility_off_outlined),
-                        onPressed: onTogglePassword,
-                      ),
-                    ),
-                    validator: (v) {
-                      if (v == null || v.isEmpty) return 'Campo requerido';
-                      if (v.length < 6) return 'Mínimo 6 caracteres';
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 8),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (_) => const ResetPasswordScreen()),
-                        );
-                      },
-                      child: const Text('Olvidé la contraseña'),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 20),
                   SizedBox(
                     height: 48,
                     child: ElevatedButton(
@@ -185,7 +140,7 @@ class _LoginForm extends StatelessWidget {
                               child: CircularProgressIndicator(
                                   strokeWidth: 2, color: Colors.white),
                             )
-                          : const Text('INGRESAR',
+                          : const Text('Enviar Link',
                               style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
                   ),
@@ -203,7 +158,6 @@ class _LoginForm extends StatelessWidget {
 class _WideLayout extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController emailController;
-  final TextEditingController passwordController;
   final bool obscurePassword;
   final VoidCallback onTogglePassword;
   final VoidCallback onSubmit;
@@ -211,7 +165,6 @@ class _WideLayout extends StatelessWidget {
   const _WideLayout({
     required this.formKey,
     required this.emailController,
-    required this.passwordController,
     required this.obscurePassword,
     required this.onTogglePassword,
     required this.onSubmit,
@@ -224,10 +177,9 @@ class _WideLayout extends StatelessWidget {
         const Expanded(flex: 2, child: LeftPanel(false)),
         Expanded(
           flex: 3,
-          child: _LoginForm(
+          child: _ResetForm(
             formKey: formKey,
             emailController: emailController,
-            passwordController: passwordController,
             obscurePassword: obscurePassword,
             onTogglePassword: onTogglePassword,
             onSubmit: onSubmit,
@@ -241,7 +193,6 @@ class _WideLayout extends StatelessWidget {
 class _NarrowLayout extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController emailController;
-  final TextEditingController passwordController;
   final bool obscurePassword;
   final VoidCallback onTogglePassword;
   final VoidCallback onSubmit;
@@ -249,7 +200,6 @@ class _NarrowLayout extends StatelessWidget {
   const _NarrowLayout({
     required this.formKey,
     required this.emailController,
-    required this.passwordController,
     required this.obscurePassword,
     required this.onTogglePassword,
     required this.onSubmit,
@@ -261,10 +211,9 @@ class _NarrowLayout extends StatelessWidget {
       children: [
         const SizedBox(height: 200, child: LeftPanel(true)),
         Expanded(
-          child: _LoginForm(
+          child: _ResetForm(
             formKey: formKey,
             emailController: emailController,
-            passwordController: passwordController,
             obscurePassword: obscurePassword,
             onTogglePassword: onTogglePassword,
             onSubmit: onSubmit,
