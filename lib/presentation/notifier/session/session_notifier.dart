@@ -35,8 +35,10 @@ class SessionNotifier extends StateNotifier<SessionState> {
           email: user.email,
           commerceId: user.commerce,
           rol: user.rol,
+          userName: user.fullname,
           commerce: commerce,
-          rolConfig: rolInfo);
+          rolConfig: rolInfo,
+          rolId: user.rol);
     } catch (e) {
       state = state.copyWith(userId: userId);
     }

@@ -8,16 +8,20 @@ class SessionState {
   final String? rol;
   final Rol? rolConfig;
   final Commerce? commerce;
+  final String? userName;
+  final String? rolId;
 
-  const SessionState({this.userId, this.email, this.commerceId, this.rol, this.rolConfig, this.commerce});
+  const SessionState({this.userId, this.email, this.commerceId, this.rol, this.rolConfig, this.commerce, this.userName, this.rolId});
 
   SessionState copyWith({
     String? userId,
     String? email,
     String? commerceId,
     String? rol,
+    String? userName,
     Rol? rolConfig,
-    Commerce? commerce
+    Commerce? commerce,
+    String? rolId
   }) {
     return SessionState(
       userId: userId ?? this.userId,
@@ -25,7 +29,9 @@ class SessionState {
       rol: rol ?? this.rol,
       commerceId: commerceId ?? this.commerceId,
       rolConfig: rolConfig ?? this.rolConfig,
-      commerce: commerce ?? this.commerce
+      commerce: commerce ?? this.commerce,
+      userName: userName ?? this.userName,
+      rolId: rolId ?? this.rolId
     );
   }
 }
