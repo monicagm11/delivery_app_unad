@@ -20,6 +20,7 @@ class Constants {
       'delivery-flutter-app-unad.firebasestorage.app';
 
   static const String adminRolCode = 'ADMINISTRADOR';
+  static const String userRolCode = 'USUARIO_FINAL';
 
   static const String productFunction = 'products';
   static const String userFunction = 'users';
@@ -37,6 +38,9 @@ class Constants {
   static const String canceledStatus = 'CANCELADO';
   static const String pendindStatus = 'PENDIENTE';
   static const String rejectedStatus = 'RECHAZADO';
+
+  static const keyDepartment = 'selected_department';
+  static const keyCity = 'selected_city';
 
   static Rol defaultRol = Rol(
       name: 'UNKNOWN',

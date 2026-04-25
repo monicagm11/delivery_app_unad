@@ -1,7 +1,10 @@
 import 'package:delivery_app/presentation/notifier/login/auth_notifier.dart';
 import 'package:delivery_app/presentation/notifier/login/auth_state.dart';
+import 'package:delivery_app/presentation/notifier/session/session_notifier.dart';
+import 'package:delivery_app/presentation/screens/city_selector_screen.dart';
 import 'package:delivery_app/presentation/screens/home_screen.dart';
 import 'package:delivery_app/presentation/screens/reset_password_screen.dart';
+import 'package:delivery_app/presentation/utils/constants.dart';
 import 'package:delivery_app/presentation/widgets/left_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -38,9 +41,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     ref.listen<AuthState>(authNotifierProvider, (_, state) {
       if (state.status == AuthStatus.success) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
-        );
+        String rolId = ref.read(sessionNotifierProvider).rol!;
+        if (rolId == Constants.userRolCode) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => CitySelectorScreen()),
+          );
+        } else {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => HomeScreen()),
+          );
+        }
       }
       if (state.status == AuthStatus.error && state.errorMessage != null) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -188,6 +198,27 @@ class _LoginForm extends StatelessWidget {
                           : const Text('INGRESAR',
                               style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    height: 50,
+                    child: ElevatedButton(
+                        onPressed: isLoading ? null : () {},
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: Row(
+                          spacing: 12,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Image.asset('assets/images/google.png'),
+                            const Text('Ingresar con Google',
+                                    style: TextStyle(fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ),
                   ),
                 ],
               ),

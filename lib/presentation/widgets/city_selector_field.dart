@@ -9,21 +9,34 @@ class CitySelectorFormField extends FormField<CityData> {
     super.onSaved,
     super.validator,
     this.isEnabled = true,
+    this.onChanged,
     required this.departments
   }) : super(
           builder: (state) {
-            return _CitySelectorField(state: state, isEnabled: isEnabled, departments: departments,);
+            return _CitySelectorField(
+              state: state,
+              isEnabled: isEnabled,
+              departments: departments,
+              onChanged: onChanged,
+            );
           },
         );
   final bool isEnabled;
   final List<Department> departments;
+  final ValueChanged<CityData?>? onChanged;
 }
 
 class _CitySelectorField extends StatefulWidget {
   final FormFieldState<CityData> state;
   final bool isEnabled;
   final List<Department> departments;
-  const _CitySelectorField({required  this.state, required this.isEnabled, required this.departments});
+  final ValueChanged<CityData?>? onChanged;
+  const _CitySelectorField({
+    required this.state,
+    required this.isEnabled,
+    required this.departments,
+    this.onChanged,
+  });
 
   @override
   State<_CitySelectorField> createState() => _CitySelectorFieldState();
@@ -57,12 +70,12 @@ class _CitySelectorFieldState extends State<_CitySelectorField> {
   }
 
   void _update() {
-    widget.state.didChange(
-      CityData(
-        department: departmentCode ?? '',
-        city: cityCode ?? ''
-      ),
+    final data = CityData(
+      department: departmentCode ?? '',
+      city: cityCode ?? '',
     );
+    widget.state.didChange(data);
+    widget.onChanged?.call(data);
     Form.of(context).validate();
   }
 

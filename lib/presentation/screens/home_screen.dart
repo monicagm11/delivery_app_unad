@@ -39,7 +39,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               children: [
                 const Icon(Icons.person_outline, size: 18),
                 const SizedBox(width: 6),
-                Text(session.email ?? '', style: const TextStyle(fontSize: 13)),
+                Text(session.userName ?? '', style: const TextStyle(fontSize: 13)),
                 IconButton(
                   tooltip: 'Cerrar sesión',
                   icon: const Icon(Icons.logout),
