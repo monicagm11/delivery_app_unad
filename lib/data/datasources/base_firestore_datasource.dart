@@ -59,7 +59,6 @@ class BaseFirestoreDatasource<T> {
       List<String> ids, T Function(Map<String, dynamic>) mapper) async {
     if (ids.isEmpty) return [];
     try {
-      // Firestore limita whereIn a 30 elementos por consulta
       const chunkSize = 30;
       final results = <T>[];
       for (var i = 0; i < ids.length; i += chunkSize) {
