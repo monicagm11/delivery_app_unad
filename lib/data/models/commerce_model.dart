@@ -13,6 +13,8 @@ class CommerceModel extends Commerce {
     required super.city,
     required super.status,
     required super.contactName,
+    required super.urlImage,
+    required super.urlImageQR,
     super.fullDocument
   });
 
@@ -28,6 +30,8 @@ class CommerceModel extends Commerce {
         city: map['city'] as String? ?? '',
         status: map['status'] as String? ?? '',
         contactName: map['contactName'] as String? ?? '',
-        fullDocument: '${map['identificationType']} ${map['document']}'
+        fullDocument: '${map['identificationType']} ${map['document']}',
+        urlImage:  map['urlImage'] as String? ?? '',
+        urlImageQR:  map['urlImageQR'] as String? ?? '',
       );
 }

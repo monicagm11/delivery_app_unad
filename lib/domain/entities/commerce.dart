@@ -11,6 +11,8 @@ class Commerce {
   final String status;
   final String fullDocument;
   final String contactName;
+  final String urlImage;
+  final String urlImageQR;
 
   const Commerce({
     required this.id,
@@ -24,6 +26,8 @@ class Commerce {
     required this.city,
     required this.status,
     required this.contactName,
+    required this.urlImage,
+    required this.urlImageQR,
     this.fullDocument = ''
   });
 
@@ -39,6 +43,8 @@ class Commerce {
         'city': city,
         'status': status,
         'contactName': contactName,
-        'fullDocument': fullDocument
+        'fullDocument': fullDocument,
+        'urlImage': urlImage,
+        'urlImageQR': urlImageQR
       };
 }

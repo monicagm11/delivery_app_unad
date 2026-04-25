@@ -39,7 +39,7 @@ class _CommerceCrudScreenState extends ConsumerState<CommerceCrudScreen> {
       formConfig: [
         FormFieldConfig(
                 label: 'Logo/Imagen del comercio',
-                id: 'image',
+                id: 'urlImage',
                 enabled: true,
                 type: FormFieldType.imagePicker,
                 isRequired: true,
@@ -50,7 +50,7 @@ class _CommerceCrudScreenState extends ConsumerState<CommerceCrudScreen> {
                 id: 'id',
                 enabled: false,
                 type: FormFieldType.textInput,
-                isRequired: true,
+                isRequired: false,
                 updateEnable: (_) => false),
             FormFieldConfig(
                 label: 'Nombre',
@@ -115,7 +115,7 @@ class _CommerceCrudScreenState extends ConsumerState<CommerceCrudScreen> {
             ),
             FormFieldConfig(
                 label: 'Seleccione un QR para pagos',
-                id: 'qr',
+                id: 'urlImageQR',
                 enabled: true,
                 type: FormFieldType.imagePicker,
                 isRequired: true,

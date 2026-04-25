@@ -423,28 +423,18 @@ class _CrudListTemplateState extends State<CrudListTemplate> {
                   isUpdate: isFormUpdate,
                   rowSelected: rowSelected,
                   onCreate: (row) async {
-                    bool confirmation = await showConfirmationDialog(context,
-                            '¿Está seguro que desea almacenar estos datos?') ??
-                        false;
-                    if (confirmation) {
-                      await widget.onCreate(row);
+                    await widget.onCreate(row);
                       setState(() {
                         showForm = false;
                         rowSelected = null;
                       });
-                    }
                   },
                   onUpdate: (id, row) async {
-                    bool confirmation = await showConfirmationDialog(context,
-                            '¿Está seguro que desea actualizar el registro?') ??
-                        false;
-                    if (confirmation) {
-                      await widget.onUpdate(id, row);
+                    await widget.onUpdate(id, row);
                       setState(() {
                         showForm = false;
                         rowSelected = null;
                       });
-                    }
                   },
                   onClose: () {
                     setState(() {
@@ -458,30 +448,5 @@ class _CrudListTemplateState extends State<CrudListTemplate> {
     );
   }
 
-  Future<bool?> showConfirmationDialog(BuildContext context, String message) {
-  return showDialog<bool>(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text('Confirmación'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context, false);
-            },
-            child: const Text('Cancelar'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context, true);
-            },
-            child: const Text('Aceptar'),
-          ),
-        ],
-      );
-    },
-  );
-}
+
 }

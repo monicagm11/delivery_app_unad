@@ -112,14 +112,27 @@ class _FormSectionState extends State<FormSection> {
                                   isLoading = true;
                                 });
                                 if (formKey.currentState!.validate()) {
-                                  formKey.currentState?.save();
-                                  if (isUpdate == ActionFormType.update) {
-                                    await widget.onUpdate(
-                                        currentId!, formValues);
-                                  } else if (isUpdate == ActionFormType.create){
-                                    await widget.onCreate(formValues);
+                                    formKey.currentState?.save();
+                                    if (isUpdate == ActionFormType.update) {
+                                      bool confirmation =
+                                          await showConfirmationDialog(context,
+                                                  '¿Está seguro que desea actualizar el registro?') ??
+                                              false;
+                                      if (confirmation) {
+                                        await widget.onUpdate(
+                                            currentId!, formValues);
+                                      }
+                                    } else if (isUpdate ==
+                                        ActionFormType.create) {
+                                      bool confirmation =
+                                          await showConfirmationDialog(context,
+                                                  '¿Está seguro que desea almacenar estos datos?') ??
+                                              false;
+                                      if (confirmation) {
+                                        await widget.onCreate(formValues);
+                                      }
+                                    }
                                   }
-                                }
                                 setState(() {
                                   isLoading = false;
                                 });
@@ -218,7 +231,7 @@ class _FormSectionState extends State<FormSection> {
         );
       case FormFieldType.imagePicker:
         return ImagePickerFormField(
-          initialValue: getImageInitialValue(formFieldConfig.folder!),
+          initialValue: getImageInitialValue(formFieldConfig.folder!, formFieldConfig.id),
           label: formFieldConfig.label,
           onSaved: (value) {
             formValues[formFieldConfig.id] = value;
@@ -351,8 +364,8 @@ class _FormSectionState extends State<FormSection> {
     return null;
   }
 
-  ImageData? getImageInitialValue(String folder) {
-    final currentImage = rowSelected?['urlImage'];
+  ImageData? getImageInitialValue(String folder, String id) {
+    final currentImage = rowSelected?[id];
     return ImageData(path: currentImage, folder: folder);
   }
 
@@ -391,4 +404,31 @@ class _FormSectionState extends State<FormSection> {
     final currentCommerce = rowSelected?['commerce'];
     return RolData(rol: currentRol, commerce: currentCommerce);
   }
+
+    Future<bool?> showConfirmationDialog(BuildContext context, String message) {
+  return showDialog<bool>(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Confirmación'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context, false);
+            },
+            child: const Text('Cancelar'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context, true);
+            },
+            child: const Text('Aceptar'),
+          ),
+        ],
+      );
+    },
+  );
+}
 }

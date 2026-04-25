@@ -60,9 +60,9 @@ class CommerceNotifier extends StateNotifier<CommerceState> {
   Future<void> create(Map<String, dynamic> map) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
-      ImageData imageData = map['image'] as ImageData;
+      ImageData imageData = map['urlImage'] as ImageData;
       final urlImage = await uploadImageUseCase(path: imageData.path!, folder: imageData.folder, bytes: imageData.bytes);
-      ImageData imageDataQR = map['qr'] as ImageData;
+      ImageData imageDataQR = map['urlImageQR'] as ImageData;
       final urlImageQR = await uploadImageUseCase(path: imageDataQR.path!, folder: imageDataQR.folder, bytes: imageDataQR.bytes);
       map['urlImage'] = urlImage;
       map['urlImageQR'] = urlImageQR;
@@ -77,6 +77,20 @@ class CommerceNotifier extends StateNotifier<CommerceState> {
   Future<void> update(String id, Map<String, dynamic> map) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
+      ImageData imageData = map['urlImage'] as ImageData;
+      if (imageData.path!= null && !imageData.path!.contains(Constants.bucketName)) {
+        final urlImage = await uploadImageUseCase(path: imageData.path!, folder: imageData.folder, bytes: imageData.bytes);
+        map['urlImage'] = urlImage;
+      } else {
+        map['urlImage'] = imageData.path;
+      }
+      ImageData imageDataQR = map['urlImageQR'] as ImageData;
+      if (imageDataQR.path!= null && !imageDataQR.path!.contains(Constants.bucketName)) {
+        final urlImage = await uploadImageUseCase(path: imageDataQR.path!, folder: imageDataQR.folder, bytes: imageDataQR.bytes);
+        map['urlImageQR'] = urlImage;
+      } else {
+        map['urlImageQR'] = imageDataQR.path;
+      }
       CommerceModel model = mapFromFormData(map);
       await updateUseCase(id, model);
       await loadAll();
@@ -109,6 +123,8 @@ class CommerceNotifier extends StateNotifier<CommerceState> {
           city: cityData.city,
           status: map['status'] as String? ?? '',
           contactName: map['contactName'] as String? ?? '',
+          urlImage: map['urlImage'] as String,
+          urlImageQR: map['urlImageQR'] as String,
           fullDocument: identificationData.full);
   }
 }
