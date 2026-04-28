@@ -105,6 +105,15 @@ class _LocalEventCrudScreenState extends ConsumerState<LocalEventCrudScreen> {
                 isRequired: true,
                 checkboxOptions: state.productOptions,
                 updateEnable: (_) => true),
+            FormFieldConfig(
+              label: 'Localización de cliente',
+              id: 'locationClientType',
+              enabled: true,
+              updateEnable: (_) => true,
+              type: FormFieldType.list,
+              isRequired: true,
+              options: Constants.locationClientOptions,
+              ),
           ],
           additionalUpdateOptions: (row) {
             String currentStatus = row['status'];

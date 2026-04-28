@@ -52,20 +52,29 @@ class _ManageRequestEventCrudScreenState extends ConsumerState<ManageRequestEven
                 optionsData: state.globalEventOptions,
                 updateEnable: (_) => false),
             FormFieldConfig(
+              label: 'Localización de cliente',
+              id: 'locationClientType',
+              enabled: true,
+              updateEnable: (_) => true,
+              type: FormFieldType.list,
+              isRequired: true,
+              options: Constants.locationClientOptions,
+              ),
+            FormFieldConfig(
                 label: 'Portafolio',
                 id: 'products',
                 enabled: true,
                 type: FormFieldType.checkboxListSelector,
                 isRequired: true,
                 checkboxOptions: state.productOptions,
-                updateEnable: (_) => false)
+                updateEnable: (_) => false),
           ],
           additionalUpdateOptions: (row) {
             String currentStatus = row['status'];
             if (currentStatus == Constants.pendindStatus) {
               return [
                 IconButton(
-                  icon: Icon(Icons.stop),
+                  icon: Icon(Icons.close, color: Colors.red,),
                   onPressed: () {
                     Map<String, dynamic> mapToUpdate = Map.from(row);
                     mapToUpdate['status'] =
@@ -73,6 +82,17 @@ class _ManageRequestEventCrudScreenState extends ConsumerState<ManageRequestEven
                     ref
                         .read(manageRequestEventNotifierProvider.notifier)
                         .updateFromTable(row['id'], mapToUpdate);
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.check, color: Colors.green,),
+                  onPressed: () {
+                    Map<String, dynamic> mapToUpdate = Map.from(row);
+                    mapToUpdate['status'] =
+                        Constants.aprovedStatus;
+                    ref
+                        .read(manageRequestEventNotifierProvider.notifier)
+                        .approveRequestFromTable(row['id'], mapToUpdate);
                   },
                 ),
               ];

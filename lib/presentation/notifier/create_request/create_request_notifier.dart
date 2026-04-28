@@ -127,7 +127,8 @@ class CreateRequestEventNotifier extends StateNotifier<CreateRequestState> {
           commerceId: commerceId,
           eventId: event.id, 
           creationDate: formattedDate, 
-          productsIdList: productIdList
+          productsIdList: productIdList,
+          locationClientType: map['locationClientType']
           );
   }
 }
@@ -135,7 +136,7 @@ class CreateRequestEventNotifier extends StateNotifier<CreateRequestState> {
 final createRequestEventNotifierProvider =
     StateNotifierProvider<CreateRequestEventNotifier, CreateRequestState>((ref) {
       final commerceId =
-      ref.read(sessionNotifierProvider).commerceId ?? '2G9IlFqKCL36mMaFF4Jg';
+      ref.read(sessionNotifierProvider).commerceId ?? '';
       final rolConfig = ref.read(sessionNotifierProvider).rolConfig ?? Constants.defaultRol;
   return CreateRequestEventNotifier(
       getAllUseCase: ref.read(getRequestEventsByCommerceUseCaseProvider),

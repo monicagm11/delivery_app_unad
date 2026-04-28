@@ -1,3 +1,4 @@
+import 'package:delivery_app/data/models/local_event_model.dart';
 import 'package:delivery_app/data/models/request_event_model.dart';
 import 'package:delivery_app/domain/entities/checkbox_option.dart';
 import 'package:delivery_app/domain/entities/global_event.dart';
@@ -73,6 +74,11 @@ class ManageRequestEventNotifier extends StateNotifier<ManageRequestState> {
         data['eventName'] = event.name;
         data['eventDescription'] = event.description;
         data['scheduleDate'] = event.scheduleDate;
+        data['longitude'] = event.longitude;
+        data['latitude'] = event.latitude;
+        data['radious'] = event.radious;
+        data['department'] = event.department;
+        data['city'] = event.city;
         return data;
       } ).toList();
       state = state.copyWith(isLoading: false, data: data);
@@ -103,6 +109,36 @@ class ManageRequestEventNotifier extends StateNotifier<ManageRequestState> {
     }
   }
 
+  Future<void> approveRequestFromTable(String id, Map<String, dynamic> map) async {
+    state = state.copyWith(isLoading: true, errorMessage: null);
+    try {
+      RequestEventModel model = RequestEventModel.fromMap(map);
+      await updateUseCase(id, model);
+      LocalEventModel modelLocalEvent = LocalEventModel(
+          id: '',
+          name: map['eventName'] as String? ?? '',
+          department: map['department'],
+          city: map['city'],
+          status: Constants.programmedStatus, 
+          description: map['eventDescription'] as String? ?? '',
+          latitude: map['latitude'] ,
+          longitude: map['longitude'],
+          radious: map['radious'],
+          startDate: map['startDate'] as String? ?? '',
+          endDate: map['endDate'] as String? ?? '',
+          scheduleDate: map['scheduleDate'] as String? ?? '',
+          productsIdList: map['products'] as List<String>,
+          commerce: map['commerceId'],
+          idGlobalEvent: map['id'],
+          locationClientType: map['locationClientType'],
+          );
+      await createLocalEventUseCase(modelLocalEvent);
+      await loadAll();
+    } catch (e) {
+      state = state.copyWith(isLoading: false, errorMessage: e.toString());
+    }
+  }
+
   void openForm() {
     state = state.copyWith(showForm: true);
   }
@@ -118,7 +154,8 @@ class ManageRequestEventNotifier extends StateNotifier<ManageRequestState> {
           commerceId: map['commerceId'] as String,
           eventId: 'event.id', 
           creationDate: 'formattedDate', 
-          productsIdList: []
+          productsIdList: [],
+          locationClientType: map['locationClientType'] as String? ?? ''
           );
   }
 }

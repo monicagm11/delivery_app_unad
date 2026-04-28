@@ -7,7 +7,8 @@ class RequestEventModel extends RequestEvent {
     required super.status,
     required super.eventId,
     required super.creationDate,
-    required super.productsIdList
+    required super.productsIdList,
+    required super.locationClientType
   });
 
   factory RequestEventModel.fromMap(Map<String, dynamic> map) => RequestEventModel(
@@ -16,7 +17,9 @@ class RequestEventModel extends RequestEvent {
         status: map['status'] as String? ?? '',
         eventId: map['eventId'] as String? ?? '',
         creationDate: map['creationDate'] as String? ?? '',
-        productsIdList: List<String>.from(map['products'] as List? ?? [])
+        productsIdList: List<String>.from(map['products'] as List? ?? []), 
+        locationClientType: map['locationClientType'] as String? ?? 'numberedChair',
+        
       );
 
   

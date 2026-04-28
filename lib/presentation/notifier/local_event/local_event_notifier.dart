@@ -134,7 +134,8 @@ class LocalEventNotifier extends StateNotifier<LocalEventState> {
           endDate: map['endDate'] as String? ?? '',
           scheduleDate: programmedDate.fullDate,
           productsIdList: productIdList,
-          commerce: commerceId
+          commerce: commerceId,
+          locationClientType: map['locationClientType']
           );
   }
 }

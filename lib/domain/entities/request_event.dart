@@ -4,6 +4,7 @@ class RequestEvent {
   final String status;
   final String eventId;
   final String creationDate;
+  final String locationClientType;
   final List<String> productsIdList;
 
   const RequestEvent({
@@ -12,7 +13,8 @@ class RequestEvent {
     required this.status,
     required this.eventId,
     required this.creationDate,
-    required this.productsIdList
+    required this.productsIdList,
+    required this.locationClientType
   });
 
   Map<String, dynamic> toMap() => {
@@ -21,6 +23,7 @@ class RequestEvent {
         'status': status,
         'eventId': eventId,
         'creationDate': creationDate,
-        'products': productsIdList
+        'products': productsIdList,
+        'locationClientType': locationClientType
       };
 }

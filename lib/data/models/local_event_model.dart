@@ -16,6 +16,7 @@ class LocalEventModel extends LocalEvent {
     required super.status,
     required super.productsIdList,
     required super.commerce,
+    required super.locationClientType,
     super.idGlobalEvent,
   });
 
@@ -35,6 +36,7 @@ class LocalEventModel extends LocalEvent {
         productsIdList: List<String>.from(map['products'] as List? ?? []),
         commerce: map['commerce'] as String? ?? '',
         idGlobalEvent: map['idGlobalEvent'] as String?,
+        locationClientType: map['locationClientType']
       );
 
   

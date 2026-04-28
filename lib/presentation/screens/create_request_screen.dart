@@ -49,6 +49,15 @@ class _CreateRequestEventCrudScreenState extends ConsumerState<CreateRequestEven
                 optionsData: state.globalEventAvailableOptions,
                 updateEnable: (_) => false),
             FormFieldConfig(
+              label: 'Localización de cliente',
+              id: 'locationClientType',
+              enabled: true,
+              updateEnable: (_) => true,
+              type: FormFieldType.list,
+              isRequired: true,
+              options: Constants.locationClientOptions,
+              ),
+            FormFieldConfig(
                 label: 'Portafolio',
                 id: 'products',
                 enabled: true,
