@@ -402,7 +402,10 @@ class _FormSectionState extends State<FormSection> {
   RolData? getRolInitialValue() {
     final currentRol = rowSelected?['rol'];
     final currentCommerce = rowSelected?['commerce'];
+    if (currentRol != null) {
     return RolData(rol: currentRol, commerce: currentCommerce);
+    }
+    return null;
   }
 
     Future<bool?> showConfirmationDialog(BuildContext context, String message) {

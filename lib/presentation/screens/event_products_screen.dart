@@ -94,6 +94,7 @@ class _EventProductsScreenState extends ConsumerState<EventProductsScreen> {
                             product: state.filteredProducts[i],
                             eventId: widget.event.id,
                             eventName: widget.event.name,
+                            commerceId: widget.commerceId,
                           ),
                         ),
                       ),

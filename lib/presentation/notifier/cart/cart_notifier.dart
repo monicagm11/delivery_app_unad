@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class CartNotifier extends StateNotifier<CartState> {
   CartNotifier() : super(const CartState());
 
-  bool addItem(Product product, String eventId, String eventName) {
+  bool addItem(Product product, String eventId, String eventName, String commerceId) {
     if (state.isEmpty || state.eventId == eventId) {
       final existing = state.items.indexWhere((i) => i.product.id == product.id);
       List<CartItem> updated;
@@ -18,7 +18,7 @@ class CartNotifier extends StateNotifier<CartState> {
       } else {
         updated = [...state.items, CartItem(product: product, quantity: 1)];
       }
-      state = state.copyWith(items: updated, eventId: eventId, eventName: eventName);
+      state = state.copyWith(items: updated, eventId: eventId, eventName: eventName, commerce: commerceId);
       return true;
     }
     return false;

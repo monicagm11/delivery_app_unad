@@ -38,6 +38,7 @@ class _CrudListTemplateState extends State<CrudListTemplate> {
   String? _filterCategory;
   String? _filterCategoryName;
   bool isViewDetails = false;
+  final ScrollController _controller = ScrollController();
 
   @override
   void initState() {
@@ -342,6 +343,7 @@ class _CrudListTemplateState extends State<CrudListTemplate> {
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: SingleChildScrollView(
+              controller: _controller,
               scrollDirection: Axis.horizontal,
               child: DataTable(
               columns: [

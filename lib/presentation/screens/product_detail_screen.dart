@@ -8,17 +8,19 @@ class ProductDetailScreen extends ConsumerWidget {
   final Product product;
   final String eventId;
   final String eventName;
+  final String commerceId;
 
   const ProductDetailScreen({
     super.key,
     required this.product,
     required this.eventId,
     required this.eventName,
+    required this.commerceId
   });
 
   Future<void> _handleAddToCart(BuildContext context, WidgetRef ref) async {
     final notifier = ref.read(cartNotifierProvider.notifier);
-    final added = notifier.addItem(product, eventId, eventName);
+    final added = notifier.addItem(product, eventId, eventName, commerceId);
 
     if (added) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -53,7 +55,7 @@ class ProductDetailScreen extends ConsumerWidget {
               onPressed: () {
                 Navigator.pop(context);
                 notifier.clear();
-                notifier.addItem(product, eventId, eventName);
+                notifier.addItem(product, eventId, eventName, commerceId);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('Carrito actualizado con ${product.name}'),

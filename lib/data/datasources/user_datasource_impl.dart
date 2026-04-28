@@ -19,7 +19,7 @@ class UserDatasourceImpl extends BaseFirestoreDatasource<UserModel>
   @override
   Future<void> create(UserModel model) async {
     try {
-      await add(model.toMap());
+      await addWithId(model.userId, model.toMap());
     } catch (e) {
       rethrow;
     }

@@ -14,6 +14,8 @@ class LocalEvent {
   final List<String> productsIdList;
   final String? idGlobalEvent;
   final String commerce;
+  final String locationClientType;
+  
 
   LocalEvent({
     required this.id,
@@ -31,6 +33,7 @@ class LocalEvent {
     required this.productsIdList,
     required this.commerce,
     this.idGlobalEvent,
+    required this.locationClientType
   });
 
   Map<String, dynamic> toMap() => {
@@ -49,5 +52,6 @@ class LocalEvent {
         'products': productsIdList,
         'idGlobalEvent': idGlobalEvent,
         'commerce': commerce,
+        'locationClientType': locationClientType
       };
 }

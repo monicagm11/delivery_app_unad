@@ -62,6 +62,11 @@ class Constants {
     DropdownOption(label: 'Inactivo', value: 'INACTIVO')
   ];
 
+  static const locationClientOptions = [
+    DropdownOption(label: 'Silla numerada', value: 'numberedChair'),
+    DropdownOption(label: 'Mesa numerada', value: 'numberedTable')
+  ];
+
   static const headersCommerce = [
     TableColumnConfig(label: "Nombre", code: "name"),
     TableColumnConfig(label: 'Identificación', code: 'fullDocument'),

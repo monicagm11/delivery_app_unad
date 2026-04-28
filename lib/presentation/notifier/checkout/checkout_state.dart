@@ -8,6 +8,7 @@ class CheckoutState {
   final bool isLoading;
   final String? errorMessage;
   final Commerce? commerce;
+  final bool isCheckoutCompleted;
 
   const CheckoutState({
     this.items = const [],
@@ -15,7 +16,8 @@ class CheckoutState {
     this.eventName,
     required this.isLoading,
     this.errorMessage,
-    this.commerce
+    this.commerce,
+    this.isCheckoutCompleted = false
   });
 
   bool get isEmpty => items.isEmpty;
@@ -30,7 +32,8 @@ class CheckoutState {
     String? eventName,
     bool? isLoading,
     String? errorMessage,
-    Commerce? commerce
+    Commerce? commerce,
+    bool? isCheckoutCompleted
   }) =>
       CheckoutState(
         items: items ?? this.items,
@@ -38,6 +41,7 @@ class CheckoutState {
         eventName: eventName ?? this.eventName,
         isLoading: isLoading ?? this.isLoading,
         errorMessage: errorMessage ?? this.errorMessage,
-        commerce: commerce ?? this.commerce
+        commerce: commerce ?? this.commerce,
+        isCheckoutCompleted: isCheckoutCompleted ?? this.isCheckoutCompleted
       );
 }

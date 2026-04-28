@@ -11,7 +11,9 @@ class BaseFirestoreDatasource<T> {
   Future<List<T>?> fetchAll(T Function(Map<String, dynamic>) mapper) async {
     try {
       final snapshot = await firestore.collection(collectionName).get();
-      return snapshot.docs.map((e) => mapper({...e.data(), 'id': e.id})).toList();
+      return snapshot.docs
+          .map((e) => mapper({...e.data(), 'id': e.id}))
+          .toList();
     } catch (_) {
       return [];
     }
@@ -26,21 +28,38 @@ class BaseFirestoreDatasource<T> {
     }
   }
 
-  Future<List<T>?> fetchWhere(T Function(Map<String, dynamic>) mapper, String keyWhere, dynamic where) async {
+  Future<void> addWithId(String id, Map<String, dynamic> data) async {
     try {
-      final snapshot = await firestore.collection(collectionName).where(keyWhere, isEqualTo: where).get();
-      return snapshot.docs.map((e) => mapper({...e.data(), 'id': e.id})).toList();
+      data.remove('id');
+      await firestore.collection(collectionName).doc(id).set(data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<T>?> fetchWhere(
+      T Function(Map<String, dynamic>) mapper,
+      String keyWhere,
+      dynamic where) async {
+    try {
+      final snapshot = await firestore
+          .collection(collectionName)
+          .where(keyWhere, isEqualTo: where)
+          .get();
+      return snapshot.docs
+          .map((e) => mapper({...e.data(), 'id': e.id}))
+          .toList();
     } catch (_) {
       return [];
     }
   }
 
-  Future<T?> findById(String id, T Function(Map<String, dynamic>) mapper) async {
+  Future<T?> findById(
+      String id, T Function(Map<String, dynamic>) mapper) async {
     try {
-      final doc =
-          await firestore.collection(collectionName).doc(id).get();
+      final doc = await firestore.collection(collectionName).doc(id).get();
       if (!doc.exists || doc.data() == null) return null;
-      return mapper(doc.data()!);
+      return mapper({...doc.data()!, 'id': doc.id});
     } catch (e) {
       rethrow;
     }

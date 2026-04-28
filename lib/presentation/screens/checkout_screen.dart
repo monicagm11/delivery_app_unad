@@ -3,6 +3,7 @@ import 'package:delivery_app/domain/entities/cart_item.dart';
 import 'package:delivery_app/domain/entities/payment_method.dart';
 import 'package:delivery_app/presentation/notifier/cart/cart_notifier.dart';
 import 'package:delivery_app/presentation/notifier/checkout/checkout_notifier.dart';
+import 'package:delivery_app/presentation/notifier/checkout/checkout_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -109,6 +110,17 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<CheckoutState>(checkoutNotifierProvider, (_, state) {
+      if (state.isCheckoutCompleted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Pedido confirmado'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        Navigator.of(context).pop();
+      }
+    });
     final state = ref.watch(checkoutNotifierProvider);
     final cart = ref.watch(cartNotifierProvider);
 
@@ -252,22 +264,19 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
   void _confirm() {
     if (!_formKey.currentState!.validate()) return;
+    final cart = ref.read(cartNotifierProvider);
     ref.read(checkoutNotifierProvider.notifier).createOrder({
       'comments' : _notesCtrl.text,
       'paymentMethod' : _paymentMethod,
       'change': _changeCtrl.text,
-      'imageBytes': _voucherBytes
+      'imageBytes': _voucherBytes,
+      'cartItems': cart.items,
+      'eventId': cart.eventId,
+      'commerce': cart.commerce,
+      'total': cart.total
     });
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Pedido confirmado'),
-        backgroundColor: Colors.green,
-      ),
-    );
   }
 }
-
-// ── Componentes ──────────────────────────────────────────────────────────────
 
 class _SectionTitle extends StatelessWidget {
   final String title;
