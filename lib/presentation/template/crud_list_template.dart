@@ -355,7 +355,7 @@ class _CrudListTemplateState extends State<CrudListTemplate> {
               rows: data.map((row) {
                 return DataRow(
                   cells: [
-                    ...widget.state.columns.map(
+                    ...widget.crudConfig.columns.map(
                       (c) => DataCell(
                         Text('${row[c.code] ?? '-'}', overflow: TextOverflow.ellipsis),
                       ),

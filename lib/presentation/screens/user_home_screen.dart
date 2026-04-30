@@ -5,7 +5,7 @@ import 'package:delivery_app/presentation/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-enum _NavItem { events, settings }
+enum _NavItem { events, orders, settings }
 
 class UserHomeScreen extends ConsumerStatefulWidget {
   const UserHomeScreen({super.key});
@@ -33,8 +33,6 @@ class _UserHomeScreenState extends ConsumerState<UserHomeScreen> {
         title: Row(
           children: [
             const Icon(Icons.set_meal, size: 24),
-            const SizedBox(width: 8),
-            const Text('Delivery App'),
           ],
         ),
         actions: [
@@ -70,6 +68,11 @@ class _UserHomeScreenState extends ConsumerState<UserHomeScreen> {
             label: 'Eventos',
           ),
           NavigationDestination(
+            icon: Icon(Icons.delivery_dining_outlined),
+            selectedIcon: Icon(Icons.delivery_dining),
+            label: 'Pedidos',
+          ),
+          NavigationDestination(
             icon: Icon(Icons.settings_outlined),
             selectedIcon: Icon(Icons.settings),
             label: 'Configuración',
@@ -85,6 +88,8 @@ class _UserHomeScreenState extends ConsumerState<UserHomeScreen> {
         return const EventsAvailableScreen();
       case _NavItem.settings:
         return const SettingsScreen();
+      case _NavItem.orders:
+        return Container();
     }
   }
 }

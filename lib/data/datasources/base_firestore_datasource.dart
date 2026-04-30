@@ -19,10 +19,11 @@ class BaseFirestoreDatasource<T> {
     }
   }
 
-  Future<void> add(Map<String, dynamic> data) async {
+  Future<String> add(Map<String, dynamic> data) async {
     try {
       data.remove('id');
-      await firestore.collection(collectionName).add(data);
+      final docRef = await firestore.collection(collectionName).add(data);
+      return docRef.id;
     } catch (e) {
       rethrow;
     }

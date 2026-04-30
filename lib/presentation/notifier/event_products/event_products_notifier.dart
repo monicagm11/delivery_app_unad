@@ -27,10 +27,13 @@ class EventProductsNotifier  extends StateNotifier<EventProductsState> {
 
   Future<void> loadAll() async {
     state = state.copyWith(isLoading: true, errorMessage: null);
+    List<Category> categories = state.categories;
     try {
        final products = await getProductsByCommerceUsecase(state.commerceId);
       final productsAvailables = products
-          .where((e) => e.status == 'ACTIVO')
+          .where((e) => e.status == 'ACTIVO').map(
+            (e) => e.copyWith(categoryName: categories.firstWhere((c) => e.category == c.id).name)
+          )
           .toList();
 
       state = state.copyWith(isLoading: false, allProducts: productsAvailables, filteredProducts: productsAvailables);

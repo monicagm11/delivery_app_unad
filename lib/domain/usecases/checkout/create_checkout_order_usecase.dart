@@ -6,8 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class CreateCheckoutOrderUseCase {
   final CheckoutOrderRepository repository;
   CreateCheckoutOrderUseCase({required this.repository});
-  Future<void> call(CheckoutOrderModel model) async {
-    try { await repository.create(model); } catch (e) { rethrow; }
+  Future<String> call(CheckoutOrderModel model) async {
+    try { return await repository.create(model); } catch (e) { rethrow; }
   }
 }
 

@@ -1,6 +1,7 @@
 import 'package:delivery_app/domain/entities/checkbox_option.dart';
 import 'package:delivery_app/domain/entities/dropdown_option.dart';
 import 'package:delivery_app/domain/entities/form_field_type.dart';
+import 'package:delivery_app/domain/entities/table_column_config.dart';
 
 class FormFieldConfig {
   final String label;
@@ -14,6 +15,8 @@ class FormFieldConfig {
   final List<CheckboxOption>? checkboxOptions;
   final List<dynamic>? optionsData;
   final String? folder;
+  final List<TableColumnConfig>? columns;
+  final List<Map<String, dynamic>>? data;
 
   const FormFieldConfig({
     required this.label,
@@ -26,6 +29,8 @@ class FormFieldConfig {
     this.options,
     this.optionsData,
     this.folder,
-    this.checkboxOptions
+    this.checkboxOptions,
+    this.columns,
+    this.data
   });
 }

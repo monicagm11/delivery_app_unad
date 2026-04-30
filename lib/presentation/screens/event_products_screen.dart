@@ -1,9 +1,11 @@
 import 'package:delivery_app/domain/entities/category.dart';
 import 'package:delivery_app/domain/entities/local_event.dart';
 import 'package:delivery_app/domain/entities/product.dart';
+import 'package:delivery_app/presentation/notifier/cart/cart_notifier.dart';
 import 'package:delivery_app/presentation/notifier/event_products/event_products_notifier.dart';
 import 'package:delivery_app/presentation/notifier/event_products/event_products_state.dart';
 import 'package:delivery_app/presentation/screens/product_detail_screen.dart';
+import 'package:delivery_app/presentation/utils/context_extensions.dart';
 import 'package:delivery_app/presentation/widgets/error_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,10 +27,12 @@ class EventProductsScreen extends ConsumerStatefulWidget {
 
 class _EventProductsScreenState extends ConsumerState<EventProductsScreen> {
   String? _selectedCategoryId;
+  late final LocalEvent event;
 
   @override
   void initState() {
     super.initState();
+    event = widget.event;
     Future.microtask(() {
       ref.read(eventProductNotifierProvider.notifier).init(widget.commerceId);
     });
@@ -59,8 +63,43 @@ class _EventProductsScreenState extends ConsumerState<EventProductsScreen> {
   }
 
   Widget _bodyEventProducts(EventProductsState state) {
+    final cartState = ref.watch(cartNotifierProvider);
+
       return Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        cartState.location != null
+                            ? 'Ubicación: ${event.locationClientType == 'numberedChair' ? 'Silla ' : 'Mesa '} ${cartState.location}'
+                            : 'Sin ubicación seleccionada',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Colors.grey.shade600,
+                              fontSize: 20
+                            ),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        final newLocation = await context.showTextFieldDialog(event.locationClientType == 'numberedChair' ? 'Digite el número de su silla' : 'Digite el número de su mesa');
+                        if (!mounted) return;
+                        if (newLocation != null) {
+                          ref.read(cartNotifierProvider.notifier).updateLocation(newLocation);
+                        }
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        minimumSize: Size.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      child: const Text('Cambiar'),
+                    ),
+                  ],
+                ),
+          ),
           _CategoryChips(
             categories: state.categories,
             selectedId: _selectedCategoryId,
@@ -87,6 +126,7 @@ class _EventProductsScreenState extends ConsumerState<EventProductsScreen> {
                     separatorBuilder: (_, __) => const SizedBox(height: 8),
                     itemBuilder: (_, i) => _ProductCard(
                       product: state.filteredProducts[i],
+                      categoryName: state.filteredProducts[i].categoryName,
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(

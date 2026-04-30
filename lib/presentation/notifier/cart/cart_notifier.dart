@@ -42,6 +42,10 @@ class CartNotifier extends StateNotifier<CartState> {
     state = state.copyWith(items: updated);
   }
 
+  void updateLocation(String? location) {
+    state = state.copyWith(location: location);
+  }
+
   void clear() => state = const CartState();
 }
 

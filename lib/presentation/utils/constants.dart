@@ -7,6 +7,7 @@ import 'package:delivery_app/presentation/screens/commerce_crud_screen.dart';
 import 'package:delivery_app/presentation/screens/global_event_crud_screen.dart';
 import 'package:delivery_app/presentation/screens/local_event_crud_screen.dart';
 import 'package:delivery_app/presentation/screens/manage_request_screen.dart';
+import 'package:delivery_app/presentation/screens/manage_sales_crud_screen.dart';
 import 'package:delivery_app/presentation/screens/product_crud_screen.dart';
 import 'package:delivery_app/presentation/screens/user_crud_screen.dart';
 import 'package:flutter/material.dart';
@@ -30,12 +31,14 @@ class Constants {
   static const String commerceFunction = 'commerces';
   static const String eventRequestFunction = 'eventRequest';
   static const String settingsFunction = 'settings';
+  static const String salesFunction = 'sales';
 
   static const String programmedStatus = 'PROGRAMADO';
   static const String publishedStatus = 'PUBLICADO';
   static const String startedStatus = 'INICIADO';
   static const String endedStatus = 'FINALIZADO';
   static const String canceledStatus = 'CANCELADO';
+  static const String aprovedStatus = 'APROBADO';
   static const String pendindStatus = 'PENDIENTE';
   static const String rejectedStatus = 'RECHAZADO';
 
@@ -116,6 +119,13 @@ class Constants {
     TableColumnConfig(label: "Estado", code: "status"),
   ];
 
+  static const headersSales = [
+    TableColumnConfig(label: "ID", code: "id"),
+    TableColumnConfig(label: "Valor total", code: "total"),
+    TableColumnConfig(label: 'Método de pago', code: 'paymentMethod'),
+    TableColumnConfig(label: "Estado", code: "status"),
+  ];
+
   static const menuItems = [
     MenuItem(
       title: 'Comercios',
@@ -134,6 +144,12 @@ class Constants {
       icon: Icons.fastfood,
       code: Constants.eventFunction,
       screen: LocalEventCrudScreen(),
+    ),
+    MenuItem(
+      title: 'Ventas',
+      code: Constants.salesFunction,
+      icon: Icons.monetization_on_outlined,
+      screen: ManageSalesCrudScreen(),
     ),
     MenuItem(
       title: 'Solicitudes de Eventos',
@@ -159,5 +175,13 @@ class Constants {
       icon: Icons.people_outline,
       screen: UserCrudScreen(),
     ),
+    
   ];
+
+  static const String orderCreatedStatus = 'Pedido creado';
+  static const String orderConfirmedStatus = 'Pedido confirmado';
+  static const String orderAssignededStatus = 'Pedido asignado';
+  static const String orderCanceledStatus = 'Pedido cancelado';
+  static const String orderDoneStatus = 'Pedido entregado';
+  static const String orderSendedStatus = 'Pedido en camino';
 }

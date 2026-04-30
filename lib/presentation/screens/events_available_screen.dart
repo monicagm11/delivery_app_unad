@@ -2,9 +2,11 @@ import 'package:delivery_app/domain/entities/global_event.dart';
 import 'package:delivery_app/domain/entities/local_event.dart';
 import 'package:delivery_app/domain/usecases/event/get_all_events_usecase.dart';
 import 'package:delivery_app/domain/usecases/global_event/get_active_global_event_usecase.dart';
+import 'package:delivery_app/presentation/notifier/cart/cart_notifier.dart';
 import 'package:delivery_app/presentation/screens/city_selector_template.dart';
 import 'package:delivery_app/presentation/screens/event_products_screen.dart';
 import 'package:delivery_app/presentation/utils/constants.dart';
+import 'package:delivery_app/presentation/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -285,20 +287,32 @@ class _EventsAvailableScreenState
                                 ),
                               )
                           : !event.isGlobal && event.commerceId != null
-                              ? () {
+                              ? () async {
                                   final localEvent = ref
                                       .read(_localEventsMapProvider)
                                       .valueOrNull?[event.id];
                                   if (localEvent == null) return;
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => EventProductsScreen(
-                                        event: localEvent,
-                                        commerceId: event.commerceId!,
+                                  final newLocation =
+                                      await context.showTextFieldDialog(
+                                          localEvent.locationClientType ==
+                                                  'numberedChair'
+                                              ? 'Digite el número de su silla'
+                                              : 'Digite el número de su mesa');
+                                  if (newLocation != null) {
+                                    ref
+                                        .read(cartNotifierProvider.notifier)
+                                        .updateLocation(newLocation);
+                                    if (!mounted) return;
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => EventProductsScreen(
+                                          event: localEvent,
+                                          commerceId: event.commerceId!,
+                                        ),
                                       ),
-                                    ),
-                                  );
+                                    );
+                                  }
                                 }
                               : null,
                     );

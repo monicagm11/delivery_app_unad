@@ -1,5 +1,6 @@
 import 'package:delivery_app/data/datasources/checkout_order_datasource.dart';
 import 'package:delivery_app/data/datasources/checkout_order_datasource_impl.dart';
+import 'package:delivery_app/data/mappers/checkout_order_mapper.dart';
 import 'package:delivery_app/data/models/checkout_order_model.dart';
 import 'package:delivery_app/domain/entities/checkout_order.dart';
 import 'package:delivery_app/domain/repositories/checkout_order_repository.dart';
@@ -30,13 +31,19 @@ class CheckoutOrderRepositoryImpl implements CheckoutOrderRepository {
   }
 
   @override
-  Future<void> create(CheckoutOrderModel model) async {
-    try { await datasource.create(model); } catch (e) { rethrow; }
+  Future<String> create(CheckoutOrderModel model) async {
+    try { return await datasource.create(model); } catch (e) { rethrow; }
   }
 
   @override
-  Future<void> update(String id, CheckoutOrderModel model) async {
-    try { await datasource.update(id, model); } catch (e) { rethrow; }
+  Future<void> update(String id, CheckoutOrder model) async {
+    try {
+      CheckoutOrderModel checkoutOrderModel =
+          CheckoutOrderMapper.toModel(model);
+      await datasource.update(id, checkoutOrderModel);
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override

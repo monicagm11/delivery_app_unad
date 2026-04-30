@@ -152,11 +152,18 @@ class ProductDetailScreen extends ConsumerWidget {
                   
                   const SizedBox(height: 8),
                   if (product.description.isNotEmpty) ...[
-                    Text('Descripción',
+                    Text(product.name,
                         style: Theme.of(context)
                             .textTheme
                             .titleMedium
                             ?.copyWith(fontWeight: FontWeight.bold)),
+                    Row(
+                      spacing: 8,
+                      children: [
+                        _chip(product.categoryName!, context),
+                        if (product.time != null) _chip(product.time!, context)
+                      ],
+                    ),
                     const SizedBox(height: 8),
                     Text(product.description,
                         style: TextStyle(
@@ -249,6 +256,20 @@ class ProductDetailScreen extends ConsumerWidget {
         color: Colors.grey.shade100,
         child: Icon(Icons.image_outlined,
             size: 64, color: Colors.grey.shade400),
+      );
+  Widget _chip(String label, BuildContext context) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.secondaryContainer,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 11,
+            color: Theme.of(context).colorScheme.onSecondaryContainer,
+          ),
+        ),
       );
 }
 

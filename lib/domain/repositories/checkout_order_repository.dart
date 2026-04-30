@@ -6,7 +6,7 @@ abstract class CheckoutOrderRepository {
   Future<List<CheckoutOrder>> getByUser(String userId);
   Future<List<CheckoutOrder>> getByEvent(String eventId);
   Future<CheckoutOrder?> getById(String id);
-  Future<void> create(CheckoutOrderModel model);
-  Future<void> update(String id, CheckoutOrderModel model);
+  Future<String> create(CheckoutOrderModel model);
+  Future<void> update(String id, CheckoutOrder model);
   Future<void> delete(String id);
 }

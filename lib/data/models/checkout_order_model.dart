@@ -3,11 +3,11 @@ import 'package:delivery_app/domain/entities/checkout_order.dart';
 import 'package:delivery_app/domain/entities/payment_method.dart';
 
 class CheckoutOrderModel extends CheckoutOrder {
-  final String id;
 
   CheckoutOrderModel({
-    required this.id,
+    required super.id,
     required super.userId,
+    required super.userName,
     required super.eventId,
     super.urlImage,
     super.change,
@@ -16,7 +16,9 @@ class CheckoutOrderModel extends CheckoutOrder {
     required super.checkoutItems,
     required super.commerce,
     required super.total,
-    required super.stageList
+    required super.stageList,
+    required super.location,
+    super.idDeliveryAssigned,
   });
 
   factory CheckoutOrderModel.fromMap(Map<String, dynamic> map) =>
@@ -29,6 +31,7 @@ class CheckoutOrderModel extends CheckoutOrder {
         comments: map['comments'] as String? ?? '',
         commerce: map['commerce'] as String? ?? '',
         total: map['total'] as double? ?? 0.0,
+        idDeliveryAssigned: map['idDeliveryAssigned'] as String?,
         paymentMethod: PaymentMethod.values.firstWhere(
           (e) => e.name == map['paymentMethod'],
           orElse: () => PaymentMethod.cash,
@@ -39,11 +42,12 @@ class CheckoutOrderModel extends CheckoutOrder {
         stageList: (map['stageList'] as List<dynamic>? ?? [])
             .map((e) => TrackingStage.fromMap(e as Map<String, dynamic>))
             .toList(),
+        location: map['location'] as String? ?? '',
+        userName: map['userName']
       );
 
   @override
   Map<String, dynamic> toMap() => {
         ...super.toMap(),
-        'id': id,
       };
 }

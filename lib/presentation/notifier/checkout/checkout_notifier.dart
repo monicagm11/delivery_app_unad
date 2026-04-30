@@ -3,24 +3,31 @@ import 'dart:typed_data';
 import 'package:delivery_app/data/models/checkout_order_model.dart';
 import 'package:delivery_app/domain/entities/cart_item.dart';
 import 'package:delivery_app/domain/entities/checkout_item.dart';
+import 'package:delivery_app/domain/entities/checkout_order.dart';
 import 'package:delivery_app/domain/entities/commerce.dart';
 import 'package:delivery_app/domain/entities/payment_method.dart';
 import 'package:delivery_app/domain/usecases/checkout/create_checkout_order_usecase.dart';
 import 'package:delivery_app/domain/usecases/commerce/get_commerce_by_id_usecase.dart';
 import 'package:delivery_app/domain/usecases/upload_image_usecase.dart';
 import 'package:delivery_app/presentation/notifier/checkout/checkout_state.dart';
+import 'package:delivery_app/presentation/notifier/session/session_notifier.dart';
+import 'package:delivery_app/presentation/utils/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CheckoutNotifier  extends StateNotifier<CheckoutState> {
   CheckoutNotifier({
     required this.getCommerceByIdUseCase,
     required this.uploadImageUseCase,
-    required this.createCheckoutOrderUseCase
+    required this.createCheckoutOrderUseCase,
+    required this.userId,
+    required this.userName
   }) : super(CheckoutState.initial());
 
   final GetCommerceByIdUseCase getCommerceByIdUseCase;
   final UploadImageUseCase uploadImageUseCase;
   final CreateCheckoutOrderUseCase createCheckoutOrderUseCase;
+  final String userId;
+  final String userName;
 
 Future<void> init(String eventId, List<CartItem> items) async {
     state = state.copyWith(isLoading: true, errorMessage: null, eventId: eventId, items: items);
@@ -58,21 +65,52 @@ Future<void> init(String eventId, List<CartItem> items) async {
                   count: e.quantity))
               .toList();
       map['checkoutItems'] = checkoutItems;
-      CheckoutOrderModel model = CheckoutOrderModel.fromMap(map);
-      await createCheckoutOrderUseCase.call(model);
+      map['userId'] = userId;
+      final now = DateTime.now();
+      map['stageList'] = [
+        TrackingStage(
+            name: Constants.orderCreatedStatus, date: now, completed: true),
+        TrackingStage(name: Constants.orderConfirmedStatus, completed: false)
+      ];
+      CheckoutOrderModel model = createOrderModel(map);
+      String orderId = await createCheckoutOrderUseCase.call(model);
 
-      state = state.copyWith(isLoading: false, isCheckoutCompleted: true);
+      state = state.copyWith(isLoading: false, isCheckoutCompleted: true, currentOrderId: orderId);
     } catch (e) {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
     }
   }
+
+  CheckoutOrderModel createOrderModel(Map<String, dynamic> map) =>
+      CheckoutOrderModel(
+        id: map['id'] as String? ?? '',
+        userId: map['userId'] as String? ?? '',
+        eventId: map['eventId'] as String? ?? '',
+        urlImage: map['urlImage'] as String?,
+        change: map['change'] as String?,
+        comments: map['comments'] as String? ?? '',
+        commerce: map['commerce'] as String? ?? '',
+        total: map['total'] as double? ?? 0.0,
+        paymentMethod: PaymentMethod.values.firstWhere(
+          (e) => e.name == map['paymentMethod'],
+          orElse: () => PaymentMethod.cash,
+        ),
+        checkoutItems: map['checkoutItems'],
+        stageList: (map['stageList']),
+        location: map['location'],
+        userName: map['userName']
+      );
 }
 
 final checkoutNotifierProvider =
     StateNotifierProvider<CheckoutNotifier, CheckoutState>((ref) {
+      final userId = ref.read(sessionNotifierProvider).userId ?? '';
+      final userName = ref.read(sessionNotifierProvider).userName ?? '';
   return CheckoutNotifier(
       getCommerceByIdUseCase: ref.read(getCommerceByIdUseCaseProvider),
       uploadImageUseCase: ref.read(uploadImageUseCaseProvider),
-      createCheckoutOrderUseCase: ref.read(createCheckoutOrderUseCaseProvider)
+      createCheckoutOrderUseCase: ref.read(createCheckoutOrderUseCaseProvider),
+      userId: userId,
+      userName: userName
       );
 });

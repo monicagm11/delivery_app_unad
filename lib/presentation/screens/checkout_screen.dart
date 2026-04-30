@@ -4,6 +4,7 @@ import 'package:delivery_app/domain/entities/payment_method.dart';
 import 'package:delivery_app/presentation/notifier/cart/cart_notifier.dart';
 import 'package:delivery_app/presentation/notifier/checkout/checkout_notifier.dart';
 import 'package:delivery_app/presentation/notifier/checkout/checkout_state.dart';
+import 'package:delivery_app/presentation/screens/tracking_order_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -118,7 +119,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             backgroundColor: Colors.green,
           ),
         );
-        Navigator.of(context).pop();
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => TrackingOrderScreen(orderId: state.currentOrderId!, isFinalUser: true,)),
+        );
       }
     });
     final state = ref.watch(checkoutNotifierProvider);
@@ -273,7 +276,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       'cartItems': cart.items,
       'eventId': cart.eventId,
       'commerce': cart.commerce,
-      'total': cart.total
+      'total': cart.total,
+      'location': cart.location
     });
   }
 }

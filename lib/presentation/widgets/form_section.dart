@@ -13,6 +13,7 @@ import 'package:delivery_app/domain/entities/rol_data.dart';
 import 'package:delivery_app/presentation/forms/event_request_form.dart';
 import 'package:delivery_app/presentation/utils/action_form_type.dart';
 import 'package:delivery_app/presentation/utils/constants.dart';
+import 'package:delivery_app/presentation/utils/context_extensions.dart';
 import 'package:delivery_app/presentation/widgets/checkbox_list_field.dart';
 import 'package:delivery_app/presentation/widgets/city_selector_field.dart';
 import 'package:delivery_app/presentation/widgets/date_picker_field.dart';
@@ -23,6 +24,7 @@ import 'package:delivery_app/presentation/widgets/image_picker_field.dart';
 import 'package:delivery_app/presentation/widgets/map_location_field.dart';
 import 'package:delivery_app/presentation/widgets/price_calculator_field.dart';
 import 'package:delivery_app/presentation/widgets/rol_selector_field.dart';
+import 'package:delivery_app/presentation/widgets/table_form_field.dart';
 import 'package:flutter/material.dart';
 
 class FormSection extends StatefulWidget {
@@ -115,7 +117,7 @@ class _FormSectionState extends State<FormSection> {
                                     formKey.currentState?.save();
                                     if (isUpdate == ActionFormType.update) {
                                       bool confirmation =
-                                          await showConfirmationDialog(context,
+                                          await context.showConfirmationDialog(
                                                   '¿Está seguro que desea actualizar el registro?') ??
                                               false;
                                       if (confirmation) {
@@ -125,7 +127,7 @@ class _FormSectionState extends State<FormSection> {
                                     } else if (isUpdate ==
                                         ActionFormType.create) {
                                       bool confirmation =
-                                          await showConfirmationDialog(context,
+                                          await context.showConfirmationDialog(
                                                   '¿Está seguro que desea almacenar estos datos?') ??
                                               false;
                                       if (confirmation) {
@@ -329,6 +331,10 @@ class _FormSectionState extends State<FormSection> {
               return null;
             }
         );
+      case FormFieldType.tableField:
+        return TableFormField(
+            columns: formFieldConfig.columns ?? [],
+            data: formFieldConfig.data ?? []);
     }
   }
 
@@ -403,35 +409,8 @@ class _FormSectionState extends State<FormSection> {
     final currentRol = rowSelected?['rol'];
     final currentCommerce = rowSelected?['commerce'];
     if (currentRol != null) {
-    return RolData(rol: currentRol, commerce: currentCommerce);
+      return RolData(rol: currentRol, commerce: currentCommerce);
     }
     return null;
   }
-
-    Future<bool?> showConfirmationDialog(BuildContext context, String message) {
-  return showDialog<bool>(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text('Confirmación'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context, false);
-            },
-            child: const Text('Cancelar'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context, true);
-            },
-            child: const Text('Aceptar'),
-          ),
-        ],
-      );
-    },
-  );
-}
 }

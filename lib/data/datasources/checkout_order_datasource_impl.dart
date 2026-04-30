@@ -26,9 +26,9 @@ class CheckoutOrderDatasourceImpl
       await findById(id, CheckoutOrderModel.fromMap);
 
   @override
-  Future<void> create(CheckoutOrderModel model) async {
+  Future<String> create(CheckoutOrderModel model) async {
     try {
-      await add(model.toMap());
+      return await add(model.toMap());
     } catch (e) {
       rethrow;
     }

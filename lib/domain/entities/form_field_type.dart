@@ -9,7 +9,8 @@ enum FormFieldType {
   mapSelector,
   checkboxListSelector,
   eventSelector,
-  rolSelector
+  rolSelector,
+  tableField
 }
 
 enum TextDynamicInputType {
