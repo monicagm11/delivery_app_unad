@@ -17,3 +17,26 @@ class GetAllLocalEventsUseCase {
 
 final getAllLocalEventsUseCaseProvider = Provider<GetAllLocalEventsUseCase>((ref) =>
     GetAllLocalEventsUseCase(repository: ref.read(localEventRepositoryProvider)));
+
+class GetLocalEventsByCommerceUseCase {
+  final LocalEventRepository repository;
+  GetLocalEventsByCommerceUseCase({required this.repository});
+  Future<List<LocalEvent>> call(String commerceId) async {
+    try {
+      return await repository.getByCommerce(commerceId);
+    } catch (e) {
+      rethrow;
+    }
+  }
+}
+
+final getLocalEventsByCommerceUseCaseProvider =
+    Provider<GetLocalEventsByCommerceUseCase>((ref) =>
+        GetLocalEventsByCommerceUseCase(
+            repository: ref.read(localEventRepositoryProvider)));
+
+/// FutureProvider.family para obtener eventos locales por commerceId.
+final localEventsByCommerceProvider =
+    FutureProvider.family<List<LocalEvent>, String>((ref, commerceId) async {
+  return ref.read(getLocalEventsByCommerceUseCaseProvider).call(commerceId);
+});

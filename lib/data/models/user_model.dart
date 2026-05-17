@@ -18,7 +18,8 @@ class UserModel extends User {
     super.city, 
     required super.rol,
     super.commerce,
-    super.occupation
+    super.occupation,
+    super.currentEventId,
   });
 
   factory UserModel.fromMap(Map<String, dynamic> map) => UserModel(
@@ -38,6 +39,7 @@ class UserModel extends User {
         city: map['city'] as String? ?? '',
         rol: map['rol'] as String? ?? '',
         commerce: map['commerce'] as String?,
-        occupation: map['occupation']
+        occupation: map['occupation'],
+        currentEventId: map['currentEventId'] as String?,
       );
 }

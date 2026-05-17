@@ -38,6 +38,24 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
+  Future<List<User>> getByRolAndEventId(String rol, String eventId) async {
+    try {
+      return await datasource.getByRolAndEventId(rol, eventId);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateCurrentEventId(String id, String? eventId) async {
+    try {
+      await datasource.updateCurrentEventId(id, eventId);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
   Future<void> update(String id, UserModel model) async {
     try {
       await datasource.update(id, model);

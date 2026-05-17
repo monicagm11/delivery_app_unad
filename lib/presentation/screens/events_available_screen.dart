@@ -298,21 +298,20 @@ class _EventsAvailableScreenState
                                                   'numberedChair'
                                               ? 'Digite el número de su silla'
                                               : 'Digite el número de su mesa');
-                                  if (newLocation != null) {
-                                    ref
-                                        .read(cartNotifierProvider.notifier)
-                                        .updateLocation(newLocation);
-                                    if (!mounted) return;
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => EventProductsScreen(
-                                          event: localEvent,
-                                          commerceId: event.commerceId!,
-                                        ),
+                                  if (newLocation == null) return;
+                                  ref
+                                      .read(cartNotifierProvider.notifier)
+                                      .updateLocation(newLocation);
+                                  if (!mounted) return;
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => EventProductsScreen(
+                                        event: localEvent,
+                                        commerceId: event.commerceId!,
                                       ),
-                                    );
-                                  }
+                                    ),
+                                  );
                                 }
                               : null,
                     );

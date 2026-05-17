@@ -1,5 +1,6 @@
 import 'package:delivery_app/domain/entities/checkout_order.dart';
 import 'package:delivery_app/domain/entities/table_column_config.dart';
+import 'package:delivery_app/domain/entities/user.dart';
 import 'package:delivery_app/presentation/notifier/crud_state.dart';
 import 'package:delivery_app/presentation/utils/constants.dart';
 
@@ -13,8 +14,10 @@ class ManageSalesState extends CrudState {
       required super.data,
       required super.functionConfig,
       super.errorMessage,
-      required this.items});
+      required this.items,
+      required this.logisticAvailable});
   List<CheckoutOrder> items;
+  List<User> logisticAvailable;
 
   factory ManageSalesState.initial(List<TableColumnConfig> columns) => ManageSalesState(
         isLoading: false,
@@ -23,7 +26,8 @@ class ManageSalesState extends CrudState {
         columns: columns,
         data: [],
         functionConfig: Constants.defaultFunctionConfig, 
-        items: []
+        items: [],
+        logisticAvailable: []
       );
 
   @override
@@ -34,7 +38,8 @@ class ManageSalesState extends CrudState {
     List<TableColumnConfig>? columns,
     List<Map<String, dynamic>>? data,
     FunctionConfig? functionConfig,
-    List<CheckoutOrder>? items
+    List<CheckoutOrder>? items,
+    List<User>? logisticAvailable
   }) =>
       ManageSalesState(
         isLoading: isLoading ?? this.isLoading,
@@ -43,6 +48,7 @@ class ManageSalesState extends CrudState {
         columns: columns ?? this.columns,
         data: data ?? this.data,
         functionConfig: functionConfig ?? this.functionConfig,
-        items: items ?? this.items
+        items: items ?? this.items,
+        logisticAvailable: logisticAvailable ?? this.logisticAvailable
       );
 }

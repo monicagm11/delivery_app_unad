@@ -39,7 +39,7 @@ class _CrudListTemplateState extends State<CrudListTemplate> {
   String? _filterCategoryName;
   bool isViewDetails = false;
   final ScrollController _controller = ScrollController();
-
+  final ScrollController _verticalController = ScrollController();
   @override
   void initState() {
     super.initState();
@@ -49,6 +49,8 @@ class _CrudListTemplateState extends State<CrudListTemplate> {
   @override
   void dispose() {
     _searchController.dispose();
+    _controller.dispose();
+    _verticalController.dispose();
     super.dispose();
   }
 
@@ -340,55 +342,71 @@ class _CrudListTemplateState extends State<CrudListTemplate> {
           ),
         ),
         Expanded(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
+          child: Scrollbar(
+            controller: _verticalController,
+            thumbVisibility: true,
             child: SingleChildScrollView(
-              controller: _controller,
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-              columns: [
-                ...widget.crudConfig.columns.map(
-                  (c) => DataColumn(label: Text(c.label, overflow: TextOverflow.ellipsis)),
-                ),
-                if (functionConfig.updateData) const DataColumn(label: Text("")),
-              ],
-              rows: data.map((row) {
-                return DataRow(
-                  cells: [
-                    ...widget.crudConfig.columns.map(
-                      (c) => DataCell(
-                        Text('${row[c.code] ?? '-'}', overflow: TextOverflow.ellipsis),
-                      ),
+              controller: _verticalController,
+              scrollDirection: Axis.vertical,
+              child: Scrollbar(
+                controller: _controller,
+                thumbVisibility: true,
+                notificationPredicate: (notification) =>
+                    notification.metrics.axis == Axis.horizontal,
+                child: SingleChildScrollView(
+                  controller: _controller,
+                  scrollDirection: Axis.horizontal,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      minWidth: 800,
                     ),
-                      DataCell(Row(children: [
-                      (functionConfig.updateData && widget.crudConfig.showUpdateOption) ?
-                        IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () async {
-                            await widget.onOpenForm?.call(row);
-                            setState(() {
-                              rowSelected = row;
-                              isFormUpdate = ActionFormType.update;
-                              showForm = true;
-                            });
-                          },
-                        ) : IconButton(
-                          icon: const Icon(Icons.remove_red_eye),
-                          onPressed: () async {
-                            await widget.onOpenForm?.call(row);
-                            setState(() {
-                              rowSelected = row;
-                              isFormUpdate = ActionFormType.viewDetails;
-                              showForm = true;
-                            });
-                          },
-                        ),
-                      if (functionConfig.updateData) ...widget.crudConfig.additionalUpdateOptions?.call(row) ?? []
-                    ])),
-                  ],
-                );
-              }).toList(),
-            ),
+                    child: DataTable(
+                    columns: [
+                      ...widget.crudConfig.columns.map(
+                        (c) => DataColumn(label: Text(c.label, overflow: TextOverflow.ellipsis)),
+                      ),
+                      if (functionConfig.updateData) const DataColumn(label: Text("")),
+                    ],
+                    rows: data.map((row) {
+                      return DataRow(
+                        cells: [
+                          ...widget.crudConfig.columns.map(
+                            (c) => DataCell(
+                              Text('${row[c.code] ?? '-'}', overflow: TextOverflow.ellipsis),
+                            ),
+                          ),
+                            DataCell(Row(children: [
+                            (functionConfig.updateData && widget.crudConfig.showUpdateOption) ?
+                              IconButton(
+                                icon: const Icon(Icons.edit),
+                                onPressed: () async {
+                                  await widget.onOpenForm?.call(row);
+                                  setState(() {
+                                    rowSelected = row;
+                                    isFormUpdate = ActionFormType.update;
+                                    showForm = true;
+                                  });
+                                },
+                              ) : IconButton(
+                                icon: const Icon(Icons.remove_red_eye),
+                                onPressed: () async {
+                                  await widget.onOpenForm?.call(row);
+                                  setState(() {
+                                    rowSelected = row;
+                                    isFormUpdate = ActionFormType.viewDetails;
+                                    showForm = true;
+                                  });
+                                },
+                              ),
+                            if (functionConfig.updateData) ...widget.crudConfig.additionalUpdateOptions?.call(row) ?? []
+                          ])),
+                        ],
+                      );
+                    }).toList(),
+                                    ),
+                  ),
+                ),
+              ),
             ),
           ),
         ),

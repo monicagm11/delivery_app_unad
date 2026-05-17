@@ -34,6 +34,12 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
   Widget build(BuildContext context) {
     ref.listen<ResetPasswordState>(resetPasswordNotifierProvider, (_, state) {
       if (state.status == AuthStatus.success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Si el correo existe, se ha enviado el link de recuperación a su correo.'),
+            backgroundColor: Colors.green,
+          ),
+        );
         Navigator.of(context).pop();
       }
       if (state.status == AuthStatus.error && state.errorMessage != null) {

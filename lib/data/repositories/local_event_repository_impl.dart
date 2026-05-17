@@ -19,6 +19,15 @@ class LocalEventRepositoryImpl implements LocalEventRepository {
   }
 
   @override
+  Future<List<LocalEvent>> getByCommerce(String commerceId) async {
+    try {
+      return await datasource.getByCommerce(commerceId);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
   Future<LocalEvent?> getById(String id) async {
     try { return await datasource.getById(id); } catch (e) { rethrow; }
   }

@@ -8,4 +8,5 @@ abstract class CheckoutOrderDatasource {
   Future<String> create(CheckoutOrderModel model);
   Future<void> update(String id, CheckoutOrderModel model);
   Future<void> delete(String id);
+  Future<void> updateCheckoutStatus(String id, Map<String, dynamic> newFields);
 }

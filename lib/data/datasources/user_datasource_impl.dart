@@ -26,6 +26,34 @@ class UserDatasourceImpl extends BaseFirestoreDatasource<UserModel>
   }
 
   @override
+  Future<List<UserModel>> getByRolAndEventId(String rol, String eventId) async {
+    try {
+      final snapshot = await firestore
+          .collection(collectionName)
+          .where('rol', isEqualTo: rol)
+          .where('currentEventId', isEqualTo: eventId)
+          .get();
+      return snapshot.docs
+          .map((doc) => UserModel.fromMap({...doc.data(), 'id': doc.id}))
+          .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateCurrentEventId(String id, String? eventId) async {
+    try {
+      await firestore
+          .collection(collectionName)
+          .doc(id)
+          .update({'currentEventId': eventId});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
   Future<void> update(String id, UserModel model) async {
     try {
       await firestore.collection(collectionName).doc(id).update(model.toMap());

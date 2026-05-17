@@ -2,8 +2,10 @@ import 'package:delivery_app/presentation/notifier/login/auth_notifier.dart';
 import 'package:delivery_app/presentation/notifier/login/auth_state.dart';
 import 'package:delivery_app/presentation/notifier/session/session_notifier.dart';
 import 'package:delivery_app/presentation/screens/city_selector_screen.dart';
+import 'package:delivery_app/presentation/screens/delivery_home_screen.dart';
 import 'package:delivery_app/presentation/screens/home_screen.dart';
 import 'package:delivery_app/presentation/screens/reset_password_screen.dart';
+import 'package:delivery_app/presentation/screens/user_home_screen.dart';
 import 'package:delivery_app/presentation/utils/constants.dart';
 import 'package:delivery_app/presentation/widgets/left_panel.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +48,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (_) => CitySelectorScreen()),
           );
-        } else {
+        } else if (rolId == Constants.logisticRolCode) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => DeliveryHomeScreen()),
+          );
+        } 
+        else {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (_) => HomeScreen()),
           );

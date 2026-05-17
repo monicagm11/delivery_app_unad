@@ -4,6 +4,7 @@ import 'package:delivery_app/domain/entities/form_field_type.dart';
 import 'package:delivery_app/presentation/notifier/manage_request/manage_request_notifier.dart';
 import 'package:delivery_app/presentation/template/crud_list_template.dart';
 import 'package:delivery_app/presentation/utils/constants.dart';
+import 'package:delivery_app/presentation/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -75,10 +76,12 @@ class _ManageRequestEventCrudScreenState extends ConsumerState<ManageRequestEven
               return [
                 IconButton(
                   icon: Icon(Icons.close, color: Colors.red,),
-                  onPressed: () {
+                  onPressed: () async {
+                    bool confirmation = await context.showConfirmationDialog('¿Estás seguro que desea rechazar esta solicitud?') ?? false;
+                    if (!confirmation) return;
                     Map<String, dynamic> mapToUpdate = Map.from(row);
                     mapToUpdate['status'] =
-                        Constants.canceledStatus;
+                        Constants.rejectedStatus;
                     ref
                         .read(manageRequestEventNotifierProvider.notifier)
                         .updateFromTable(row['id'], mapToUpdate);
@@ -86,7 +89,9 @@ class _ManageRequestEventCrudScreenState extends ConsumerState<ManageRequestEven
                 ),
                 IconButton(
                   icon: Icon(Icons.check, color: Colors.green,),
-                  onPressed: () {
+                  onPressed: () async {
+                    bool confirmation = await context.showConfirmationDialog('¿Estás seguro que desea aceptar esta solicitud?') ?? false;
+                    if (!confirmation) return;
                     Map<String, dynamic> mapToUpdate = Map.from(row);
                     mapToUpdate['status'] =
                         Constants.aprovedStatus;

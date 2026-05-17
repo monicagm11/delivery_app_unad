@@ -30,7 +30,7 @@ class CheckoutOrderModel extends CheckoutOrder {
         change: map['change'] as String?,
         comments: map['comments'] as String? ?? '',
         commerce: map['commerce'] as String? ?? '',
-        total: map['total'] as double? ?? 0.0,
+        total: (map['total'] as num?)?.toDouble() ?? 0.0,
         idDeliveryAssigned: map['idDeliveryAssigned'] as String?,
         paymentMethod: PaymentMethod.values.firstWhere(
           (e) => e.name == map['paymentMethod'],
@@ -43,7 +43,7 @@ class CheckoutOrderModel extends CheckoutOrder {
             .map((e) => TrackingStage.fromMap(e as Map<String, dynamic>))
             .toList(),
         location: map['location'] as String? ?? '',
-        userName: map['userName']
+        userName: map['userName'] as String? ?? ''
       );
 
   @override

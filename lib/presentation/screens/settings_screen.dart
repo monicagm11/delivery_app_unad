@@ -20,12 +20,58 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   _SettingsOption _selected = _SettingsOption.profileDetail;
 
+  static const _options = [
+    _SettingsOption.profileDetail,
+    _SettingsOption.changePassword,
+    _SettingsOption.about,
+  ];
+
+  int get _selectedIndex => _options.indexOf(_selected);
+
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.sizeOf(context).width < 600;
+    return isMobile ? _buildMobile() : _buildDesktop(context);
+  }
+
+  // ── Mobile: NavigationRail ───────────────────────────────────────
+  Widget _buildMobile() {
+    return Row(
+      children: [
+        NavigationRail(
+          selectedIndex: _selectedIndex,
+          onDestinationSelected: (i) =>
+              setState(() => _selected = _options[i]),
+          labelType: NavigationRailLabelType.all,
+          destinations: const [
+            NavigationRailDestination(
+              icon: Icon(Icons.person_outline),
+              selectedIcon: Icon(Icons.person),
+              label: Text('Perfil'),
+            ),
+            NavigationRailDestination(
+              icon: Icon(Icons.lock_outline),
+              selectedIcon: Icon(Icons.lock),
+              label: Text('Contraseña'),
+            ),
+            NavigationRailDestination(
+              icon: Icon(Icons.info_outline),
+              selectedIcon: Icon(Icons.info),
+              label: Text('Acerca de'),
+            ),
+          ],
+        ),
+        const VerticalDivider(width: 1),
+        Expanded(child: _buildContent()),
+      ],
+    );
+  }
+
+  // ── Desktop: panel lateral con ListView ─────────────────────────
+  Widget _buildDesktop(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // ── Panel izquierdo ──────────────────────────────────────────
         SizedBox(
           width: 240,
           child: Material(
@@ -38,13 +84,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   icon: Icons.person_outline,
                   label: 'Detalle de perfil',
                   selected: _selected == _SettingsOption.profileDetail,
-                  onTap: () => setState(() => _selected = _SettingsOption.profileDetail),
+                  onTap: () => setState(
+                      () => _selected = _SettingsOption.profileDetail),
                 ),
                 _NavTile(
                   icon: Icons.lock_outline,
                   label: 'Cambio de contraseña',
                   selected: _selected == _SettingsOption.changePassword,
-                  onTap: () => setState(() => _selected = _SettingsOption.changePassword),
+                  onTap: () => setState(
+                      () => _selected = _SettingsOption.changePassword),
                 ),
                 const Divider(indent: 16, endIndent: 16),
                 _SectionHeader(title: 'Ayuda'),
@@ -52,17 +100,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   icon: Icons.info_outline,
                   label: 'Acerca de la aplicación',
                   selected: _selected == _SettingsOption.about,
-                  onTap: () => setState(() => _selected = _SettingsOption.about),
+                  onTap: () =>
+                      setState(() => _selected = _SettingsOption.about),
                 ),
               ],
             ),
           ),
         ),
         const VerticalDivider(width: 1),
-        // ── Panel derecho ────────────────────────────────────────────
-        Expanded(
-          child: _buildContent(),
-        ),
+        Expanded(child: _buildContent()),
       ],
     );
   }

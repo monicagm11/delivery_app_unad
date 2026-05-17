@@ -4,6 +4,7 @@ import 'package:delivery_app/domain/entities/form_field_type.dart';
 import 'package:delivery_app/presentation/notifier/global_event/global_event_notifier.dart';
 import 'package:delivery_app/presentation/template/crud_list_template.dart';
 import 'package:delivery_app/presentation/utils/constants.dart';
+import 'package:delivery_app/presentation/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -104,18 +105,32 @@ class _GlobalEventCrudScreenState extends ConsumerState<GlobalEventCrudScreen> {
               return [
                 if (currentStatus == Constants.programmedStatus)
                   IconButton(
-                    icon: Icon(Icons.publish),
+                    icon: Icon(Icons.publish, color: Colors.green,),
                     tooltip: 'Publicar evento',
-                    onPressed: () {},
+                    onPressed: () async {
+                      bool confirmation = await context.showConfirmationDialog(
+                              '¿Estás seguro que desea publicar este evento?') ??
+                          false;
+                      if (!confirmation) return;
+                      Map<String, dynamic> mapToUpdate = Map.from(row);
+                      mapToUpdate['status'] = Constants.publishedStatus;
+                      ref
+                          .read(globalEventNotifierProvider.notifier)
+                          .updateFromTable(row['id'], mapToUpdate);
+                    },
                   ),
+                if (currentStatus == Constants.publishedStatus || currentStatus == Constants.startedStatus)
                 IconButton(
-                  icon: Icon(currentStatus == Constants.programmedStatus
-                      ? Icons.play_arrow
-                      : Icons.stop),
-                  onPressed: () {
+                  icon: currentStatus == Constants.publishedStatus ? Icon(
+                      Icons.play_arrow, color: Colors.blue,) : Icon(Icons.stop, color: Colors.yellow),
+                  onPressed: () async {
+                    bool confirmation = await context.showConfirmationDialog(
+                            '¿Estás seguro que desea ${currentStatus == Constants.publishedStatus ? 'iniciar' : 'finalizar'} este evento?') ??
+                        false;
+                    if (!confirmation) return;
                     Map<String, dynamic> mapToUpdate = Map.from(row);
                     mapToUpdate['status'] =
-                        currentStatus == Constants.programmedStatus
+                        currentStatus == Constants.publishedStatus
                             ? Constants.startedStatus
                             : Constants.endedStatus;
                     ref
@@ -123,9 +138,14 @@ class _GlobalEventCrudScreenState extends ConsumerState<GlobalEventCrudScreen> {
                         .updateFromTable(row['id'], mapToUpdate);
                   },
                 ),
+                if (currentStatus != Constants.startedStatus)
                 IconButton(
-                  icon: const Icon(Icons.cancel),
-                  onPressed: () {
+                  icon: const Icon(Icons.close, color: Colors.red,),
+                  onPressed: () async {
+                    bool confirmation = await context.showConfirmationDialog(
+                            '¿Estás seguro que desea cancelar este evento?') ??
+                        false;
+                    if (!confirmation) return;
                     Map<String, dynamic> mapToUpdate = Map.from(row);
                     mapToUpdate['status'] = Constants.canceledStatus;
                     ref

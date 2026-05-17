@@ -39,10 +39,10 @@ class UserOrdersNotifier extends StateNotifier<UserOrdersState> {
   final WatchCollectionUseCase<CheckoutOrder> useCase;
   StreamSubscription<List<CheckoutOrder>>? _subscription;
 
-  void watchOrders(String userId) {
+  void watchByField(String field, String value) {
     _subscription?.cancel();
     state = state.copyWith(isLoading: true, errorMessage: null);
-    _subscription = useCase.where('userId', userId).listen(
+    _subscription = useCase.where(field, value).listen(
       (orders) => state = state.copyWith(orders: orders, isLoading: false),
       onError: (e) => state = state.copyWith(
         isLoading: false,
@@ -58,12 +58,21 @@ class UserOrdersNotifier extends StateNotifier<UserOrdersState> {
   }
 }
 
+WatchCollectionUseCase<CheckoutOrder> _buildUseCase(Ref ref) =>
+    WatchCollectionUseCase<CheckoutOrder>(
+      firestore: ref.read(firebaseFirestoreProvider),
+      collectionName: 'checkout_orders',
+      mapper: CheckoutOrderModel.fromMap,
+    );
+
+/// Órdenes donde userId == usuario actual.
 final userOrdersProvider =
-    StateNotifierProvider<UserOrdersNotifier, UserOrdersState>((ref) {
-  final useCase = WatchCollectionUseCase<CheckoutOrder>(
-    firestore: ref.read(firebaseFirestoreProvider),
-    collectionName: 'checkout_orders',
-    mapper: CheckoutOrderModel.fromMap,
-  );
-  return UserOrdersNotifier(useCase: useCase);
-});
+    StateNotifierProvider<UserOrdersNotifier, UserOrdersState>(
+  (ref) => UserOrdersNotifier(useCase: _buildUseCase(ref)),
+);
+
+/// Órdenes donde idDeliveryAssigned == usuario actual (repartidor).
+final deliveryOrdersProvider =
+    StateNotifierProvider<UserOrdersNotifier, UserOrdersState>(
+  (ref) => UserOrdersNotifier(useCase: _buildUseCase(ref)),
+);

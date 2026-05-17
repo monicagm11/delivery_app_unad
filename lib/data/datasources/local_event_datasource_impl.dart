@@ -13,6 +13,10 @@ class LocalEventDatasourceImpl extends BaseFirestoreDatasource<LocalEventModel>
       await fetchAll(LocalEventModel.fromMap) ?? [];
 
   @override
+  Future<List<LocalEventModel>> getByCommerce(String commerceId) async =>
+      await fetchWhere(LocalEventModel.fromMap, 'commerce', commerceId) ?? [];
+
+  @override
   Future<LocalEventModel?> getById(String id) async =>
       await findById(id, LocalEventModel.fromMap);
 

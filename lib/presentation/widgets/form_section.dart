@@ -70,7 +70,7 @@ class _FormSectionState extends State<FormSection> {
     controllers = Map.fromEntries(widget.fields
         .where((field) => (field.type == FormFieldType.textInput))
         .map((field) => MapEntry(field.id,
-            TextEditingController(text: rowSelected?[field.id] ?? ''))));
+            TextEditingController(text: (rowSelected?[field.id] != null ?'${rowSelected?[field.id]}' : '')))));
     formValues = {};
   }
 
@@ -334,7 +334,7 @@ class _FormSectionState extends State<FormSection> {
       case FormFieldType.tableField:
         return TableFormField(
             columns: formFieldConfig.columns ?? [],
-            data: formFieldConfig.data ?? []);
+            data: rowSelected?[formFieldConfig.dataId] ?? []);
     }
   }
 

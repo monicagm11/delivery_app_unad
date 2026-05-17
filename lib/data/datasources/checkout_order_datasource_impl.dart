@@ -51,6 +51,18 @@ class CheckoutOrderDatasourceImpl
       rethrow;
     }
   }
+  
+  @override
+  Future<void> updateCheckoutStatus(String id, Map<String, dynamic> newFields) async {
+    try {
+      await firestore
+          .collection(collectionName)
+          .doc(id)
+          .update(newFields);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
 
 final checkoutOrderDatasourceProvider =

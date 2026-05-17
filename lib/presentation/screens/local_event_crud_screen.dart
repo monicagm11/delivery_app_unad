@@ -5,6 +5,7 @@ import 'package:delivery_app/presentation/notifier/local_event/local_event_notif
 import 'package:delivery_app/presentation/screens/create_request_screen.dart';
 import 'package:delivery_app/presentation/template/crud_list_template.dart';
 import 'package:delivery_app/presentation/utils/constants.dart';
+import 'package:delivery_app/presentation/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -121,10 +122,13 @@ class _LocalEventCrudScreenState extends ConsumerState<LocalEventCrudScreen> {
                 currentStatus != Constants.endedStatus) {
               return [
                 IconButton(
-                  icon: Icon(currentStatus == Constants.programmedStatus
-                      ? Icons.play_arrow
-                      : Icons.stop),
-                  onPressed: () {
+                  icon: currentStatus == Constants.publishedStatus ? Icon(
+                      Icons.play_arrow, color: Colors.blue,) : Icon(Icons.stop, color: Colors.yellow),
+                  onPressed: () async {
+                    bool confirmation = await context.showConfirmationDialog(
+                            '¿Estás seguro que desea ${currentStatus == Constants.programmedStatus ? 'iniciar' : 'finalizar'} este evento?') ??
+                        false;
+                    if (!confirmation) return;
                     Map<String, dynamic> mapToUpdate = Map.from(row);
                     mapToUpdate['status'] =
                         currentStatus == Constants.programmedStatus
@@ -136,8 +140,12 @@ class _LocalEventCrudScreenState extends ConsumerState<LocalEventCrudScreen> {
                   },
                 ),
                 IconButton(
-                  icon: const Icon(Icons.cancel),
-                  onPressed: () {
+                  icon: const Icon(Icons.cancel, color: Colors.red,),
+                  onPressed: () async {
+                    bool confirmation = await context.showConfirmationDialog(
+                            '¿Estás seguro que desea cancelar este evento?') ??
+                        false;
+                    if (!confirmation) return;
                     Map<String, dynamic> mapToUpdate = Map.from(row);
                     mapToUpdate['status'] = Constants.canceledStatus;
                     ref

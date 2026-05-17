@@ -16,7 +16,8 @@ class FormFieldConfig {
   final List<dynamic>? optionsData;
   final String? folder;
   final List<TableColumnConfig>? columns;
-  final List<Map<String, dynamic>>? data;
+  final String? dataId;
+
 
   const FormFieldConfig({
     required this.label,
@@ -31,6 +32,6 @@ class FormFieldConfig {
     this.folder,
     this.checkboxOptions,
     this.columns,
-    this.data
+    this.dataId
   });
 }

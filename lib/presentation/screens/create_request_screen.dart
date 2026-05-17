@@ -5,6 +5,7 @@ import 'package:delivery_app/presentation/notifier/create_request/create_request
 import 'package:delivery_app/presentation/notifier/local_event/local_event_notifier.dart';
 import 'package:delivery_app/presentation/template/crud_list_template.dart';
 import 'package:delivery_app/presentation/utils/constants.dart';
+import 'package:delivery_app/presentation/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -30,6 +31,7 @@ class _CreateRequestEventCrudScreenState extends ConsumerState<CreateRequestEven
     final state = ref.watch(createRequestEventNotifierProvider);
     return CrudListTemplate(
       state: state,
+      
       onCreate: (row) async {
         ref.read(createRequestEventNotifierProvider.notifier).create(row);
       },
@@ -39,6 +41,7 @@ class _CreateRequestEventCrudScreenState extends ConsumerState<CreateRequestEven
       crudConfig: CrudConfig(
           columns: Constants.headersCreateRequestEvents,
           name: 'Solicitud',
+          showUpdateOption: false,
           formConfig: [
             FormFieldConfig(
                 label: 'Selecciona el evento',
@@ -71,13 +74,15 @@ class _CreateRequestEventCrudScreenState extends ConsumerState<CreateRequestEven
             if (currentStatus == Constants.pendindStatus) {
               return [
                 IconButton(
-                  icon: Icon(Icons.cancel),
-                  onPressed: () {
+                  icon: Icon(Icons.cancel, color: Colors.red,),
+                  onPressed: () async {
+                    bool confirmation = await context.showConfirmationDialog('¿Estás seguro que desea cancelar esta solicitud?') ?? false;
+                    if (!confirmation) return;
                     Map<String, dynamic> mapToUpdate = Map.from(row);
                     mapToUpdate['status'] =
                         Constants.canceledStatus;
                     ref
-                        .read(localEventNotifierProvider.notifier)
+                        .read(createRequestEventNotifierProvider.notifier)
                         .updateFromTable(row['id'], mapToUpdate);
                   },
                 ),

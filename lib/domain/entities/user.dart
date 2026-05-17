@@ -16,6 +16,7 @@ class User {
   final String? commerce;
   final String? occupation;
   final String rol;
+  final String? currentEventId;
 
   User(
       {required this.id, 
@@ -34,7 +35,8 @@ class User {
       required this.status,
       this.commerce,
       this.occupation,
-      required this.rol});
+      required this.rol,
+      this.currentEventId});
 
   Map<String, dynamic> toMap() => {
         'id': id,
@@ -53,6 +55,7 @@ class User {
         'city': city,
         'commerce': commerce,
         'rol': rol,
-        'occupation': occupation
+        'occupation': occupation,
+        'currentEventId': currentEventId,
       };
 }

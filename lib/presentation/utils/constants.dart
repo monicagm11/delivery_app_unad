@@ -22,6 +22,7 @@ class Constants {
 
   static const String adminRolCode = 'ADMINISTRADOR';
   static const String userRolCode = 'USUARIO_FINAL';
+  static const String logisticRolCode = 'LOGISTICO';
 
   static const String productFunction = 'products';
   static const String userFunction = 'users';
@@ -124,6 +125,15 @@ class Constants {
     TableColumnConfig(label: "Valor total", code: "total"),
     TableColumnConfig(label: 'Método de pago', code: 'paymentMethod'),
     TableColumnConfig(label: "Estado", code: "status"),
+  ];
+
+  static const headersSaleItems = [
+    TableColumnConfig(label: "Cantidad", code: "count"),
+    TableColumnConfig(label: "Producto", code: "nameProduct"),
+    TableColumnConfig(label: 'Precio base', code: 'priceBase'),
+    TableColumnConfig(label: "% IVA", code: "percentageIva"),
+    TableColumnConfig(label: "IVA", code: "valueIva"),
+    TableColumnConfig(label: "Total", code: "priceTotal"),
   ];
 
   static const menuItems = [

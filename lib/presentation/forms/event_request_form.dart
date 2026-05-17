@@ -58,11 +58,12 @@ class _EventRequestFormState extends State<_EventRequestForm> {
       children: [
         DropdownButtonFormField<GlobalEvent>(
         value: currentValue,
+        isExpanded: true,
         decoration: InputDecoration(labelText: 'Selecciona un evento'),
         items: options
             .map((opt) => DropdownMenuItem(
                   value: opt,
-                  child: Text(opt.name),
+                  child: Text(opt.name, overflow: TextOverflow.ellipsis),
                 ))
             .toList(),
         onChanged: isEnabled ? (value) {

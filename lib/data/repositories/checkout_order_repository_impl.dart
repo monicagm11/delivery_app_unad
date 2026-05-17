@@ -50,6 +50,11 @@ class CheckoutOrderRepositoryImpl implements CheckoutOrderRepository {
   Future<void> delete(String id) async {
     try { await datasource.delete(id); } catch (e) { rethrow; }
   }
+  
+  @override
+  Future<void> updateCheckoutStatus(String id, Map<String, dynamic> newFields) async {
+    try { await datasource.updateCheckoutStatus(id, newFields); } catch (e) { rethrow; }
+  }
 }
 
 final checkoutOrderRepositoryProvider =

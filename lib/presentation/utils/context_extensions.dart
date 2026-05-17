@@ -1,3 +1,5 @@
+import 'package:delivery_app/domain/entities/user.dart';
+import 'package:delivery_app/presentation/widgets/logistics_selector_dialog.dart';
 import 'package:flutter/material.dart';
 
 extension DialogsExtensions on BuildContext {
@@ -29,8 +31,20 @@ extension DialogsExtensions on BuildContext {
     );
   }
 
-  Future<bool?> showConfirmationDialog(String message) {
-    return showDialog<bool>(
+  Future<User?> showLogisticsSelectorDialog({
+    String title = 'Seleccionar logístico',
+    required List<User> users
+  }) async {
+
+    if (!mounted) return null;
+    return showDialog<User>(
+      context: this,
+      barrierDismissible: false,
+      builder: (_) => LogisticsSelectorDialog(users: users, title: title),
+    );
+  }
+
+  Future<bool?> showConfirmationDialog(String message) {    return showDialog<bool>(
       context: this,
       barrierDismissible: false,
       builder: (context) {

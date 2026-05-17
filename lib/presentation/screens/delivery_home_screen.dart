@@ -1,22 +1,22 @@
 import 'package:delivery_app/presentation/notifier/login/auth_notifier.dart';
 import 'package:delivery_app/presentation/notifier/session/session_notifier.dart';
-import 'package:delivery_app/presentation/screens/events_available_screen.dart';
+import 'package:delivery_app/presentation/screens/commerce_events_screen.dart';
+import 'package:delivery_app/presentation/screens/delivery_orders_screen.dart';
 import 'package:delivery_app/presentation/screens/settings_screen.dart';
-import 'package:delivery_app/presentation/screens/user_orders_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-enum _NavItem { events, orders, settings }
+enum _DeliveryNavItem { events, orders, settings }
 
-class UserHomeScreen extends ConsumerStatefulWidget {
-  const UserHomeScreen({super.key});
+class DeliveryHomeScreen extends ConsumerStatefulWidget {
+  const DeliveryHomeScreen({super.key});
 
   @override
-  ConsumerState<UserHomeScreen> createState() => _UserHomeScreenState();
+  ConsumerState<DeliveryHomeScreen> createState() => _DeliveryHomeScreenState();
 }
 
-class _UserHomeScreenState extends ConsumerState<UserHomeScreen> {
-  _NavItem _current = _NavItem.events;
+class _DeliveryHomeScreenState extends ConsumerState<DeliveryHomeScreen> {
+  _DeliveryNavItem _current = _DeliveryNavItem.orders;
 
   void _logout() {
     ref.read(sessionNotifierProvider.notifier).clear();
@@ -31,9 +31,9 @@ class _UserHomeScreenState extends ConsumerState<UserHomeScreen> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF1565C0),
         foregroundColor: Colors.white,
-        title: Row(
+        title: const Row(
           children: [
-            const Icon(Icons.set_meal, size: 24),
+            Icon(Icons.delivery_dining, size: 24),
           ],
         ),
         actions: [
@@ -59,9 +59,9 @@ class _UserHomeScreenState extends ConsumerState<UserHomeScreen> {
       ),
       body: _buildBody(),
       bottomNavigationBar: NavigationBar(
-        selectedIndex: _NavItem.values.indexOf(_current),
+        selectedIndex: _DeliveryNavItem.values.indexOf(_current),
         onDestinationSelected: (i) =>
-            setState(() => _current = _NavItem.values[i]),
+            setState(() => _current = _DeliveryNavItem.values[i]),
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.event_outlined),
@@ -85,12 +85,12 @@ class _UserHomeScreenState extends ConsumerState<UserHomeScreen> {
 
   Widget _buildBody() {
     switch (_current) {
-      case _NavItem.events:
-        return const EventsAvailableScreen();
-      case _NavItem.settings:
+      case _DeliveryNavItem.events:
+        return const CommerceEventsScreen();
+      case _DeliveryNavItem.orders:
+        return const DeliveryOrdersScreen();
+      case _DeliveryNavItem.settings:
         return const SettingsScreen();
-      case _NavItem.orders:
-        return UserOrdersScreen();
     }
   }
 }
