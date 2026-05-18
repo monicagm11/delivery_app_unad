@@ -1,5 +1,5 @@
-import 'package:delivery_app/data/models/commerce_model.dart';
 import 'package:delivery_app/data/repositories/commerce_repository_impl.dart';
+import 'package:delivery_app/domain/entities/commerce.dart';
 import 'package:delivery_app/domain/repositories/commerce_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,7 +8,7 @@ class CreateCommerceUseCase {
 
   CreateCommerceUseCase({required this.repository});
 
-  Future<void> call(CommerceModel model) async {
+  Future<void> call(Commerce model) async {
     try {
       await repository.create(model);
     } catch (e) {

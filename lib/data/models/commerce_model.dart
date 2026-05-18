@@ -1,22 +1,36 @@
-import 'package:delivery_app/domain/entities/commerce.dart';
 
-class CommerceModel extends Commerce {
+class CommerceModel {
   const CommerceModel({
-    required super.id,
-    required super.name,
-    required super.document,
-    required super.identificationType,
-    required super.phone,
-    required super.address,
-    required super.email,
-    required super.department,
-    required super.city,
-    required super.status,
-    required super.contactName,
-    required super.urlImage,
-    required super.urlImageQR,
-    super.fullDocument
+    required this.id,
+    required this.name,
+    required this.document,
+    required this.identificationType,
+    required this.phone,
+    required this.address,
+    required this.email,
+    required this.department,
+    required this.city,
+    required this.status,
+    required this.contactName,
+    required this.urlImage,
+    required this.urlImageQR,
+    required this.fullDocument
   });
+
+  final String id;
+  final String name;
+  final String document;
+  final String identificationType;
+  final String phone;
+  final String address;
+  final String email;
+  final String department;
+  final String city;
+  final String status;
+  final String fullDocument;
+  final String contactName;
+  final String urlImage;
+  final String urlImageQR;
 
   factory CommerceModel.fromMap(Map<String, dynamic> map) => CommerceModel(
         id: map['id'] as String? ?? '',
@@ -34,4 +48,21 @@ class CommerceModel extends Commerce {
         urlImage:  map['urlImage'] as String? ?? '',
         urlImageQR:  map['urlImageQR'] as String? ?? '',
       );
+      
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'name': name,
+        'document': document,
+        'identificationType': identificationType,
+        'phone': phone,
+        'address': address,
+        'email': email,
+        'department': department,
+        'city': city,
+        'status': status,
+        'contactName': contactName,
+        'fullDocument': fullDocument,
+        'urlImage': urlImage,
+        'urlImageQR': urlImageQR
+      };
 }

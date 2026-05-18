@@ -1,5 +1,5 @@
-import 'package:delivery_app/data/models/commerce_model.dart';
 import 'package:delivery_app/domain/entities/city_data.dart';
+import 'package:delivery_app/domain/entities/commerce.dart';
 import 'package:delivery_app/domain/entities/identification_data.dart';
 import 'package:delivery_app/domain/entities/image_data.dart';
 import 'package:delivery_app/domain/entities/rol.dart';
@@ -66,7 +66,7 @@ class CommerceNotifier extends StateNotifier<CommerceState> {
       final urlImageQR = await uploadImageUseCase(path: imageDataQR.path!, folder: imageDataQR.folder, bytes: imageDataQR.bytes);
       map['urlImage'] = urlImage;
       map['urlImageQR'] = urlImageQR;
-      CommerceModel model = mapFromFormData(map);
+      Commerce model = mapFromFormData(map);
       await createUseCase(model);
       await loadAll();
     } catch (e) {
@@ -91,7 +91,7 @@ class CommerceNotifier extends StateNotifier<CommerceState> {
       } else {
         map['urlImageQR'] = imageDataQR.path;
       }
-      CommerceModel model = mapFromFormData(map);
+      Commerce model = mapFromFormData(map);
       await updateUseCase(id, model);
       await loadAll();
     } catch (e) {
@@ -107,11 +107,11 @@ class CommerceNotifier extends StateNotifier<CommerceState> {
     state = state.copyWith(showForm: false);
   }
 
-  CommerceModel mapFromFormData(Map<String, dynamic> map) {
+  Commerce mapFromFormData(Map<String, dynamic> map) {
     IdentificationData identificationData =
           map['identification'] as IdentificationData;
       CityData cityData = map['cityDepartment'] as CityData;
-      return CommerceModel(
+      return Commerce(
           id: map['id'] as String? ?? '',
           name: map['name'] as String? ?? '',
           document: identificationData.number,
