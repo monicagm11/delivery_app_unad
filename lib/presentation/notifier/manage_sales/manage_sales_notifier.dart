@@ -104,7 +104,7 @@ final manageSalesRealtimeProvider =
     collectionName: 'checkout_orders',
     mapper: CheckoutOrder.fromMap,
   );
-  final commerceId = ref.read(sessionNotifierProvider).commerceId ?? '';
+  final commerceId = ref.read(sessionNotifierProvider).commerce?.id ?? '';
   final rolConfig =
       ref.read(sessionNotifierProvider).rolConfig ?? Constants.defaultRol;
   return ManageSalesNotifier(

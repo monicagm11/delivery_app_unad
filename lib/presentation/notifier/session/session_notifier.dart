@@ -1,5 +1,6 @@
 import 'package:delivery_app/domain/entities/commerce.dart';
 import 'package:delivery_app/domain/entities/menu_item.dart';
+import 'package:delivery_app/domain/entities/rol.dart';
 import 'package:delivery_app/domain/entities/user.dart';
 import 'package:delivery_app/domain/usecases/commerce/get_commerce_by_id_usecase.dart';
 import 'package:delivery_app/domain/usecases/get_remote_config_usecase.dart';
@@ -20,28 +21,13 @@ class SessionNotifier extends StateNotifier<SessionState> {
       required this.getRemoteConfigUsecase})
       : super(const SessionState());
 
-  Future<void> setSession(String userId) async {
-    try {
-      User? user = await getUserByIdUseCase.call(userId);
-      if (user == null) return;
-      Commerce? commerce;
-      if (user.commerce != null && user.commerce!.isNotEmpty) {
-        commerce = await getCommerceByIdUseCase.call(user.commerce!);
-      }
-      final rolInfo = await getRemoteConfigUsecase.call(user.rol);
-
-      state = state.copyWith(
-          userId: userId,
-          email: user.email,
-          commerceId: user.commerce,
-          rol: user.rol,
-          userName: user.fullname,
+  Future<void> setSession(User? user, Commerce? commerce, Rol? rolInfo ) async {
+    state = state.copyWith(
+          user: user,
+          userName: user?.fullname,
           commerce: commerce,
           rolConfig: rolInfo,
-          rolId: user.rol);
-    } catch (e) {
-      state = state.copyWith(userId: userId);
-    }
+          rolId: user?.rol);
   }
 
   List<MenuItem> getMenuItems() {

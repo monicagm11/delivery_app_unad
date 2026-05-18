@@ -22,7 +22,7 @@ class _CommerceEventsScreenState extends ConsumerState<CommerceEventsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final commerceId = ref.watch(sessionNotifierProvider).commerceId ?? '';
+    final commerceId = ref.watch(sessionNotifierProvider).commerce?.id ?? '';
     final eventsAsync = ref.watch(localEventsByCommerceProvider(commerceId));
 
     return Padding(

@@ -75,7 +75,7 @@ class CategoryNotifier extends StateNotifier<CategoryState> {
 
 final categoryNotifierProvider =
     StateNotifierProvider<CategoryNotifier, CategoryState>((ref) {
-    final commerceId = ref.read(sessionNotifierProvider).commerceId ?? '';
+    final commerceId = ref.read(sessionNotifierProvider).commerce?.id ?? '';
     final rolConfig = ref.read(sessionNotifierProvider).rolConfig ?? Constants.defaultRol;
   return CategoryNotifier(
       createUseCase: ref.read(createCategoryUseCaseProvider),

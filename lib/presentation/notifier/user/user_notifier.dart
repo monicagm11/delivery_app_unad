@@ -144,7 +144,7 @@ class UserNotifier extends StateNotifier<UserState> {
 final userNotifierProvider =
     StateNotifierProvider<UserNotifier, UserState>((ref) {
       final commerceId =
-      ref.read(sessionNotifierProvider).commerceId ?? '2G9IlFqKCL36mMaFF4Jg';
+      ref.read(sessionNotifierProvider).commerce?.id ?? '';
       final rolConfig = ref.read(sessionNotifierProvider).rolConfig ?? Constants.defaultRol;
   return UserNotifier(
       getAllUseCase: ref.read(getAllUsersUseCaseProvider),

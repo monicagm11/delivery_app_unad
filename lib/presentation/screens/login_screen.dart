@@ -42,7 +42,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     ref.listen<AuthState>(authNotifierProvider, (_, state) {
       if (state.status == AuthStatus.success) {
-        String rolId = ref.read(sessionNotifierProvider).rol!;
+        ref.read(sessionNotifierProvider.notifier).setSession(state.user, state.commerce, state.rolConfig);
+        String rolId = state.rolId!;
         if (rolId == Constants.userRolCode) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (_) => CitySelectorScreen()),

@@ -44,7 +44,7 @@ class _UserHomeScreenState extends ConsumerState<UserHomeScreen> {
                 const Icon(Icons.person_outline, size: 18),
                 const SizedBox(width: 4),
                 Text(
-                  session.userName ?? session.email ?? '',
+                  session.userName ?? session.user?.email ?? '',
                   style: const TextStyle(fontSize: 13),
                 ),
               ],

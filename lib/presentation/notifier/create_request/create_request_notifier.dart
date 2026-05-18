@@ -136,7 +136,7 @@ class CreateRequestEventNotifier extends StateNotifier<CreateRequestState> {
 final createRequestEventNotifierProvider =
     StateNotifierProvider<CreateRequestEventNotifier, CreateRequestState>((ref) {
       final commerceId =
-      ref.read(sessionNotifierProvider).commerceId ?? '';
+      ref.read(sessionNotifierProvider).commerce?.id ?? '';
       final rolConfig = ref.read(sessionNotifierProvider).rolConfig ?? Constants.defaultRol;
   return CreateRequestEventNotifier(
       getAllUseCase: ref.read(getRequestEventsByCommerceUseCaseProvider),

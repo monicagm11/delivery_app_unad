@@ -3,6 +3,10 @@ import 'package:delivery_app/presentation/widgets/logistics_selector_dialog.dart
 import 'package:flutter/material.dart';
 
 extension DialogsExtensions on BuildContext {
+
+  bool isMobile() {
+    return MediaQuery.sizeOf(this).width < 600;
+  }
   Future<String?> showTextFieldDialog(String label) {
     final controller = TextEditingController();
     return showDialog<String>(

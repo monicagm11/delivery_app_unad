@@ -124,7 +124,7 @@ class ProductNotifier extends StateNotifier<ProductState> {
 final productNotifierProvider =
     StateNotifierProvider<ProductNotifier, ProductState>((ref) {
   final commerceId =
-      ref.read(sessionNotifierProvider).commerceId ?? '2G9IlFqKCL36mMaFF4Jg';
+      ref.read(sessionNotifierProvider).commerce?.id ?? '';
   final rolConfig =
       ref.read(sessionNotifierProvider).rolConfig ?? Constants.defaultRol;
   return ProductNotifier(

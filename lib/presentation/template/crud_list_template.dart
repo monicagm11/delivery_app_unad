@@ -3,6 +3,7 @@ import 'package:delivery_app/domain/entities/crud_config.dart';
 import 'package:delivery_app/domain/entities/rol.dart';
 import 'package:delivery_app/presentation/notifier/crud_state.dart';
 import 'package:delivery_app/presentation/utils/action_form_type.dart';
+import 'package:delivery_app/presentation/utils/context_extensions.dart';
 import 'package:delivery_app/presentation/widgets/error_widget.dart';
 import 'package:delivery_app/presentation/widgets/form_section.dart';
 import 'package:flutter/material.dart';
@@ -191,10 +192,11 @@ class _CrudListTemplateState extends State<CrudListTemplate> {
   }
   @override
   Widget build(BuildContext context) {
-    return _buildBody(widget.state);
+    bool isMobile = context.isMobile();
+    return _buildBody(widget.state, isMobile);
   }
 
-  Widget _buildBody(CrudState state) {
+  Widget _buildBody(CrudState state, bool isMobile) {
     final functionConfig = state.functionConfig;
     if (state.isLoading) {
       return const Center(child: CircularProgressIndicator());
@@ -210,13 +212,14 @@ class _CrudListTemplateState extends State<CrudListTemplate> {
 
     return Row(
       children: [
+        if (!(showForm && isMobile))
         Expanded(
-          flex: showForm ? 3 : 5,
+          flex: showForm ? 3: 5,
           child: functionConfig.readData ? _buildTable(functionConfig): ErrorIconWidget(errorMessage: 'No tienes los permisos para consultar esta información'),
         ),
         if (showForm)
           Expanded(
-            flex: 2,
+            flex: (isMobile? 5 : 2),
             child: _buildForm(state),
           ),
       ],

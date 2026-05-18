@@ -1,5 +1,6 @@
 import 'package:delivery_app/domain/usecases/update_password_usecase.dart';
 import 'package:delivery_app/presentation/notifier/session/session_notifier.dart';
+import 'package:delivery_app/presentation/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -30,7 +31,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = MediaQuery.sizeOf(context).width < 600;
+    final isMobile = context.isMobile();
     return isMobile ? _buildMobile() : _buildDesktop(context);
   }
 
@@ -189,6 +190,7 @@ class _ProfileDetailView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final session = ref.watch(sessionNotifierProvider);
+    final user = session.user;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(32),
@@ -205,10 +207,10 @@ class _ProfileDetailView extends ConsumerWidget {
                 size: 40, color: Theme.of(context).colorScheme.primary),
           ),
           const SizedBox(height: 24),
-          _InfoRow(label: 'Correo', value: session.email ?? '-'),
-          _InfoRow(label: 'Rol', value: session.rol ?? '-'),
+          _InfoRow(label: 'Correo', value: user?.email ?? '-'),
+          _InfoRow(label: 'Rol', value: session.rolConfig?.name ?? '-'),
           _InfoRow(label: 'Comercio', value: session.commerce?.name ?? '-'),
-          _InfoRow(label: 'ID de usuario', value: session.userId ?? '-'),
+          _InfoRow(label: 'ID de usuario', value: user?.id ?? '-'),
         ],
       ),
     );

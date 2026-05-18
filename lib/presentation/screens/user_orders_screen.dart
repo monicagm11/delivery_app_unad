@@ -9,7 +9,7 @@ class UserOrdersScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userId = ref.watch(sessionNotifierProvider).userId ?? '';
+    final userId = ref.watch(sessionNotifierProvider).user?.id ?? '';
 
     return OrdersListTemplate(
       provider: userOrdersProvider,

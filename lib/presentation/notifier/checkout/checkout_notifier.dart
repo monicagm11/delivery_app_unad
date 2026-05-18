@@ -103,7 +103,7 @@ Future<void> init(String eventId, List<CartItem> items) async {
 
 final checkoutNotifierProvider =
     StateNotifierProvider<CheckoutNotifier, CheckoutState>((ref) {
-      final userId = ref.read(sessionNotifierProvider).userId ?? '';
+      final userId = ref.read(sessionNotifierProvider).user?.id ?? '';
       final userName = ref.read(sessionNotifierProvider).userName ?? '';
   return CheckoutNotifier(
       getCommerceByIdUseCase: ref.read(getCommerceByIdUseCaseProvider),
