@@ -1,6 +1,6 @@
-import 'package:delivery_app/data/models/request_event_model.dart';
 import 'package:delivery_app/domain/entities/checkbox_option.dart';
 import 'package:delivery_app/domain/entities/global_event.dart';
+import 'package:delivery_app/domain/entities/request_event.dart';
 import 'package:delivery_app/domain/entities/rol.dart';
 import 'package:delivery_app/domain/usecases/create_request/create_request_event_usecase.dart';
 import 'package:delivery_app/domain/usecases/create_request/get_request_events_by_commerce_usecase.dart';
@@ -77,7 +77,7 @@ class CreateRequestEventNotifier extends StateNotifier<CreateRequestState> {
   Future<void> create(Map<String, dynamic> map) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
-      RequestEventModel model = mapFromFormData(map);
+      RequestEvent model = mapFromFormData(map);
       await createUseCase(model);
       await loadAll();
     } catch (e) {
@@ -88,7 +88,7 @@ class CreateRequestEventNotifier extends StateNotifier<CreateRequestState> {
   Future<void> update(String id, Map<String, dynamic> map) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
-      RequestEventModel model = mapFromFormData(map);
+      RequestEvent model = mapFromFormData(map);
       await updateUseCase(id, model);
       await loadAll();
     } catch (e) {
@@ -99,7 +99,7 @@ class CreateRequestEventNotifier extends StateNotifier<CreateRequestState> {
   Future<void> updateFromTable(String id, Map<String, dynamic> map) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
-      RequestEventModel model = RequestEventModel.fromMap(map);
+      RequestEvent model = RequestEvent.fromMap(map);
       await updateUseCase(id, model);
       await loadAll();
     } catch (e) {
@@ -115,13 +115,13 @@ class CreateRequestEventNotifier extends StateNotifier<CreateRequestState> {
     state = state.copyWith(showForm: false);
   }
 
-  RequestEventModel mapFromFormData(Map<String, dynamic> map) {
+  RequestEvent mapFromFormData(Map<String, dynamic> map) {
     GlobalEvent event = map['event'] as GlobalEvent;
     final now = DateTime.now();
     final formattedDate = DateFormat('dd/MM/yyyy HH:mm').format(now);
     List<CheckboxOption> productList = map['products'] as List<CheckboxOption>? ?? [];
     List<String> productIdList = productList.map((e) => e.value).toList();
-      return RequestEventModel(
+      return RequestEvent(
           id: map['id'] as String? ?? '',
           status: map['status'] as String? ?? Constants.pendindStatus,  
           commerceId: commerceId,

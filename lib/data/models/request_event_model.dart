@@ -1,15 +1,22 @@
-import 'package:delivery_app/domain/entities/request_event.dart';
 
-class RequestEventModel extends RequestEvent {
+class RequestEventModel{
   const RequestEventModel({
-    required super.id,
-    required super.commerceId,
-    required super.status,
-    required super.eventId,
-    required super.creationDate,
-    required super.productsIdList,
-    required super.locationClientType
+    required this.id,
+    required this.commerceId,
+    required this.status,
+    required this.eventId,
+    required this.creationDate,
+    required this.productsIdList,
+    required this.locationClientType
   });
+
+  final String id;
+  final String commerceId;
+  final String status;
+  final String eventId;
+  final String creationDate;
+  final String locationClientType;
+  final List<String> productsIdList;
 
   factory RequestEventModel.fromMap(Map<String, dynamic> map) => RequestEventModel(
         id: map['id'] as String? ?? '',
@@ -22,5 +29,13 @@ class RequestEventModel extends RequestEvent {
         
       );
 
-  
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'commerceId': commerceId,
+        'status': status,
+        'eventId': eventId,
+        'creationDate': creationDate,
+        'products': productsIdList,
+        'locationClientType': locationClientType
+      };
 }

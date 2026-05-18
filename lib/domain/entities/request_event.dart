@@ -17,6 +17,17 @@ class RequestEvent {
     required this.locationClientType
   });
 
+  factory RequestEvent.fromMap(Map<String, dynamic> map) => RequestEvent(
+        id: map['id'] as String? ?? '',
+        commerceId: map['commerceId'] as String? ?? '',
+        status: map['status'] as String? ?? '',
+        eventId: map['eventId'] as String? ?? '',
+        creationDate: map['creationDate'] as String? ?? '',
+        productsIdList: List<String>.from(map['products'] as List? ?? []), 
+        locationClientType: map['locationClientType'] as String? ?? 'numberedChair',
+        
+      );
+
   Map<String, dynamic> toMap() => {
         'id': id,
         'commerceId': commerceId,

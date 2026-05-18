@@ -1,7 +1,7 @@
-import 'package:delivery_app/data/models/request_event_model.dart';
 import 'package:delivery_app/domain/entities/checkbox_option.dart';
 import 'package:delivery_app/domain/entities/global_event.dart';
 import 'package:delivery_app/domain/entities/local_event.dart';
+import 'package:delivery_app/domain/entities/request_event.dart';
 import 'package:delivery_app/domain/entities/rol.dart';
 import 'package:delivery_app/domain/usecases/create_request/get_all_request_event_usecases.dart';
 import 'package:delivery_app/domain/usecases/create_request/update_request_event_usecase.dart';
@@ -90,7 +90,7 @@ class ManageRequestEventNotifier extends StateNotifier<ManageRequestState> {
   Future<void> update(String id, Map<String, dynamic> map) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
-      RequestEventModel model = mapFromFormData(map);
+      RequestEvent model = mapFromFormData(map);
       await updateUseCase(id, model);
       await loadAll();
     } catch (e) {
@@ -101,7 +101,7 @@ class ManageRequestEventNotifier extends StateNotifier<ManageRequestState> {
   Future<void> updateFromTable(String id, Map<String, dynamic> map) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
-      RequestEventModel model = RequestEventModel.fromMap(map);
+      RequestEvent model = RequestEvent.fromMap(map);
       await updateUseCase(id, model);
       await loadAll();
     } catch (e) {
@@ -112,7 +112,7 @@ class ManageRequestEventNotifier extends StateNotifier<ManageRequestState> {
   Future<void> approveRequestFromTable(String id, Map<String, dynamic> map) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
-      RequestEventModel model = RequestEventModel.fromMap(map);
+      RequestEvent model = RequestEvent.fromMap(map);
       await updateUseCase(id, model);
       LocalEvent modelLocalEvent = LocalEvent(
           id: '',
@@ -147,8 +147,8 @@ class ManageRequestEventNotifier extends StateNotifier<ManageRequestState> {
     state = state.copyWith(showForm: false);
   }
 
-  RequestEventModel mapFromFormData(Map<String, dynamic> map) {
-      return RequestEventModel(
+  RequestEvent mapFromFormData(Map<String, dynamic> map) {
+      return RequestEvent(
           id: map['id'] as String? ?? '',
           status: map['status'] as String? ?? Constants.pendindStatus,  
           commerceId: map['commerceId'] as String,
