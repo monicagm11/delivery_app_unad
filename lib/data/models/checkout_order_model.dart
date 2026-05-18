@@ -1,25 +1,39 @@
-import 'package:delivery_app/domain/entities/checkout_item.dart';
-import 'package:delivery_app/domain/entities/checkout_order.dart';
-import 'package:delivery_app/domain/entities/payment_method.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:delivery_app/data/models/checkout_item_model.dart';
 
-class CheckoutOrderModel extends CheckoutOrder {
+class CheckoutOrderModel{
 
   CheckoutOrderModel({
-    required super.id,
-    required super.userId,
-    required super.userName,
-    required super.eventId,
-    super.urlImage,
-    super.change,
-    required super.comments,
-    required super.paymentMethod,
-    required super.checkoutItems,
-    required super.commerce,
-    required super.total,
-    required super.stageList,
-    required super.location,
-    super.idDeliveryAssigned,
+    required this.id,
+    required this.userId,
+    required this.userName,
+    required this.eventId,
+    this.urlImage,
+    this.change,
+    required this.comments,
+    required this.paymentMethod,
+    required this.checkoutItems,
+    required this.commerce,
+    required this.total,
+    required this.stageList,
+    required this.location,
+    this.idDeliveryAssigned,
   });
+
+  final String? id;
+  final String userId;
+  final String userName;
+  final String eventId;
+  final String? urlImage;
+  final String? change;
+  final String? comments;
+  final String commerce;
+  final String paymentMethod;
+  final List<CheckoutItemModel> checkoutItems;
+  final List<TrackingStageModel> stageList;
+  final double total;
+  final String location;
+  final String? idDeliveryAssigned;
 
   factory CheckoutOrderModel.fromMap(Map<String, dynamic> map) =>
       CheckoutOrderModel(
@@ -32,22 +46,58 @@ class CheckoutOrderModel extends CheckoutOrder {
         commerce: map['commerce'] as String? ?? '',
         total: (map['total'] as num?)?.toDouble() ?? 0.0,
         idDeliveryAssigned: map['idDeliveryAssigned'] as String?,
-        paymentMethod: PaymentMethod.values.firstWhere(
-          (e) => e.name == map['paymentMethod'],
-          orElse: () => PaymentMethod.cash,
-        ),
+        paymentMethod: map['paymentMethod'],
         checkoutItems: (map['checkoutItems'] as List<dynamic>? ?? [])
-            .map((e) => CheckoutItem.fromMap(e as Map<String, dynamic>))
+            .map((e) => CheckoutItemModel.fromMap(e as Map<String, dynamic>))
             .toList(),
         stageList: (map['stageList'] as List<dynamic>? ?? [])
-            .map((e) => TrackingStage.fromMap(e as Map<String, dynamic>))
+            .map((e) => TrackingStageModel.fromMap(e as Map<String, dynamic>))
             .toList(),
         location: map['location'] as String? ?? '',
         userName: map['userName'] as String? ?? ''
       );
 
-  @override
   Map<String, dynamic> toMap() => {
-        ...super.toMap(),
+        'id': id,
+      'userId': userId,
+      'eventId': eventId,
+      'urlImage': urlImage,
+      'change': change,
+      'comments': comments,
+      'commerce': commerce,
+      'paymentMethod': paymentMethod,
+      'checkoutItems': checkoutItems.map((e) => e.toMap()).toList(),
+      'stageList': stageList.map((e) => e.toMap()).toList(),
+      'total': total,
+      'location': location,
+      'idDeliveryAssigned': idDeliveryAssigned,
+      'userName': userName
       };
+}
+
+class TrackingStageModel {
+  final String name;
+  final DateTime? date;
+  final bool completed;
+
+  const TrackingStageModel({
+    required this.name,
+    this.date,
+    this.completed = false,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'date': date,
+      'completed': completed,
+    };
+  }
+
+  factory TrackingStageModel.fromMap(Map<String, dynamic> map) {
+    return TrackingStageModel(
+        name: map['name'], 
+        date: (map['date'] as Timestamp?)?.toDate(),
+        completed: map['completed']);
+  }
 }

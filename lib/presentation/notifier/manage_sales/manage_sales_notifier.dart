@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:delivery_app/data/datasources/base_firestore_datasource.dart';
-import 'package:delivery_app/data/models/checkout_order_model.dart';
 import 'package:delivery_app/domain/entities/checkout_order.dart';
 import 'package:delivery_app/domain/entities/payment_method.dart';
 import 'package:delivery_app/domain/entities/rol.dart';
@@ -103,7 +102,7 @@ final manageSalesRealtimeProvider =
   final useCase = WatchCollectionUseCase<CheckoutOrder>(
     firestore: ref.read(firebaseFirestoreProvider),
     collectionName: 'checkout_orders',
-    mapper: CheckoutOrderModel.fromMap,
+    mapper: CheckoutOrder.fromMap,
   );
   final commerceId = ref.read(sessionNotifierProvider).commerceId ?? '';
   final rolConfig =

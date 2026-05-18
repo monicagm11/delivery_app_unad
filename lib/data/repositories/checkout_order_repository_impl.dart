@@ -8,38 +8,64 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CheckoutOrderRepositoryImpl implements CheckoutOrderRepository {
   final CheckoutOrderDatasource datasource;
+  final CheckoutOrderMapper mapper = CheckoutOrderMapper();
   CheckoutOrderRepositoryImpl({required this.datasource});
 
   @override
   Future<List<CheckoutOrder>> getAll() async {
-    try { return await datasource.getAll(); } catch (e) { rethrow; }
+    try {
+      final list = await datasource.getAll();
+      return list.map((e) => mapper.toEntity(e)).toList();
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
   Future<List<CheckoutOrder>> getByUser(String userId) async {
-    try { return await datasource.getByUser(userId); } catch (e) { rethrow; }
+    try {
+      final list = await datasource.getByUser(userId);
+      return list.map((e) => mapper.toEntity(e)).toList();
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
   Future<List<CheckoutOrder>> getByEvent(String eventId) async {
-    try { return await datasource.getByEvent(eventId); } catch (e) { rethrow; }
+    try {
+      final list = await datasource.getByEvent(eventId);
+      return list.map((e) => mapper.toEntity(e)).toList();
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
   Future<CheckoutOrder?> getById(String id) async {
-    try { return await datasource.getById(id); } catch (e) { rethrow; }
+    try {
+      CheckoutOrderModel? result = await datasource.getById(id);
+      return result != null ? mapper.toEntity(result) : null;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
-  Future<String> create(CheckoutOrderModel model) async {
-    try { return await datasource.create(model); } catch (e) { rethrow; }
+  Future<String> create(CheckoutOrder order) async {
+    try {
+      CheckoutOrderModel model = mapper.toModel(order);
+      return await datasource.create(model);
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
   Future<void> update(String id, CheckoutOrder model) async {
     try {
       CheckoutOrderModel checkoutOrderModel =
-          CheckoutOrderMapper.toModel(model);
+          mapper.toModel(model);
       await datasource.update(id, checkoutOrderModel);
     } catch (e) {
       rethrow;

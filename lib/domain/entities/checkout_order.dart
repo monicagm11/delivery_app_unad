@@ -88,6 +88,28 @@ class CheckoutOrder {
   void addTrackingStage(TrackingStage trackingStage) {
     stageList.add(trackingStage);
   }
+
+  factory CheckoutOrder.fromMap(Map<String, dynamic> map) =>
+      CheckoutOrder(
+        id: map['id'] as String? ?? '',
+        userId: map['userId'] as String? ?? '',
+        eventId: map['eventId'] as String? ?? '',
+        urlImage: map['urlImage'] as String?,
+        change: map['change'] as String?,
+        comments: map['comments'] as String? ?? '',
+        commerce: map['commerce'] as String? ?? '',
+        total: (map['total'] as num?)?.toDouble() ?? 0.0,
+        idDeliveryAssigned: map['idDeliveryAssigned'] as String?,
+        paymentMethod: map['paymentMethod'],
+        checkoutItems: (map['checkoutItems'] as List<dynamic>? ?? [])
+            .map((e) => CheckoutItem.fromMap(e as Map<String, dynamic>))
+            .toList(),
+        stageList: (map['stageList'] as List<dynamic>? ?? [])
+            .map((e) => TrackingStage.fromMap(e as Map<String, dynamic>))
+            .toList(),
+        location: map['location'] as String? ?? '',
+        userName: map['userName'] as String? ?? ''
+      );
 }
 
 class TrackingStage {

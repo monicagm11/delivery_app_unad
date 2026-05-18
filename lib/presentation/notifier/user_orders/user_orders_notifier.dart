@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:delivery_app/data/datasources/base_firestore_datasource.dart';
-import 'package:delivery_app/data/models/checkout_order_model.dart';
 import 'package:delivery_app/domain/entities/checkout_order.dart';
 import 'package:delivery_app/domain/usecases/watch_collection_usecase.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -62,7 +61,7 @@ WatchCollectionUseCase<CheckoutOrder> _buildUseCase(Ref ref) =>
     WatchCollectionUseCase<CheckoutOrder>(
       firestore: ref.read(firebaseFirestoreProvider),
       collectionName: 'checkout_orders',
-      mapper: CheckoutOrderModel.fromMap,
+      mapper: CheckoutOrder.fromMap,
     );
 
 /// Órdenes donde userId == usuario actual.

@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:delivery_app/data/models/checkout_order_model.dart';
 import 'package:delivery_app/domain/entities/cart_item.dart';
 import 'package:delivery_app/domain/entities/checkout_item.dart';
 import 'package:delivery_app/domain/entities/checkout_order.dart';
@@ -72,7 +71,7 @@ Future<void> init(String eventId, List<CartItem> items) async {
             name: Constants.orderCreatedStatus, date: now, completed: true),
         TrackingStage(name: Constants.orderConfirmedStatus, completed: false)
       ];
-      CheckoutOrderModel model = createOrderModel(map);
+      CheckoutOrder model = createOrderModel(map);
       String orderId = await createCheckoutOrderUseCase.call(model);
 
       state = state.copyWith(isLoading: false, isCheckoutCompleted: true, currentOrderId: orderId);
@@ -81,8 +80,8 @@ Future<void> init(String eventId, List<CartItem> items) async {
     }
   }
 
-  CheckoutOrderModel createOrderModel(Map<String, dynamic> map) =>
-      CheckoutOrderModel(
+  CheckoutOrder createOrderModel(Map<String, dynamic> map) =>
+      CheckoutOrder(
         id: map['id'] as String? ?? '',
         userId: map['userId'] as String? ?? '',
         eventId: map['eventId'] as String? ?? '',
