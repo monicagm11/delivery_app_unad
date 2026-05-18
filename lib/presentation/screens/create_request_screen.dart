@@ -2,7 +2,6 @@ import 'package:delivery_app/domain/entities/crud_config.dart';
 import 'package:delivery_app/domain/entities/form_field_config.dart';
 import 'package:delivery_app/domain/entities/form_field_type.dart';
 import 'package:delivery_app/presentation/notifier/create_request/create_request_notifier.dart';
-import 'package:delivery_app/presentation/notifier/local_event/local_event_notifier.dart';
 import 'package:delivery_app/presentation/template/crud_list_template.dart';
 import 'package:delivery_app/presentation/utils/constants.dart';
 import 'package:delivery_app/presentation/utils/context_extensions.dart';

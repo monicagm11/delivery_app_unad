@@ -20,4 +20,11 @@ class Category {
         'status': status,
         'commerce': commerce,
       };
+  factory Category.fromMap(Map<String, dynamic> map) => Category(
+        id: map['id'] as String? ?? '',
+        name: map['name'] as String? ?? '',
+        description: map['description'] as String? ?? '',
+        status: map['status'] as String? ?? '',
+        commerce: map['commerce'] as String? ?? '',
+      );
 }

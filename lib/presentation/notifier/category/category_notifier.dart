@@ -1,4 +1,4 @@
-import 'package:delivery_app/data/models/category_model.dart';
+import 'package:delivery_app/domain/entities/category.dart';
 import 'package:delivery_app/domain/entities/rol.dart';
 import 'package:delivery_app/domain/usecases/category/create_category_usecase.dart';
 import 'package:delivery_app/domain/usecases/category/get_categories_by_commerce_usecase.dart';
@@ -44,7 +44,7 @@ class CategoryNotifier extends StateNotifier<CategoryState> {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
       map['commerce'] = commerceId;
-      CategoryModel model = CategoryModel.fromMap(map);
+      Category model = Category.fromMap(map);
       await createUseCase(model);
       await loadAll();
     } catch (e) {
@@ -56,7 +56,7 @@ class CategoryNotifier extends StateNotifier<CategoryState> {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
       map['commerce'] = commerceId;
-      CategoryModel model = CategoryModel.fromMap(map);
+      Category model = Category.fromMap(map);
       await updateUseCase(id, model);
       await loadAll();
     } catch (e) {
