@@ -1,11 +1,10 @@
-import 'package:delivery_app/data/models/local_event_model.dart';
 import 'package:delivery_app/domain/entities/local_event.dart';
 
 abstract class LocalEventRepository {
   Future<List<LocalEvent>> getAll();
   Future<LocalEvent?> getById(String id);
   Future<List<LocalEvent>> getByCommerce(String commerceId);
-  Future<void> create(LocalEventModel model);
-  Future<void> update(String id, LocalEventModel model);
+  Future<void> create(LocalEvent model);
+  Future<void> update(String id, LocalEvent model);
   Future<void> delete(String id);
 }

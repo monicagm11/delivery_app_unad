@@ -1,7 +1,7 @@
-import 'package:delivery_app/data/models/local_event_model.dart';
 import 'package:delivery_app/data/models/request_event_model.dart';
 import 'package:delivery_app/domain/entities/checkbox_option.dart';
 import 'package:delivery_app/domain/entities/global_event.dart';
+import 'package:delivery_app/domain/entities/local_event.dart';
 import 'package:delivery_app/domain/entities/rol.dart';
 import 'package:delivery_app/domain/usecases/create_request/get_all_request_event_usecases.dart';
 import 'package:delivery_app/domain/usecases/create_request/update_request_event_usecase.dart';
@@ -114,7 +114,7 @@ class ManageRequestEventNotifier extends StateNotifier<ManageRequestState> {
     try {
       RequestEventModel model = RequestEventModel.fromMap(map);
       await updateUseCase(id, model);
-      LocalEventModel modelLocalEvent = LocalEventModel(
+      LocalEvent modelLocalEvent = LocalEvent(
           id: '',
           name: map['eventName'] as String? ?? '',
           department: map['department'],

@@ -1,7 +1,7 @@
-import 'package:delivery_app/data/models/local_event_model.dart';
 import 'package:delivery_app/domain/entities/checkbox_option.dart';
 import 'package:delivery_app/domain/entities/city_data.dart';
 import 'package:delivery_app/domain/entities/date_data.dart';
+import 'package:delivery_app/domain/entities/local_event.dart';
 import 'package:delivery_app/domain/entities/rol.dart';
 import 'package:delivery_app/domain/usecases/event/create_event_usecase.dart';
 import 'package:delivery_app/domain/usecases/event/get_all_events_usecase.dart';
@@ -75,7 +75,7 @@ class LocalEventNotifier extends StateNotifier<LocalEventState> {
   Future<void> create(Map<String, dynamic> map) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
-      LocalEventModel model = mapFromFormData(map);
+      LocalEvent model = mapFromFormData(map);
       await createUseCase(model);
       await loadAll();
     } catch (e) {
@@ -86,7 +86,7 @@ class LocalEventNotifier extends StateNotifier<LocalEventState> {
   Future<void> update(String id, Map<String, dynamic> map) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
-      LocalEventModel model = mapFromFormData(map);
+      LocalEvent model = mapFromFormData(map);
       await updateUseCase(id, model);
       await loadAll();
     } catch (e) {
@@ -97,7 +97,7 @@ class LocalEventNotifier extends StateNotifier<LocalEventState> {
   Future<void> updateFromTable(String id, Map<String, dynamic> map) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
-      LocalEventModel model = LocalEventModel.fromMap(map);
+      LocalEvent model = LocalEvent.fromMap(map);
       await updateUseCase(id, model);
       await loadAll();
     } catch (e) {
@@ -113,14 +113,14 @@ class LocalEventNotifier extends StateNotifier<LocalEventState> {
     state = state.copyWith(showForm: false);
   }
 
-  LocalEventModel mapFromFormData(Map<String, dynamic> map) {
+  LocalEvent mapFromFormData(Map<String, dynamic> map) {
       CityData cityData = map['cityDepartment'] as CityData;
       DateData programmedDate = map['scheduleDate'] as DateData;
       MapLocationData mapLocationData = map['location'] as MapLocationData;
       List<CheckboxOption> productList = map['products'] as List<CheckboxOption>? ?? [];
       List<String> productIdList = productList.map((e) => e.value).toList();
 
-      return LocalEventModel(
+      return LocalEvent(
           id: map['id'] as String? ?? '',
           name: map['name'] as String? ?? '',
           department: cityData.department,
