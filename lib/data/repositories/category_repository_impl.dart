@@ -16,7 +16,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
   Future<List<Category>> getAll() async {
     try {
       List<CategoryModel> list = await datasource.getAll();
-      return list.map((e)=> mapper.toEntity(e)).toList();
+      return list.map((e)=> mapper.toEntity(e)!).toList();
     } catch (e) {
       rethrow;
     }
@@ -26,7 +26,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
   Future<List<Category>> getByCommerce(String commerceId) async {
     try {
       List<CategoryModel> list = await datasource.getByCommerce(commerceId);
-      return list.map((e)=> mapper.toEntity(e)).toList();
+      return list.map((e)=> mapper.toEntity(e)!).toList();
     } catch (e) {
       rethrow;
     }
@@ -45,7 +45,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
   @override
   Future<void> create(Category category) async {
     try {
-      CategoryModel model = mapper.toModel(category);
+      CategoryModel model = mapper.toModel(category)!;
       await datasource.create(model);
     } catch (e) {
       rethrow;
@@ -55,7 +55,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
   @override
   Future<void> update(String id, Category category) async {
     try {
-      CategoryModel model = mapper.toModel(category);
+      CategoryModel model = mapper.toModel(category)!;
       await datasource.update(id, model);
     } catch (e) {
       rethrow;

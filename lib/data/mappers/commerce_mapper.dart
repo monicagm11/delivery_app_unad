@@ -4,7 +4,8 @@ import 'package:delivery_app/domain/entities/commerce.dart';
 
 class CommerceMapper extends BaseMapper<Commerce, CommerceModel> {
   @override
-  Commerce toEntity(CommerceModel model) {
+  Commerce? toEntity(CommerceModel? model) {
+    if (model == null) return null;
     return Commerce(id: model.id, 
     name: model.name, 
     document: model.document, 
@@ -22,7 +23,8 @@ class CommerceMapper extends BaseMapper<Commerce, CommerceModel> {
   }
 
   @override
-  CommerceModel toModel(Commerce entity) {
+  CommerceModel? toModel(Commerce? entity) {
+    if (entity == null) return null;
     return CommerceModel(id: entity.id, 
     name: entity.name, 
     document: entity.document, 

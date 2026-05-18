@@ -1,6 +1,6 @@
-import 'package:delivery_app/data/models/global_event_model.dart';
 import 'package:delivery_app/domain/entities/city_data.dart';
 import 'package:delivery_app/domain/entities/date_data.dart';
+import 'package:delivery_app/domain/entities/global_event.dart';
 import 'package:delivery_app/domain/entities/rol.dart';
 import 'package:delivery_app/domain/usecases/get_departments_usecase.dart';
 import 'package:delivery_app/domain/usecases/global_event/create_global_event_usecase.dart';
@@ -66,7 +66,7 @@ class GlobalEventNotifier extends StateNotifier<GlobalEventState> {
   Future<void> create(Map<String, dynamic> map) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
-      GlobalEventModel model = mapFromFormData(map);
+      GlobalEvent model = mapFromFormData(map);
       await createUseCase(model);
       await loadAll();
     } catch (e) {
@@ -77,7 +77,7 @@ class GlobalEventNotifier extends StateNotifier<GlobalEventState> {
   Future<void> update(String id, Map<String, dynamic> map) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
-      GlobalEventModel model = mapFromFormData(map);
+      GlobalEvent model = mapFromFormData(map);
       await updateUseCase(id, model);
       await loadAll();
     } catch (e) {
@@ -88,7 +88,7 @@ class GlobalEventNotifier extends StateNotifier<GlobalEventState> {
   Future<void> updateFromTable(String id, Map<String, dynamic> map) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
-      GlobalEventModel model = GlobalEventModel.fromMap(map);
+      GlobalEvent model = GlobalEvent.fromMap(map);
       await updateUseCase(id, model);
       await loadAll();
     } catch (e) {
@@ -104,11 +104,11 @@ class GlobalEventNotifier extends StateNotifier<GlobalEventState> {
     state = state.copyWith(showForm: false);
   }
 
-  GlobalEventModel mapFromFormData(Map<String, dynamic> map) {
+  GlobalEvent mapFromFormData(Map<String, dynamic> map) {
       CityData cityData = map['cityDepartment'] as CityData;
       DateData programmedDate = map['scheduleDate'] as DateData;
       MapLocationData mapLocationData = map['location'] as MapLocationData;
-      return GlobalEventModel(
+      return GlobalEvent(
           id: map['id'] as String? ?? '',
           name: map['name'] as String? ?? '',
           department: cityData.department,

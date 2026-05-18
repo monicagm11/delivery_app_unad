@@ -40,5 +40,20 @@ Map<String, dynamic> toMap() => {
         'city': city,
         'status': status,
       };
+
+  factory GlobalEvent.fromMap(Map<String, dynamic> map) => GlobalEvent(
+        id: map['id'] as String? ?? '',
+        name: map['name'] as String? ?? '',
+        description: map['description'] as String? ?? '',
+        longitude: (map['longitude'] as num?)?.toDouble() ?? 0.0,
+        latitude: (map['latitude'] as num?)?.toDouble() ?? 0.0,
+        radious: (map['radious'] as num?)?.toDouble() ?? 0.0,
+        scheduleDate: map['scheduleDate'] as String? ?? '',
+        startDate: map['startDate'] as String? ?? '',
+        endDate: map['endDate'] as String? ?? '',
+        department: map['department'] as String? ?? '',
+        city: map['city'] as String? ?? '',
+        status: map['status'] as String? ?? '',
+      );
   
 }

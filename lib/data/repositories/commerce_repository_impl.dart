@@ -16,7 +16,7 @@ class CommerceRepositoryImpl implements CommerceRepository {
   Future<List<Commerce>> getAll() async {
     try {
       List<CommerceModel> list = await datasource.getAll();
-      return list.map((e)=> _mapper.toEntity(e)).toList();
+      return list.map((e)=> _mapper.toEntity(e)!).toList();
     } catch (e) {
       rethrow;
     }
@@ -35,7 +35,7 @@ class CommerceRepositoryImpl implements CommerceRepository {
   @override
   Future<void> create(Commerce commerce) async {
     try {
-      CommerceModel model = _mapper.toModel(commerce);
+      CommerceModel model = _mapper.toModel(commerce)!;
       await datasource.create(model);
     } catch (e) {
       rethrow;
@@ -45,7 +45,7 @@ class CommerceRepositoryImpl implements CommerceRepository {
   @override
   Future<void> update(String id, Commerce commerce) async {
     try {
-      CommerceModel model = _mapper.toModel(commerce);
+      CommerceModel model = _mapper.toModel(commerce)!;
       await datasource.update(id, model);
     } catch (e) {
       rethrow;

@@ -4,7 +4,8 @@ import 'package:delivery_app/domain/entities/checkout_item.dart';
 
 class CheckoutItemMapper extends BaseMapper<CheckoutItem, CheckoutItemModel> {
   @override
-  CheckoutItem toEntity(CheckoutItemModel model) {
+  CheckoutItem? toEntity(CheckoutItemModel? model) {
+    if (model == null) return null;
     return CheckoutItem(
         priceTotal: model.priceTotal,
         valueIva: model.valueIva,
@@ -16,7 +17,8 @@ class CheckoutItemMapper extends BaseMapper<CheckoutItem, CheckoutItemModel> {
   }
 
   @override
-  CheckoutItemModel toModel(CheckoutItem entity) {
+  CheckoutItemModel? toModel(CheckoutItem? entity) {
+    if (entity == null) return null;
     return CheckoutItemModel(
         priceTotal: entity.priceTotal,
         valueIva: entity.valueIva,

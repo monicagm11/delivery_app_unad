@@ -15,7 +15,7 @@ class CheckoutOrderRepositoryImpl implements CheckoutOrderRepository {
   Future<List<CheckoutOrder>> getAll() async {
     try {
       final list = await datasource.getAll();
-      return list.map((e) => mapper.toEntity(e)).toList();
+      return list.map((e) => mapper.toEntity(e)!).toList();
     } catch (e) {
       rethrow;
     }
@@ -25,7 +25,7 @@ class CheckoutOrderRepositoryImpl implements CheckoutOrderRepository {
   Future<List<CheckoutOrder>> getByUser(String userId) async {
     try {
       final list = await datasource.getByUser(userId);
-      return list.map((e) => mapper.toEntity(e)).toList();
+      return list.map((e) => mapper.toEntity(e)!).toList();
     } catch (e) {
       rethrow;
     }
@@ -35,7 +35,7 @@ class CheckoutOrderRepositoryImpl implements CheckoutOrderRepository {
   Future<List<CheckoutOrder>> getByEvent(String eventId) async {
     try {
       final list = await datasource.getByEvent(eventId);
-      return list.map((e) => mapper.toEntity(e)).toList();
+      return list.map((e) => mapper.toEntity(e)!).toList();
     } catch (e) {
       rethrow;
     }
@@ -54,7 +54,7 @@ class CheckoutOrderRepositoryImpl implements CheckoutOrderRepository {
   @override
   Future<String> create(CheckoutOrder order) async {
     try {
-      CheckoutOrderModel model = mapper.toModel(order);
+      CheckoutOrderModel model = mapper.toModel(order)!;
       return await datasource.create(model);
     } catch (e) {
       rethrow;
@@ -65,7 +65,7 @@ class CheckoutOrderRepositoryImpl implements CheckoutOrderRepository {
   Future<void> update(String id, CheckoutOrder model) async {
     try {
       CheckoutOrderModel checkoutOrderModel =
-          mapper.toModel(model);
+          mapper.toModel(model)!;
       await datasource.update(id, checkoutOrderModel);
     } catch (e) {
       rethrow;

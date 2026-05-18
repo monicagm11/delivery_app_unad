@@ -4,7 +4,8 @@ import 'package:delivery_app/domain/entities/category.dart';
 
 class CategoryMapper extends BaseMapper<Category, CategoryModel> {
   @override
-  Category toEntity(CategoryModel model) {
+  Category? toEntity(CategoryModel? model) {
+    if (model == null) return null;
     return Category(
       id: model.id,
       name: model.name,
@@ -15,7 +16,8 @@ class CategoryMapper extends BaseMapper<Category, CategoryModel> {
   }
 
   @override
-  CategoryModel toModel(Category entity) {
+  CategoryModel? toModel(Category? entity) {
+    if (entity == null) return null;
     return CategoryModel(
       id: entity.id,
       name: entity.name,

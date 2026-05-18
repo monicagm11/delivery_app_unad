@@ -1,20 +1,32 @@
-import 'package:delivery_app/domain/entities/global_event.dart';
 
-class GlobalEventModel extends GlobalEvent {
+class GlobalEventModel {
   GlobalEventModel({
-    required super.id,
-    required super.name,
-    required super.description,
-    required super.longitude,
-    required super.latitude,
-    required super.radious,
-    required super.scheduleDate,
-    required super.startDate,
-    required super.endDate,
-    required super.department,
-    required super.city,
-    required super.status,
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.longitude,
+    required this.latitude,
+    required this.radious,
+    required this.scheduleDate,
+    required this.startDate,
+    required this.endDate,
+    required this.department,
+    required this.city,
+    required this.status,
   });
+
+  final String id;
+  final String name;
+  final String description;
+  final double longitude;
+  final double latitude;
+  final double radious;
+  final String scheduleDate;
+  final String startDate;
+  final String endDate;
+  final String department;
+  final String city;
+  final String status;
 
   factory GlobalEventModel.fromMap(Map<String, dynamic> map) => GlobalEventModel(
         id: map['id'] as String? ?? '',
@@ -31,5 +43,19 @@ class GlobalEventModel extends GlobalEvent {
         status: map['status'] as String? ?? '',
       );
 
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'name': name,
+        'description': description,
+        'longitude': longitude,
+        'latitude': latitude,
+        'radious': radious,
+        'scheduleDate': scheduleDate,
+        'startDate': startDate,
+        'endDate': endDate,
+        'department': department,
+        'city': city,
+        'status': status,
+      };
   
 }

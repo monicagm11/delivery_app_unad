@@ -9,7 +9,8 @@ class CheckoutOrderMapper extends BaseMapper<CheckoutOrder, CheckoutOrderModel>{
   final CheckoutItemMapper _checkoutItemMapper = CheckoutItemMapper();
   final TrackingStageMapper _trackingStageMapper = TrackingStageMapper();
   @override
-  CheckoutOrder toEntity(CheckoutOrderModel model) {
+  CheckoutOrder? toEntity(CheckoutOrderModel? model) {
+    if (model == null) return null;
     return CheckoutOrder(
         id: model.id,
         userId: model.userId,
@@ -20,9 +21,9 @@ class CheckoutOrderMapper extends BaseMapper<CheckoutOrder, CheckoutOrderModel>{
           (e) => e.name == model.paymentMethod,
           orElse: () => PaymentMethod.cash,
         ),
-        checkoutItems: model.checkoutItems.map((e) => _checkoutItemMapper.toEntity(e)).toList(),
+        checkoutItems: model.checkoutItems.map((e) => _checkoutItemMapper.toEntity(e)!).toList(),
         total: model.total,
-        stageList: model.stageList.map((e) => _trackingStageMapper.toEntity(e)).toList(),
+        stageList: model.stageList.map((e) => _trackingStageMapper.toEntity(e)!).toList(),
         urlImage: model.urlImage,
         change: model.change,
         location: model.location,
@@ -30,7 +31,8 @@ class CheckoutOrderMapper extends BaseMapper<CheckoutOrder, CheckoutOrderModel>{
   }
 
   @override
-  CheckoutOrderModel toModel(CheckoutOrder entity) {
+  CheckoutOrderModel? toModel(CheckoutOrder? entity) {
+    if (entity == null) return null;
     return CheckoutOrderModel(
         id: entity.id,
         userId: entity.userId,
@@ -38,9 +40,9 @@ class CheckoutOrderMapper extends BaseMapper<CheckoutOrder, CheckoutOrderModel>{
         commerce: entity.commerce,
         comments: entity.comments,
         paymentMethod: entity.paymentMethod.name,
-        checkoutItems: entity.checkoutItems.map((e) => _checkoutItemMapper.toModel(e)).toList(),
+        checkoutItems: entity.checkoutItems.map((e) => _checkoutItemMapper.toModel(e)!).toList(),
         total: entity.total,
-        stageList: entity.stageList.map((e) => _trackingStageMapper.toModel(e)).toList(),
+        stageList: entity.stageList.map((e) => _trackingStageMapper.toModel(e)!).toList(),
         urlImage: entity.urlImage,
         change: entity.change,
         location: entity.location,

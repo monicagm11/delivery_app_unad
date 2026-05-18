@@ -4,13 +4,15 @@ import 'package:delivery_app/domain/entities/checkout_order.dart';
 
 class TrackingStageMapper extends BaseMapper<TrackingStage, TrackingStageModel> {
   @override
-  TrackingStage toEntity(TrackingStageModel model) {
+  TrackingStage? toEntity(TrackingStageModel? model) {
+    if (model == null) return null;
     return TrackingStage(
         name: model.name, date: model.date, completed: model.completed);
   }
 
   @override
-  TrackingStageModel toModel(TrackingStage entity) {
+  TrackingStageModel? toModel(TrackingStage? entity) {
+    if (entity == null) return null;
     return TrackingStageModel(
         name: entity.name, date: entity.date, completed: entity.completed);
   }
