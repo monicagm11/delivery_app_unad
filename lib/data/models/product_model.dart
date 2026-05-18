@@ -1,20 +1,34 @@
-import 'package:delivery_app/domain/entities/product.dart';
 
-class ProductModel extends Product {
+class ProductModel {
   const ProductModel({
-    required super.id,
-    required super.name,
-    required super.priceBase, 
-    required super.percentageIva, 
-    required super.valueIva, 
-    required super.totalPrice, 
-    required super.category, 
-    required super.status,
-    required super.commerce,
-    required super.description,
-    super.urlImage,
-    super.time
+    required this.id,
+    required this.name,
+    required this.priceBase, 
+    required this.percentageIva, 
+    required this.valueIva, 
+    required this.totalPrice, 
+    required this.category, 
+    required this.status,
+    required this.commerce,
+    required this.description,
+    this.urlImage,
+    this.time,
+    this.categoryName
   });
+
+  final String id;
+  final String name;
+  final double priceBase;
+  final double percentageIva;
+  final double valueIva;
+  final double totalPrice;
+  final String? urlImage;
+  final String category;
+  final String? time;
+  final String status;
+  final String commerce;
+  final String description;
+  final String? categoryName;
 
   factory ProductModel.fromMap(Map<String, dynamic> map) => ProductModel(
         id: map['id'] as String? ?? '',
@@ -31,5 +45,19 @@ class ProductModel extends Product {
         description: map['description'] as String? ?? '',
       );
 
-  
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'name': name,
+        'priceBase': priceBase,
+        'percentageIva': percentageIva,
+        'valueIva': valueIva,
+        'totalPrice': totalPrice,
+        'category': category,
+        'status': status,
+        'urlImage': urlImage,
+        'time': time,
+        'commerce': commerce,
+        'description': description,
+        'categoryName': categoryName
+      };
 }

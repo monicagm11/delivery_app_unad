@@ -1,7 +1,7 @@
-import 'package:delivery_app/data/models/product_model.dart';
 import 'package:delivery_app/domain/entities/calculator_price_data.dart';
 import 'package:delivery_app/domain/entities/dropdown_option.dart';
 import 'package:delivery_app/domain/entities/image_data.dart';
+import 'package:delivery_app/domain/entities/product.dart';
 import 'package:delivery_app/domain/entities/rol.dart';
 import 'package:delivery_app/domain/usecases/category/get_categories_by_commerce_usecase.dart';
 import 'package:delivery_app/domain/usecases/product/create_product_usecase.dart';
@@ -68,7 +68,7 @@ class ProductNotifier extends StateNotifier<ProductState> {
       ImageData imageData = map['image'] as ImageData;
       final urlImage = await uploadImageUseCase(path: imageData.path!, folder: imageData.folder, bytes: imageData.bytes);
       map['urlImage'] = urlImage;
-      ProductModel model = mapFromFormData(map);
+      Product model = mapFromFormData(map);
 
       await createUseCase(model);
       await loadAll();
@@ -87,7 +87,7 @@ class ProductNotifier extends StateNotifier<ProductState> {
       } else {
         map['urlImage'] = imageData.path;
       }
-      ProductModel model = mapFromFormData(map);
+      Product model = mapFromFormData(map);
       await updateUseCase(id, model);
       await loadAll();
     } catch (e) {
@@ -103,9 +103,9 @@ class ProductNotifier extends StateNotifier<ProductState> {
     state = state.copyWith(showForm: false);
   }
 
-  ProductModel mapFromFormData(Map<String, dynamic> map) {
+  Product mapFromFormData(Map<String, dynamic> map) {
     CalculatorPriceData priceData = map['price'] as CalculatorPriceData;
-    return ProductModel(
+    return Product(
       id: map['id'] as String? ?? '',
       name: map['name'] as String? ?? '',
       status: map['status'] as String? ?? '',
