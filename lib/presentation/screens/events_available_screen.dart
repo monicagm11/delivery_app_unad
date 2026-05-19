@@ -1,92 +1,14 @@
-import 'package:delivery_app/domain/entities/global_event.dart';
+import 'package:delivery_app/domain/entities/event_item.dart';
 import 'package:delivery_app/domain/entities/local_event.dart';
 import 'package:delivery_app/domain/usecases/event/get_all_events_usecase.dart';
-import 'package:delivery_app/domain/usecases/global_event/get_active_global_event_usecase.dart';
 import 'package:delivery_app/presentation/notifier/cart/cart_notifier.dart';
+import 'package:delivery_app/presentation/notifier/events_available/events_available_notifier.dart';
 import 'package:delivery_app/presentation/screens/city_selector_template.dart';
 import 'package:delivery_app/presentation/screens/event_products_screen.dart';
 import 'package:delivery_app/presentation/utils/constants.dart';
 import 'package:delivery_app/presentation/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-// ── Modelo unificado ─────────────────────────────────────────────────────────
-
-class EventItem {
-  final String id;
-  final String name;
-  final String description;
-  final String scheduleDate;
-  final String startDate;
-  final String city;
-  final String department;
-  final String status;
-  final bool isGlobal;
-  final String? idGlobalEvent;
-  final String? commerceId;
-
-  const EventItem({
-    required this.id,
-    required this.name,
-    required this.description,
-    required this.scheduleDate,
-    required this.startDate,
-    required this.city,
-    required this.department,
-    required this.status,
-    required this.isGlobal,
-    this.idGlobalEvent,
-    this.commerceId,
-  });
-
-  factory EventItem.fromGlobal(GlobalEvent e) => EventItem(
-        id: e.id,
-        name: e.name,
-        description: e.description,
-        scheduleDate: e.scheduleDate,
-        startDate: e.startDate,
-        city: e.city,
-        department: e.department,
-        status: e.status,
-        isGlobal: true,
-      );
-
-  factory EventItem.fromLocal(LocalEvent e) => EventItem(
-        id: e.id,
-        name: e.name,
-        description: e.description,
-        scheduleDate: e.scheduleDate,
-        startDate: e.startDate,
-        city: e.city,
-        department: e.department,
-        status: e.status,
-        isGlobal: false,
-        idGlobalEvent: e.idGlobalEvent,
-        commerceId: e.commerce,
-      );
-}
-
-// ── Providers ────────────────────────────────────────────────────────────────
-
-final cityPrefsProvider =
-    FutureProvider<({String department, String city})>((ref) async {
-  final prefs = await SharedPreferences.getInstance();
-  return (
-    department: prefs.getString('selected_department') ?? '',
-    city: prefs.getString('selected_city') ?? '',
-  );
-});
-
-final allEventsProvider = FutureProvider<List<EventItem>>((ref) async {
-  final globalEvents =
-      await ref.read(getActiveGlobalEventsUseCaseProvider).call();
-  final localEvents = await ref.read(getAllLocalEventsUseCaseProvider).call();
-  return [
-    ...globalEvents.map(EventItem.fromGlobal),
-    ...localEvents.map(EventItem.fromLocal),
-  ];
-});
 
 // Mapa de id -> LocalEvent para navegación
 final _localEventsMapProvider =
@@ -115,7 +37,12 @@ class EventsAvailableScreen extends ConsumerStatefulWidget {
 
 class _EventsAvailableScreenState
     extends ConsumerState<EventsAvailableScreen> {
-  bool _showStarted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    ref.read(eventsAvailableNotifierProvider.notifier).init(widget.globalEventId);
+  }
 
   Future<void> _openCitySelector() async {
     await showDialog(
@@ -127,8 +54,7 @@ class _EventsAvailableScreenState
           child: CitySelectorTemplate(
             onSaved: () {
               Navigator.pop(context);
-              ref.invalidate(cityPrefsProvider);
-              ref.invalidate(allEventsProvider);
+              ref.read(eventsAvailableNotifierProvider.notifier).loadAll();
             },
           ),
         ),
@@ -138,9 +64,9 @@ class _EventsAvailableScreenState
 
   @override
   Widget build(BuildContext context) {
-    final cityAsync = ref.watch(cityPrefsProvider);
-    final eventsAsync = ref.watch(allEventsProvider);
     final isSubScreen = widget.globalEventId != null;
+    final state = ref.watch(eventsAvailableNotifierProvider);
+    final filtered = state.filteredEventItems;
 
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -172,15 +98,12 @@ class _EventsAvailableScreenState
 
           // Subtítulo ciudad (solo en pantalla principal)
           if (!isSubScreen)
-            cityAsync.when(
-              loading: () => const SizedBox(height: 24),
-              error: (_, __) => const SizedBox.shrink(),
-              data: (loc) => Row(
+            Row(
                 children: [
                   Expanded(
                     child: Text(
-                      loc.city.isNotEmpty
-                          ? '${loc.city}, ${loc.department}'
+                      state.city.isNotEmpty
+                          ? '${state.city}, ${state.department}'
                           : 'Sin ciudad seleccionada',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: Colors.grey.shade600,
@@ -198,24 +121,27 @@ class _EventsAvailableScreenState
                   ),
                 ],
               ),
-            ),
           const SizedBox(height: 16),
 
           // Chips de filtro
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
+              spacing: 8,
               children: [
                 EventFilterChip(
-                  label: 'Próximamente',
-                  selected: !_showStarted,
-                  onTap: () => setState(() => _showStarted = false),
-                ),
-                const SizedBox(width: 8),
-                EventFilterChip(
                   label: 'Iniciados',
-                  selected: _showStarted,
-                  onTap: () => setState(() => _showStarted = true),
+                  selected: state.currentStateSelected == Constants.startedStatus,
+                  onTap: () {
+                    ref.read(eventsAvailableNotifierProvider.notifier).updateStateSelected(Constants.startedStatus);
+                  },
+                ),
+                EventFilterChip(
+                  label: 'Próximamente',
+                  selected: state.currentStateSelected == Constants.programmedStatus,
+                  onTap: () {
+                    ref.read(eventsAvailableNotifierProvider.notifier).updateStateSelected(Constants.programmedStatus);
+                  },
                 ),
               ],
             ),
@@ -224,35 +150,8 @@ class _EventsAvailableScreenState
 
           // Lista
           Expanded(
-            child: eventsAsync.when(
-              loading: () =>
-                  const Center(child: CircularProgressIndicator()),
-              error: (e, _) => Center(child: Text('Error: $e')),
-              data: (events) {
-                final targetStatus = _showStarted
-                    ? Constants.startedStatus
-                    : Constants.programmedStatus;
-
-                final city = cityAsync.valueOrNull?.city ?? '';
-                final department = cityAsync.valueOrNull?.department ?? '';
-
-                final filtered = events.where((e) {
-                  if (isSubScreen) {
-                    return !e.isGlobal &&
-                        e.idGlobalEvent == widget.globalEventId &&
-                        e.status == targetStatus;
-                  }
-                  final matchStatus = e.status == targetStatus;
-                  final matchCity = city.isEmpty ||
-                      e.city.toUpperCase() == city.toUpperCase();
-                  final matchDept = department.isEmpty ||
-                      e.department.toUpperCase() ==
-                          department.toUpperCase();
-                  return matchStatus && matchCity && matchDept;
-                }).toList();
-
-                if (filtered.isEmpty) {
-                  return Center(
+            child: (state.filteredEventItems.isEmpty) ?
+                  Center(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -266,10 +165,9 @@ class _EventsAvailableScreenState
                         ),
                       ],
                     ),
-                  );
-                }
-
-                return ListView.separated(
+                  ) :
+              
+                ListView.separated(
                   itemCount: filtered.length,
                   separatorBuilder: (_, __) => const SizedBox(height: 8),
                   itemBuilder: (_, i) {
@@ -316,9 +214,8 @@ class _EventsAvailableScreenState
                               : null,
                     );
                   },
-                );
-              },
-            ),
+                )
+
           ),
         ],
       ),

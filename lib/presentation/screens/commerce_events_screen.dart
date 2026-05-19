@@ -1,3 +1,4 @@
+import 'package:delivery_app/domain/entities/event_item.dart';
 import 'package:delivery_app/domain/entities/local_event.dart';
 import 'package:delivery_app/domain/usecases/event/get_all_events_usecase.dart';
 import 'package:delivery_app/presentation/notifier/cart/cart_notifier.dart';

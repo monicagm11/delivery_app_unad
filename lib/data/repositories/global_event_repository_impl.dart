@@ -65,6 +65,16 @@ class GlobalEventRepositoryImpl implements GlobalEventRepository {
       rethrow;
     }
   }
+  
+  @override
+  Future<List<GlobalEvent>> getActiveByCity(String city, String department) async {
+    try {
+      List<GlobalEventModel> list = await datasource.getActiveByCity(city, department);
+      return list.map((e) => _mapper.toEntity(e)!).toList();
+    } catch (e) {
+      return [];
+    }
+  }
 }
 
 final globalEventRepositoryProvider = Provider<GlobalEventRepository>((ref) {

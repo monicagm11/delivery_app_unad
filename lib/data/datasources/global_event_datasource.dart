@@ -4,6 +4,7 @@ abstract class GlobalEventDatasource {
   Future<List<GlobalEventModel>> getAll();
   Future<List<GlobalEventModel>> getAllActive();
   Future<GlobalEventModel?> getById(String id);
+  Future<List<GlobalEventModel>> getActiveByCity(String city, String department);
   Future<void> create(GlobalEventModel model);
   Future<void> update(String id, GlobalEventModel model);
   Future<void> delete(String id);

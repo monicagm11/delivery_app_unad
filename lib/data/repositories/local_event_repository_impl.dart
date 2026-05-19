@@ -65,6 +65,16 @@ class LocalEventRepositoryImpl implements LocalEventRepository {
   Future<void> delete(String id) async {
     try { await datasource.delete(id); } catch (e) { rethrow; }
   }
+  
+  @override
+  Future<List<LocalEvent>> getActiveByCity(String city, String department) async {
+    try {
+      List<LocalEventModel> list = await datasource.getActiveByCity(city, department);
+      return list.map((e) => _mapper.toEntity(e)!).toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
 
 final localEventRepositoryProvider = Provider<LocalEventRepository>((ref) {

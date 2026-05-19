@@ -46,6 +46,22 @@ class LocalEventDatasourceImpl extends BaseFirestoreDatasource<LocalEventModel>
       rethrow;
     }
   }
+  
+  @override
+  Future<List<LocalEventModel>> getActiveByCity(String city, String department) async {
+    try {
+      final snapshot = await firestore
+          .collection(collectionName)
+          .where('city', isEqualTo: city)
+          .where('department', isEqualTo: department)
+          .get();
+      return snapshot.docs
+          .map((doc) => LocalEventModel.fromMap({...doc.data(), 'id': doc.id}))
+          .toList();
+    } catch (e) {
+      return [];
+    }
+  }
 }
 
 final localEventDatasourceProvider = Provider<LocalEventDatasource>((ref) {

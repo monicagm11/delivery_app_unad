@@ -46,6 +46,22 @@ class GlobalEventDatasourceImpl extends BaseFirestoreDatasource<GlobalEventModel
   @override
   Future<List<GlobalEventModel>> getAllActive() async =>
       await fetchWhere(GlobalEventModel.fromMap, 'status', 'PUBLICADO') ?? [];
+      
+  @override
+  Future<List<GlobalEventModel>> getActiveByCity(String city, String department) async {
+    try {
+      final snapshot = await firestore
+          .collection(collectionName)
+          .where('city', isEqualTo: city)
+          .where('department', isEqualTo: department)
+          .get();
+      return snapshot.docs
+          .map((doc) => GlobalEventModel.fromMap({...doc.data(), 'id': doc.id}))
+          .toList();
+    } catch (e) {
+      return [];
+    }
+  }
 }
 
 final globalEventDatasourceProvider = Provider<GlobalEventDatasource>((ref) {
