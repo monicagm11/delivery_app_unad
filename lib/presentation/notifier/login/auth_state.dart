@@ -12,6 +12,7 @@ class AuthState {
   final Commerce? commerce;
   final String? userName;
   final String? rolId;
+  final bool? hasCitySelected;
 
   const AuthState(
       {this.status = AuthStatus.idle,
@@ -20,7 +21,8 @@ class AuthState {
       this.rolConfig,
       this.commerce,
       this.userName,
-      this.rolId});
+      this.rolId,
+      this.hasCitySelected});
 
   AuthState copyWith(
           {AuthStatus? status,
@@ -29,7 +31,8 @@ class AuthState {
           String? userName,
           Rol? rolConfig,
           Commerce? commerce,
-          String? rolId}) =>
+          String? rolId,
+          bool? hasCitySelected}) =>
       AuthState(
           status: status ?? this.status,
           errorMessage: errorMessage ?? this.errorMessage,
@@ -37,5 +40,6 @@ class AuthState {
           rolConfig: rolConfig ?? this.rolConfig,
           commerce: commerce ?? this.commerce,
           userName: userName ?? this.userName,
-          rolId: rolId ?? this.rolId);
+          rolId: rolId ?? this.rolId,
+          hasCitySelected: hasCitySelected ?? this.hasCitySelected);
 }

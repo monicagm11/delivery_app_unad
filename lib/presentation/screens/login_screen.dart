@@ -5,6 +5,7 @@ import 'package:delivery_app/presentation/screens/city_selector_screen.dart';
 import 'package:delivery_app/presentation/screens/delivery_home_screen.dart';
 import 'package:delivery_app/presentation/screens/home_screen.dart';
 import 'package:delivery_app/presentation/screens/reset_password_screen.dart';
+import 'package:delivery_app/presentation/screens/user_home_screen.dart';
 import 'package:delivery_app/presentation/utils/constants.dart';
 import 'package:delivery_app/presentation/widgets/left_panel.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +47,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         String rolId = state.rolId!;
         if (rolId == Constants.userRolCode) {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => CitySelectorScreen()),
+            MaterialPageRoute(builder: (_) => state.hasCitySelected == true ? UserHomeScreen() : CitySelectorScreen()),
           );
         } else if (rolId == Constants.logisticRolCode) {
           Navigator.of(context).pushReplacement(

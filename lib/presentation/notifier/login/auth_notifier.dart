@@ -2,9 +2,11 @@ import 'package:delivery_app/domain/entities/commerce.dart';
 import 'package:delivery_app/domain/entities/user.dart';
 import 'package:delivery_app/domain/usecases/commerce/get_commerce_by_id_usecase.dart';
 import 'package:delivery_app/domain/usecases/get_remote_config_usecase.dart';
+import 'package:delivery_app/domain/usecases/local_storage/get_string_localstorage_usecase.dart';
 import 'package:delivery_app/domain/usecases/login_usecase.dart';
 import 'package:delivery_app/domain/usecases/user/get_user_by_id_usecase.dart';
 import 'package:delivery_app/presentation/notifier/login/auth_state.dart';
+import 'package:delivery_app/presentation/utils/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AuthNotifier extends StateNotifier<AuthState> {
@@ -12,10 +14,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
   final GetUserByIdUseCase getUserByIdUseCase;
   final GetCommerceByIdUseCase getCommerceByIdUseCase;
   final GetRemoteConfigUsecase getRemoteConfigUsecase;
+  final GetStringLocalstorageUsecase getStringLocalstorageUsecase;
 
   AuthNotifier({required this.loginUseCase, required this.getCommerceByIdUseCase,
       required this.getUserByIdUseCase,
-      required this.getRemoteConfigUsecase})
+      required this.getRemoteConfigUsecase,
+      required this.getStringLocalstorageUsecase})
       : super(const AuthState());
 
   Future<void> login(String email, String password) async {
@@ -34,13 +38,21 @@ class AuthNotifier extends StateNotifier<AuthState> {
       }
       final rolInfo = await getRemoteConfigUsecase.call(userData.rol);
 
+      bool? hasCity = null;
+
+      if (userData.rol == Constants.userRolCode) {
+        String? citySelected = await getStringLocalstorageUsecase(Constants.keyCity);
+        hasCity = citySelected != null && citySelected.isNotEmpty;
+      }
+
       state = state.copyWith(
           status: AuthStatus.success,
           user: userData,
           userName: userData.fullname,
           commerce: commerce,
           rolConfig: rolInfo,
-          rolId: userData.rol);
+          rolId: userData.rol,
+          hasCitySelected: hasCity);
     } catch (e) {
       state = state.copyWith(
           status: AuthStatus.error, errorMessage: e.toString());
@@ -57,5 +69,6 @@ final authNotifierProvider =
     getCommerceByIdUseCase: ref.read(getCommerceByIdUseCaseProvider),
     getUserByIdUseCase: ref.read(getUserByIdUseCaseProvider),
     getRemoteConfigUsecase: ref.read(getRemoteConfigUsecaseProvider),
+    getStringLocalstorageUsecase: ref.read(getStringUseCaseProvider)
   );
 });
