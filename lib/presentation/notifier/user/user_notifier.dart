@@ -1,9 +1,9 @@
-import 'package:delivery_app/data/models/user_model.dart';
 import 'package:delivery_app/domain/entities/city_data.dart';
 import 'package:delivery_app/domain/entities/dropdown_option.dart';
 import 'package:delivery_app/domain/entities/identification_data.dart';
 import 'package:delivery_app/domain/entities/rol.dart';
 import 'package:delivery_app/domain/entities/rol_data.dart';
+import 'package:delivery_app/domain/entities/user.dart';
 import 'package:delivery_app/domain/usecases/commerce/get_all_commercers_usecase.dart';
 import 'package:delivery_app/domain/usecases/get_departments_usecase.dart';
 import 'package:delivery_app/domain/usecases/send_email_new_users_usecase.dart';
@@ -87,7 +87,7 @@ class UserNotifier extends StateNotifier<UserState> {
       String userId = await sendEmailNewUsersUsecase(email: map['email'], name: map['name']);
       map['userId'] = userId;
       map['isPending'] = true;
-      UserModel model = mapFromFormData(map);
+      User model = mapFromFormData(map);
       await createUseCase(model);
       await loadAll();
     } catch (e) {
@@ -98,7 +98,7 @@ class UserNotifier extends StateNotifier<UserState> {
   Future<void> update(String id, Map<String, dynamic> map) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
-      UserModel model = mapFromFormData(map);
+      User model = mapFromFormData(map);
       await updateUseCase(id, model);
       await loadAll();
     } catch (e) {
@@ -114,12 +114,12 @@ class UserNotifier extends StateNotifier<UserState> {
     state = state.copyWith(showForm: false);
   }
 
-  UserModel mapFromFormData(Map<String, dynamic> map) {
+  User mapFromFormData(Map<String, dynamic> map) {
     IdentificationData identificationData =
           map['identification'] as IdentificationData;
       CityData cityData = map['cityDepartment'] as CityData;
       RolData rolData = map['rol'] as RolData;
-      return UserModel(
+      return User(
           id: map['id'] as String? ?? '',
           userId: map['userId'] as String? ?? '',
           name: map['name'] as String? ?? '',

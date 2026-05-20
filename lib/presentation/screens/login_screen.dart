@@ -39,6 +39,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         );
   }
 
+  Future<void> _onLoginWithGoogle() async {
+    await ref.read(authNotifierProvider.notifier).loginWithGoogle();
+  }
+
   @override
   Widget build(BuildContext context) {
     ref.listen<AuthState>(authNotifierProvider, (_, state) {
@@ -82,6 +86,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             obscurePassword: _obscurePassword,
             onTogglePassword: () => setState(() => _obscurePassword = !_obscurePassword),
             onSubmit: _submit,
+            onLoginWithGoogle: _onLoginWithGoogle,
           ) : _NarrowLayout(
             formKey: _formKey,
             emailController: _emailController,
@@ -89,6 +94,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             obscurePassword: _obscurePassword,
             onTogglePassword: () => setState(() => _obscurePassword = !_obscurePassword),
             onSubmit: _submit,
+            onLoginWithGoogle: _onLoginWithGoogle
           );
         },
       ),
@@ -104,6 +110,7 @@ class _LoginForm extends StatelessWidget {
   final bool obscurePassword;
   final VoidCallback onTogglePassword;
   final VoidCallback onSubmit;
+  final VoidCallback onLoginWithGoogle;
 
   const _LoginForm({
     required this.formKey,
@@ -112,6 +119,7 @@ class _LoginForm extends StatelessWidget {
     required this.obscurePassword,
     required this.onTogglePassword,
     required this.onSubmit,
+    required this.onLoginWithGoogle
   });
 
   @override
@@ -211,7 +219,7 @@ class _LoginForm extends StatelessWidget {
                   SizedBox(
                     height: 50,
                     child: ElevatedButton(
-                        onPressed: isLoading ? null : () {},
+                        onPressed: isLoading ? null : onLoginWithGoogle,
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -246,6 +254,7 @@ class _WideLayout extends StatelessWidget {
   final bool obscurePassword;
   final VoidCallback onTogglePassword;
   final VoidCallback onSubmit;
+  final VoidCallback onLoginWithGoogle;
 
   const _WideLayout({
     required this.formKey,
@@ -254,6 +263,7 @@ class _WideLayout extends StatelessWidget {
     required this.obscurePassword,
     required this.onTogglePassword,
     required this.onSubmit,
+    required this.onLoginWithGoogle
   });
 
   @override
@@ -270,6 +280,7 @@ class _WideLayout extends StatelessWidget {
             obscurePassword: obscurePassword,
             onTogglePassword: onTogglePassword,
             onSubmit: onSubmit,
+            onLoginWithGoogle: onLoginWithGoogle,
           ),
         ),
       ],
@@ -284,6 +295,7 @@ class _NarrowLayout extends StatelessWidget {
   final bool obscurePassword;
   final VoidCallback onTogglePassword;
   final VoidCallback onSubmit;
+  final VoidCallback onLoginWithGoogle;
 
   const _NarrowLayout({
     required this.formKey,
@@ -292,6 +304,7 @@ class _NarrowLayout extends StatelessWidget {
     required this.obscurePassword,
     required this.onTogglePassword,
     required this.onSubmit,
+    required this.onLoginWithGoogle
   });
 
   @override
@@ -307,6 +320,7 @@ class _NarrowLayout extends StatelessWidget {
             obscurePassword: obscurePassword,
             onTogglePassword: onTogglePassword,
             onSubmit: onSubmit,
+            onLoginWithGoogle: onLoginWithGoogle,
           ),
         ),
       ],
