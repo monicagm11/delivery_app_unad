@@ -24,7 +24,8 @@ class UserMapper extends BaseMapper<User, UserModel> {
         commerce: model.commerce,
         occupation: model.occupation,
         rol: model.rol,
-        currentEventId: model.currentEventId);
+        currentEventId: model.currentEventId,
+        token: model.token);
   }
 
   @override
@@ -48,7 +49,8 @@ class UserMapper extends BaseMapper<User, UserModel> {
         commerce: entity.commerce,
         occupation: entity.occupation,
         rol: entity.rol,
-        currentEventId: entity.currentEventId);
+        currentEventId: entity.currentEventId,
+        token: entity.token);
   }
   
 }

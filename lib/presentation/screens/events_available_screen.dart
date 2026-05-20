@@ -200,7 +200,7 @@ class _EventsAvailableScreenState
                                   ref
                                       .read(cartNotifierProvider.notifier)
                                       .updateLocation(newLocation);
-                                  if (!mounted) return;
+                                  if (!context.mounted) return;
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(

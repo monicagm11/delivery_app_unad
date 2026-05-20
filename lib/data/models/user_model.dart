@@ -19,6 +19,7 @@ class UserModel {
     this.commerce,
     this.occupation,
     this.currentEventId,
+    this.token
   });
 
   final String id;
@@ -39,6 +40,7 @@ class UserModel {
   final String? occupation;
   final String rol;
   final String? currentEventId;
+  final String? token;
 
   factory UserModel.fromMap(Map<String, dynamic> map) => UserModel(
         id: map['id'] as String? ?? '',
@@ -59,6 +61,7 @@ class UserModel {
         commerce: map['commerce'] as String?,
         occupation: map['occupation'],
         currentEventId: map['currentEventId'] as String?,
+        token: map['token'] as String?
       );
 
   Map<String, dynamic> toMap() => {
@@ -80,5 +83,6 @@ class UserModel {
         'rol': rol,
         'occupation': occupation,
         'currentEventId': currentEventId,
+        'token': token
       };
 }
