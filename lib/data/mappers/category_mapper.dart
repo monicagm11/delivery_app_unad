@@ -22,7 +22,7 @@ class CategoryMapper extends BaseMapper<Category, CategoryModel> {
       id: entity.id,
       name: entity.name,
       description: entity.description,
-      status: entity.description,
+      status: entity.status,
       commerce: entity.commerce,
     );
   }
