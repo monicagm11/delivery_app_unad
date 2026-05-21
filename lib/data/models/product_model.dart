@@ -43,6 +43,7 @@ class ProductModel {
         time: map['time'],
         commerce: map['commerce'],
         description: map['description'] as String? ?? '',
+        categoryName: map['categoryName'] as String? ?? '',
       );
 
   Map<String, dynamic> toMap() => {

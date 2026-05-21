@@ -3,11 +3,19 @@ import 'package:delivery_app/data/models/category_model.dart';
 import 'package:delivery_app/data/models/checkout_item_model.dart';
 import 'package:delivery_app/data/models/checkout_order_model.dart';
 import 'package:delivery_app/data/models/commerce_model.dart';
+import 'package:delivery_app/data/models/global_event_model.dart';
+import 'package:delivery_app/data/models/local_event_model.dart';
+import 'package:delivery_app/data/models/product_model.dart';
+import 'package:delivery_app/data/models/user_model.dart';
 import 'package:delivery_app/domain/entities/category.dart';
 import 'package:delivery_app/domain/entities/checkout_item.dart';
 import 'package:delivery_app/domain/entities/checkout_order.dart';
 import 'package:delivery_app/domain/entities/commerce.dart';
+import 'package:delivery_app/domain/entities/global_event.dart';
+import 'package:delivery_app/domain/entities/local_event.dart';
 import 'package:delivery_app/domain/entities/payment_method.dart';
+import 'package:delivery_app/domain/entities/product.dart';
+import 'package:delivery_app/domain/entities/user.dart';
 
 class Mocks {
   static CategoryModel categoryModelMock = CategoryModel(
@@ -279,8 +287,152 @@ class Mocks {
       urlImageQR: 'http://www.ejemplo.com/logo.jpg',
       fullDocument: 'NIT 123456');
 
+  static GlobalEvent globalEventMock = GlobalEvent(
+      id: '1',
+      name: 'Festival del perro caliente',
+      description: 'Festival del perro caliente en la plaza de la paz',
+      longitude: -74.789077,
+      latitude: 10.987877, 
+      radious: 100,
+      scheduleDate: '05/05/2026 12:00',
+      startDate: '05/05/2026 12:00',
+      endDate: '05/05/2026 18:00',
+      department: 'ATLANTICO',
+      city: 'BARRANQUILLA',
+      status: 'PUBLICADO');
+
+  static Map<String, dynamic> mapGlobalEventModelMock = {
+      'id': '1',
+      'name': 'Festival del perro caliente',
+      'description': 'Festival del perro caliente en la plaza de la paz',
+      'longitude': -74.789077,
+      'latitude': 10.987877, 
+      'radious': 100,
+      'scheduleDate': '05/05/2026 12:00',
+      'startDate': '05/05/2026 12:00',
+      'endDate': '05/05/2026 18:00',
+      'department': 'ATLANTICO',
+      'city': 'BARRANQUILLA',
+      'status': 'PUBLICADO'};
+
+  static GlobalEventModel globalEventModelMock = GlobalEventModel(
+      id: '1',
+      name: 'Festival del perro caliente',
+      description: 'Festival del perro caliente en la plaza de la paz',
+      longitude: -74.789077,
+      latitude: 10.987877, 
+      radious: 100,
+      scheduleDate: '05/05/2026 12:00',
+      startDate: '05/05/2026 12:00',
+      endDate: '05/05/2026 18:00',
+      department: 'ATLANTICO',
+      city: 'BARRANQUILLA',
+      status: 'PUBLICADO');
+
+  static Map<String, dynamic> mapLocalEventModelMock = {
+      'id': '1',
+      'name': 'Festival del perro caliente',
+      'description': 'Festival del perro caliente en la plaza de la paz',
+      'longitude': -74.789077,
+      'latitude': 10.987877, 
+      'radious': 100,
+      'scheduleDate': '05/05/2026 12:00',
+      'startDate': '05/05/2026 12:00',
+      'endDate': '05/05/2026 18:00',
+      'department': 'ATLANTICO',
+      'city': 'BARRANQUILLA',
+      'status': 'PUBLICADO',
+      'products': ['QWE1234', 'ASDF1234'],
+      'commerce': 'ABCDE123',
+      'locationClientType': 'numberedChair',
+      'idGlobalEvent': '11'};
+
+  static LocalEvent localEventMock = LocalEvent(
+      id: '1',
+      name: 'Festival del perro caliente',
+      description: 'Festival del perro caliente en la plaza de la paz',
+      longitude: -74.789077,
+      latitude: 10.987877, 
+      radious: 100,
+      scheduleDate: '05/05/2026 12:00',
+      startDate: '05/05/2026 12:00',
+      endDate: '05/05/2026 18:00',
+      department: 'ATLANTICO',
+      city: 'BARRANQUILLA',
+      status: 'PUBLICADO',
+      productsIdList: ['QWE1234', 'ASDF1234'],
+      commerce: 'ABCDE123',
+      locationClientType: 'numberedChair',
+      idGlobalEvent: '11');
+
+  static LocalEventModel localEventModelMock = LocalEventModel(
+      id: '1',
+      name: 'Festival del perro caliente',
+      description: 'Festival del perro caliente en la plaza de la paz',
+      longitude: -74.789077,
+      latitude: 10.987877, 
+      radious: 100,
+      scheduleDate: '05/05/2026 12:00',
+      startDate: '05/05/2026 12:00',
+      endDate: '05/05/2026 18:00',
+      department: 'ATLANTICO',
+      city: 'BARRANQUILLA',
+      status: 'PUBLICADO',
+      productsIdList: ['QWE1234', 'ASDF1234'],
+      commerce: 'ABCDE123',
+      locationClientType: 'numberedChair',
+      idGlobalEvent: '11');
+
+  static Product productMock = Product(
+      id: 'ABC123DEF',
+      name: 'Hamburguesa de carne',
+      priceBase: 50000,
+      percentageIva: 19,
+      valueIva: 9500,
+      totalPrice: 59500,
+      urlImage: 'http://www.ejemplo.com/ejemplo.jpg',
+      category: '1',
+      time: '15 min',
+      status: 'ACTIVO',
+      commerce: 'ABCDE123',
+      description: 'Hamburguesa de carne y queso americano',
+      categoryName: 'Hamburguesas');
+
+  static Map<String, dynamic> mapProductMock = {
+    'id': 'ABC123DEF',
+    'name': 'Hamburguesa de carne',
+    'priceBase': 50000,
+    'percentageIva': 19,
+    'valueIva': 9500,
+    'totalPrice': 59500,
+    'urlImage': 'http://www.ejemplo.com/ejemplo.jpg',
+    'category': '1',
+    'time': '15 min',
+    'status': 'ACTIVO',
+    'commerce': 'ABCDE123',
+    'description': 'Hamburguesa de carne y queso americano',
+    'categoryName': 'Hamburguesas'
+  };
+
+  static ProductModel productModelMock = ProductModel(
+      id: 'ABC123DEF',
+      name: 'Hamburguesa de carne',
+      priceBase: 50000,
+      percentageIva: 19,
+      valueIva: 9500,
+      totalPrice: 59500,
+      urlImage: 'http://www.ejemplo.com/ejemplo.jpg',
+      category: '1',
+      time: '15 min',
+      status: 'ACTIVO',
+      commerce: 'ABCDE123',
+      description: 'Hamburguesa de carne y queso americano',
+      categoryName: 'Hamburguesas');
+
   static TrackingStageModel trackingStageModelMock = TrackingStageModel(
-      name: 'Pedido creado', date: DateTime(2026, 4, 30), completed: true);
+      name: 'Pedido creado', 
+      date: DateTime(2026, 4, 30), 
+      completed: true);
 
   static Map<String, dynamic> mapTrackingStageMock = {
     'name': 'Pedido creado',
@@ -289,7 +441,73 @@ class Mocks {
   };
 
   static TrackingStage trackingStageMock = TrackingStage(
-      name: 'Pedido creado', date: DateTime(2026, 4, 30), completed: true);
+      name: 'Pedido creado', 
+      date: DateTime(2026, 4, 30), 
+      completed: true);
+
+  static User userMock = User(
+      id: 'POIU908',
+      name: 'Maria',
+      lastname: 'Suarez',
+      fullname: 'Maria Suarez',
+      document: '123456789',
+      identificationType: 'CC',
+      fullDocument: 'CC 123456789',
+      phone: '3000010203',
+      email: 'mariasuarez@ejemplo.com',
+      department: 'ATLANTICO',
+      city: 'BARRANQUILLA',
+      address: 'CL 11 11 11',
+      commerce: 'ABCDE123',
+      occupation: 'Administrador general',
+      currentEventId: '1',
+      token: 'nfiergbseifgre3y443rsb73ehsb',
+      userId: 'POIU908',
+      status: 'ACTIVO',
+      rol: 'ADMINISTRADOR');
+
+  static Map<String, dynamic> mapUserMock = {
+    'id': 'POIU908',
+    'name': 'Maria',
+    'lastname': 'Suarez',
+    'fullname': 'Maria Suarez',
+    'document': '123456789',
+    'identificationType': 'CC',
+    'fullDocument': 'CC 123456789',
+    'phone': '3000010203',
+    'email': 'mariasuarez@ejemplo.com',
+    'department': 'ATLANTICO',
+    'city': 'BARRANQUILLA',
+    'address': 'CL 11 11 11',
+    'commerce': 'ABCDE123',
+    'occupation': 'Administrador general',
+    'currentEventId': '1',
+    'token': 'nfiergbseifgre3y443rsb73ehsb',
+    'userId': 'POIU908',
+    'status': 'ACTIVO',
+    'rol': 'ADMINISTRADOR'
+  };
+
+  static UserModel userModelMock = UserModel(
+      id: 'POIU908',
+      name: 'Maria',
+      lastname: 'Suarez',
+      fullname: 'Maria Suarez',
+      document: '123456789',
+      identificationType: 'CC',
+      fullDocument: 'CC 123456789',
+      phone: '3000010203',
+      email: 'mariasuarez@ejemplo.com',
+      department: 'ATLANTICO',
+      city: 'BARRANQUILLA',
+      address: 'CL 11 11 11',
+      commerce: 'ABCDE123',
+      occupation: 'Administrador general',
+      currentEventId: '1',
+      token: 'nfiergbseifgre3y443rsb73ehsb',
+      userId: 'POIU908',
+      status: 'ACTIVO',
+      rol: 'ADMINISTRADOR');
 
   static List<Map<String, dynamic>> data = [
     {

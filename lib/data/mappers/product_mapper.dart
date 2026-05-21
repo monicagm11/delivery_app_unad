@@ -38,7 +38,8 @@ class ProductMapper extends BaseMapper<Product, ProductModel> {
         commerce: entity.commerce,
         description: entity.description,
         urlImage: entity.urlImage,
-        time: entity.time
+        time: entity.time,
+        categoryName: entity.categoryName
         );
   }
 
