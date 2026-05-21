@@ -27,7 +27,8 @@ class CheckoutOrderMapper extends BaseMapper<CheckoutOrder, CheckoutOrderModel>{
         urlImage: model.urlImage,
         change: model.change,
         location: model.location,
-        userName: model.userName);
+        userName: model.userName,
+        idDeliveryAssigned: model.idDeliveryAssigned);
   }
 
   @override
@@ -46,6 +47,7 @@ class CheckoutOrderMapper extends BaseMapper<CheckoutOrder, CheckoutOrderModel>{
         urlImage: entity.urlImage,
         change: entity.change,
         location: entity.location,
-        userName: entity.userName);
+        userName: entity.userName,
+        idDeliveryAssigned: entity.idDeliveryAssigned);
   }
 }
