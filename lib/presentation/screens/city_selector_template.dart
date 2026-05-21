@@ -1,6 +1,6 @@
 import 'package:delivery_app/domain/entities/city_data.dart';
 import 'package:delivery_app/domain/entities/department.dart';
-import 'package:delivery_app/domain/usecases/get_departments_usecase.dart';
+import 'package:delivery_app/domain/usecases/functions/get_departments_usecase.dart';
 import 'package:delivery_app/presentation/utils/constants.dart';
 import 'package:delivery_app/presentation/widgets/city_selector_field.dart';
 import 'package:flutter/material.dart';

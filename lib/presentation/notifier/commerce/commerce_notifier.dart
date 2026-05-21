@@ -7,8 +7,8 @@ import 'package:delivery_app/domain/usecases/commerce/create_commerce_usecase.da
 import 'package:delivery_app/domain/usecases/commerce/get_all_commercers_usecase.dart';
 import 'package:delivery_app/domain/usecases/commerce/get_commerce_by_id_usecase.dart';
 import 'package:delivery_app/domain/usecases/commerce/update_commerce_usecase.dart';
-import 'package:delivery_app/domain/usecases/get_departments_usecase.dart';
-import 'package:delivery_app/domain/usecases/upload_image_usecase.dart';
+import 'package:delivery_app/domain/usecases/functions/get_departments_usecase.dart';
+import 'package:delivery_app/domain/usecases/functions/upload_image_usecase.dart';
 import 'package:delivery_app/presentation/notifier/commerce/commerce_state.dart';
 import 'package:delivery_app/presentation/notifier/session/session_notifier.dart';
 import 'package:delivery_app/presentation/utils/constants.dart';

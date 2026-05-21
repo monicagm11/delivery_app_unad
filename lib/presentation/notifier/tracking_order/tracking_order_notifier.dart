@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:delivery_app/data/datasources/base_firestore_datasource.dart';
 import 'package:delivery_app/domain/entities/checkout_order.dart';
 import 'package:delivery_app/domain/usecases/checkout/update_checkout_order_usecase.dart';
-import 'package:delivery_app/domain/usecases/watch_document_usecase.dart';
+import 'package:delivery_app/domain/usecases/realtime/watch_document_usecase.dart';
 import 'package:delivery_app/presentation/notifier/tracking_order/tracking_order_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

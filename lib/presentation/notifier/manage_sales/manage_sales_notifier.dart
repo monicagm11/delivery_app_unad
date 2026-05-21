@@ -8,7 +8,7 @@ import 'package:delivery_app/domain/entities/user.dart';
 import 'package:delivery_app/domain/usecases/checkout/add_stage_to_checkout_order_usecase.dart';
 import 'package:delivery_app/domain/usecases/checkout/update_status_checkout_order_usecase.dart';
 import 'package:delivery_app/domain/usecases/user/get_logistics_by_event_usecase.dart';
-import 'package:delivery_app/domain/usecases/watch_collection_usecase.dart';
+import 'package:delivery_app/domain/usecases/realtime/watch_collection_usecase.dart';
 import 'package:delivery_app/presentation/notifier/manage_sales/manage_sales_state.dart';
 import 'package:delivery_app/presentation/notifier/session/session_notifier.dart';
 import 'package:delivery_app/presentation/utils/constants.dart';

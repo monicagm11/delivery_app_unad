@@ -1,4 +1,4 @@
-import 'package:delivery_app/domain/usecases/reset_password_usecase.dart';
+import 'package:delivery_app/domain/usecases/auth/reset_password_usecase.dart';
 import 'package:delivery_app/presentation/notifier/login/auth_state.dart';
 import 'package:delivery_app/presentation/notifier/reset_password/reset_password_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

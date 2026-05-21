@@ -1,5 +1,5 @@
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:delivery_app/domain/usecases/send_email_new_users_usecase.dart';
+import 'package:delivery_app/domain/usecases/functions/send_email_new_users_usecase.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SendPushNotificationUseCase {

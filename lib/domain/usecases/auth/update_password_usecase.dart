@@ -1,4 +1,4 @@
-import 'package:delivery_app/domain/usecases/login_usecase.dart';
+import 'package:delivery_app/domain/usecases/auth/login_usecase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

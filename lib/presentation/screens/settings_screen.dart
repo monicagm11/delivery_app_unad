@@ -1,4 +1,4 @@
-import 'package:delivery_app/domain/usecases/update_password_usecase.dart';
+import 'package:delivery_app/domain/usecases/auth/update_password_usecase.dart';
 import 'package:delivery_app/presentation/notifier/session/session_notifier.dart';
 import 'package:delivery_app/presentation/utils/context_extensions.dart';
 import 'package:flutter/material.dart';

@@ -7,7 +7,7 @@ import 'package:delivery_app/domain/usecases/category/get_categories_by_commerce
 import 'package:delivery_app/domain/usecases/product/create_product_usecase.dart';
 import 'package:delivery_app/domain/usecases/product/get_products_by_commerce_usecase.dart';
 import 'package:delivery_app/domain/usecases/product/update_product_usecase.dart';
-import 'package:delivery_app/domain/usecases/upload_image_usecase.dart';
+import 'package:delivery_app/domain/usecases/functions/upload_image_usecase.dart';
 import 'package:delivery_app/presentation/notifier/product/product_state.dart';
 import 'package:delivery_app/presentation/notifier/session/session_notifier.dart';
 import 'package:delivery_app/presentation/utils/constants.dart';

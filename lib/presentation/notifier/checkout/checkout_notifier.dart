@@ -7,7 +7,7 @@ import 'package:delivery_app/domain/entities/commerce.dart';
 import 'package:delivery_app/domain/entities/payment_method.dart';
 import 'package:delivery_app/domain/usecases/checkout/create_checkout_order_usecase.dart';
 import 'package:delivery_app/domain/usecases/commerce/get_commerce_by_id_usecase.dart';
-import 'package:delivery_app/domain/usecases/upload_image_usecase.dart';
+import 'package:delivery_app/domain/usecases/functions/upload_image_usecase.dart';
 import 'package:delivery_app/presentation/notifier/checkout/checkout_state.dart';
 import 'package:delivery_app/presentation/notifier/session/session_notifier.dart';
 import 'package:delivery_app/presentation/utils/constants.dart';

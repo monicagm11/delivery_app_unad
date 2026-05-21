@@ -1,10 +1,10 @@
 import 'package:delivery_app/domain/entities/commerce.dart';
 import 'package:delivery_app/domain/entities/user.dart';
 import 'package:delivery_app/domain/usecases/commerce/get_commerce_by_id_usecase.dart';
-import 'package:delivery_app/domain/usecases/get_remote_config_usecase.dart';
+import 'package:delivery_app/domain/usecases/functions/get_remote_config_usecase.dart';
 import 'package:delivery_app/domain/usecases/local_storage/get_string_localstorage_usecase.dart';
-import 'package:delivery_app/domain/usecases/login_google_usecase.dart';
-import 'package:delivery_app/domain/usecases/login_usecase.dart';
+import 'package:delivery_app/domain/usecases/auth/login_google_usecase.dart';
+import 'package:delivery_app/domain/usecases/auth/login_usecase.dart';
 import 'package:delivery_app/domain/usecases/user/create_user_usecase.dart';
 import 'package:delivery_app/domain/usecases/user/get_user_by_id_usecase.dart';
 import 'package:delivery_app/presentation/notifier/login/auth_state.dart';
