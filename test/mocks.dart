@@ -6,15 +6,22 @@ import 'package:delivery_app/data/models/commerce_model.dart';
 import 'package:delivery_app/data/models/global_event_model.dart';
 import 'package:delivery_app/data/models/local_event_model.dart';
 import 'package:delivery_app/data/models/product_model.dart';
+import 'package:delivery_app/data/models/request_event_model.dart';
 import 'package:delivery_app/data/models/user_model.dart';
 import 'package:delivery_app/domain/entities/category.dart';
 import 'package:delivery_app/domain/entities/checkout_item.dart';
 import 'package:delivery_app/domain/entities/checkout_order.dart';
 import 'package:delivery_app/domain/entities/commerce.dart';
+import 'package:delivery_app/domain/entities/crud_config.dart';
+import 'package:delivery_app/domain/entities/form_field_config.dart';
+import 'package:delivery_app/domain/entities/form_field_type.dart';
 import 'package:delivery_app/domain/entities/global_event.dart';
 import 'package:delivery_app/domain/entities/local_event.dart';
 import 'package:delivery_app/domain/entities/payment_method.dart';
 import 'package:delivery_app/domain/entities/product.dart';
+import 'package:delivery_app/domain/entities/request_event.dart';
+import 'package:delivery_app/domain/entities/rol.dart';
+import 'package:delivery_app/domain/entities/table_column_config.dart';
 import 'package:delivery_app/domain/entities/user.dart';
 
 class Mocks {
@@ -429,6 +436,34 @@ class Mocks {
       description: 'Hamburguesa de carne y queso americano',
       categoryName: 'Hamburguesas');
 
+  static RequestEvent requestEventMock = RequestEvent(
+      id: 'ABC123DEF',
+      commerceId: 'ABCDE123',
+      status: 'ACTIVO',
+      eventId: '1',
+      creationDate: '05/05/2026 12:00',
+      productsIdList: ['DEF145', 'FR7F55'],
+      locationClientType: 'numberedChair');
+
+  static Map<String, dynamic> mapRequestEventMock = {
+    'id': 'ABC123DEF',
+    'commerceId': 'ABCDE123',
+    'status': 'ACTIVO',
+    'eventId': '1',
+    'creationDate': '05/05/2026 12:00',
+    'products': ['DEF145', 'FR7F55'],
+    'locationClientType': 'numberedChair'
+  };
+
+  static RequestEventModel requestEventModelMock = RequestEventModel(
+      id: 'ABC123DEF',
+      commerceId: 'ABCDE123',
+      status: 'ACTIVO',
+      eventId: '1',
+      creationDate: '05/05/2026 12:00',
+      productsIdList: ['DEF145', 'FR7F55'],
+      locationClientType: 'numberedChair');
+  
   static TrackingStageModel trackingStageModelMock = TrackingStageModel(
       name: 'Pedido creado', 
       date: DateTime(2026, 4, 30), 
@@ -508,6 +543,72 @@ class Mocks {
       userId: 'POIU908',
       status: 'ACTIVO',
       rol: 'ADMINISTRADOR');
+
+  static CrudConfig crudConfigMock = CrudConfig(columns: [
+    TableColumnConfig(label: "Nombre", code: "name"),
+    TableColumnConfig(label: 'Identificación', code: 'fullDocument'),
+    TableColumnConfig(label: 'Contacto', code: 'contactName'),
+    TableColumnConfig(label: 'Teléfono', code: 'phone'),
+  ], formConfig: [
+    FormFieldConfig(
+        label: 'ID',
+        id: 'id',
+        enabled: false,
+        type: FormFieldType.textInput,
+        isRequired: false,
+        updateEnable: (_) => false),
+    FormFieldConfig(
+        label: 'Nombre',
+        id: 'name',
+        enabled: true,
+        type: FormFieldType.textInput,
+        isRequired: true,
+        updateEnable: (_) => true)
+  ], name: 'name');
+
+  static FunctionConfig functionConfigMock = FunctionConfig(
+            functionName: 'UNKNOWN',
+            readData: false,
+            createData: false,
+            updateData: false,
+            enabled: false);
+
+  static Map<String, dynamic> mapFunctionConfigMock = {
+            'functionName': 'UNKNOWN',
+            'readData': false,
+            'createData': false,
+            'updateData': false,
+            'enabled': false};
+
+  static Rol rolMock = Rol(
+      name: 'UNKNOWN',
+      id: 'UNKNOWN',
+      functionConfig: {
+        'commerce': FunctionConfig(
+            functionName: 'UNKNOWN',
+            readData: false,
+            createData: false,
+            updateData: false,
+            enabled: false)
+      },
+      code: 'UNKNOWN',
+      enabled: true,
+      rolEnableToCreate: ['ADMINISTRADOR']);
+
+  static  Map<String, dynamic> mapRolMock = {
+      'name': 'UNKNOWN',
+      'id': 'UNKNOWN',
+      'functionConfig': {
+        'commerce': {
+            'functionName': 'UNKNOWN',
+            'readData': false,
+            'createData': false,
+            'updateData': false,
+            'enabled': false}
+      },
+      'code': 'UNKNOWN',
+      'enabled': true,
+      'rolEnableToCreate': ['ADMINISTRADOR']};
 
   static List<Map<String, dynamic>> data = [
     {

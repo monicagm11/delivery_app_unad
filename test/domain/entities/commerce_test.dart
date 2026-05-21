@@ -22,7 +22,7 @@ void main() {
     expect(model.fullDocument, 'NIT 123456');
   });
 
-  test('Verify properties of CommerceModel created correctly', () {
+  test('Verify properties of CommerceModel created correctly from map', () {
     Map<String, dynamic> map = Mocks.mapCommerceMock;
 
     CommerceModel model = CommerceModel.fromMap(map);

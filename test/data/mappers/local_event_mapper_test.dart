@@ -12,7 +12,7 @@ void main() {
   setUpAll(() {
     mapper = LocalEventMapper();
   });
-  test('verify properties of convert category to categoryModel', () {
+  test('verify properties of convert LocalEvent to LocalEventModel', () {
     LocalEvent entity = Mocks.localEventMock;
     LocalEventModel? model = mapper.toModel(entity);
     expect(model, isNotNull);
