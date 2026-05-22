@@ -12,7 +12,7 @@ void main() {
   setUpAll(() {
     mapper = GlobalEventMapper();
   });
-  test('verify properties of convert category to GlobalEventModel', () {
+  test('verify properties of convert GlobalEvent to GlobalEventModel', () {
     GlobalEvent entity = Mocks.globalEventMock;
     GlobalEventModel? model = mapper.toModel(entity);
     expect(model, isNotNull);
@@ -35,7 +35,7 @@ void main() {
     expect(model, isNull);
   });
 
-  test('verify properties of convert categoryModel to category', () {
+  test('verify properties of convert GlobalEventModel to GlobalEvent', () {
     GlobalEventModel model = Mocks.globalEventModelMock;
     GlobalEvent? entity = mapper.toEntity(model);
     expect(entity, isNotNull);

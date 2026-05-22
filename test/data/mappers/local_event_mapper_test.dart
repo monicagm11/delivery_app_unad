@@ -39,7 +39,7 @@ void main() {
     expect(model, isNull);
   });
 
-  test('verify properties of convert categoryModel to category', () {
+  test('verify properties of convert LocalEventModel to LocalEvent', () {
     LocalEventModel model = Mocks.localEventModelMock;
     LocalEvent? entity = mapper.toEntity(model);
     expect(entity, isNotNull);
