@@ -210,16 +210,19 @@ class _CrudListTemplateState extends State<CrudListTemplate> {
       return const Center(child: Text('No items'));
     }*/
 
+    if (isMobile) {
+      return showForm ? _buildForm(state) : _buildTable(functionConfig);
+    }
+
     return Row(
       children: [
-        if (!(showForm && isMobile))
         Expanded(
           flex: showForm ? 3: 5,
-          child: functionConfig.readData ? _buildTable(functionConfig): ErrorIconWidget(errorMessage: 'No tienes los permisos para consultar esta información'),
+          child: (functionConfig.readData ? _buildTable(functionConfig): ErrorIconWidget(errorMessage: 'No tienes los permisos para consultar esta información')),
         ),
         if (showForm)
           Expanded(
-            flex: (isMobile? 5 : 2),
+            flex: 2,
             child: _buildForm(state),
           ),
       ],
