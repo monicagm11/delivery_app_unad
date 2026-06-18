@@ -1,6 +1,6 @@
 import 'package:delivery_app/domain/entities/city_data.dart';
 import 'package:delivery_app/domain/entities/department.dart';
-import 'package:delivery_app/domain/usecases/functions/get_departments_usecase.dart';
+import 'package:delivery_app/presentation/notifier/city_selector/city_selector_notifier.dart';
 import 'package:delivery_app/presentation/utils/constants.dart';
 import 'package:delivery_app/presentation/widgets/city_selector_field.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +28,14 @@ class _CitySelectorTemplateState extends ConsumerState<CitySelectorTemplate> {
       _selection!.department.isNotEmpty &&
       _selection!.city.isNotEmpty;
 
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      ref.read(citySelectorNotifierProvider.notifier).init();
+    });
+  }
+
   Future<void> _save() async {
     if (!_isValid) return;
     setState(() => _loading = true);
@@ -43,20 +51,16 @@ class _CitySelectorTemplateState extends ConsumerState<CitySelectorTemplate> {
 
   @override
   Widget build(BuildContext context) {
-    final departmentsAsync = ref.watch(_departmentsProvider);
+    final state = ref.watch(citySelectorNotifierProvider);
 
-    return Scaffold(
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 480),
-          child: Padding(
-            padding: const EdgeInsets.all(32),
-            child: departmentsAsync.when(
-              loading: () => const CircularProgressIndicator(),
-              error: (e, _) => Text('Error cargando departamentos: $e'),
-              data: (departments) => _buildContent(departments),
-            ),
-          ),
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 480),
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: state.isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : _buildContent(state.departmentOptions),
         ),
       ),
     );
@@ -124,8 +128,3 @@ class _CitySelectorTemplateState extends ConsumerState<CitySelectorTemplate> {
     );
   }
 }
-
-// Provider que carga los departamentos una sola vez
-final _departmentsProvider = FutureProvider<List<Department>>((ref) {
-  return ref.read(getDepartmentsUseCaseProvider)();
-});

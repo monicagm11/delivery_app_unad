@@ -44,7 +44,8 @@ class EventsAvailableNotifier extends StateNotifier<EventsAvailableState> {
           department: departmentSelected,
           isLoading: false,
           eventItems: eventItems,
-          filteredEventItems: filteredItems);
+          filteredEventItems: filteredItems,
+          localEvents: localEvents);
     } catch (e) {
       state = state.copyWith(isLoading: false);
     }

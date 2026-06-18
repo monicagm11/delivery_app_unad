@@ -1,6 +1,4 @@
 import 'package:delivery_app/domain/entities/event_item.dart';
-import 'package:delivery_app/domain/entities/local_event.dart';
-import 'package:delivery_app/domain/usecases/event/get_all_events_usecase.dart';
 import 'package:delivery_app/presentation/notifier/cart/cart_notifier.dart';
 import 'package:delivery_app/presentation/notifier/events_available/events_available_notifier.dart';
 import 'package:delivery_app/presentation/screens/city_selector_template.dart';
@@ -10,17 +8,7 @@ import 'package:delivery_app/presentation/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// Mapa de id -> LocalEvent para navegación
-final _localEventsMapProvider =
-    FutureProvider<Map<String, LocalEvent>>((ref) async {
-  final events = await ref.read(getAllLocalEventsUseCaseProvider).call();
-  return {for (final e in events) e.id: e};
-});
-
-// ── Screen ───────────────────────────────────────────────────────────────────
-
 class EventsAvailableScreen extends ConsumerStatefulWidget {
-  /// Si se pasa, muestra solo eventos locales con este idGlobalEvent
   final String? globalEventId;
   final String? globalEventName;
 
@@ -186,10 +174,7 @@ class _EventsAvailableScreenState
                               )
                           : !event.isGlobal && event.commerceId != null
                               ? () async {
-                                  final localEvent = ref
-                                      .read(_localEventsMapProvider)
-                                      .valueOrNull?[event.id];
-                                  if (localEvent == null) return;
+                                  final localEvent = state.localEvents.firstWhere((e) => e.id == event.id);
                                   final newLocation =
                                       await context.showTextFieldDialog(
                                           localEvent.locationClientType ==

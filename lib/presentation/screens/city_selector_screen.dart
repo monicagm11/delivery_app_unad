@@ -7,11 +7,13 @@ class CitySelectorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CitySelectorTemplate(onSaved: () {
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const UserHomeScreen()),
-        );
-    });
+    return Scaffold(
+      body: CitySelectorTemplate(onSaved: () {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => const UserHomeScreen()),
+          );
+      }),
+    );
   }
   
 }

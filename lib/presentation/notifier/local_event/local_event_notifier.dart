@@ -17,7 +17,7 @@ import 'package:delivery_app/presentation/widgets/map_location_field.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LocalEventNotifier extends StateNotifier<LocalEventState> {
-  final GetAllLocalEventsUseCase getAllUseCase;
+  final GetLocalEventsByCommerceUseCase getAllUseCase;
   final GetLocalEventByIdUseCase getByIdUseCase;
   final CreateLocalEventUseCase createUseCase;
   final UpdateLocalEventUseCase updateUseCase;
@@ -64,7 +64,7 @@ class LocalEventNotifier extends StateNotifier<LocalEventState> {
   Future<void> loadAll() async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
-      final items = await getAllUseCase();
+      final items = await getAllUseCase(commerceId);
       final data = items.map((e) => e.toMap()).toList();
       state = state.copyWith(isLoading: false, data: data);
     } catch (e) {
@@ -146,7 +146,7 @@ final localEventNotifierProvider =
       ref.read(sessionNotifierProvider).commerce?.id ?? '';
       final rolConfig = ref.read(sessionNotifierProvider).rolConfig ?? Constants.defaultRol;
   return LocalEventNotifier(
-      getAllUseCase: ref.read(getAllLocalEventsUseCaseProvider),
+      getAllUseCase: ref.read(getLocalEventsByCommerceUseCaseProvider),
       getByIdUseCase: ref.read(getLocalEventByIdUseCaseProvider),
       createUseCase: ref.read(createLocalEventUseCaseProvider),
       updateUseCase: ref.read(updateLocalEventUseCaseProvider),
