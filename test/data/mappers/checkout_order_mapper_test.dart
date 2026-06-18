@@ -59,6 +59,29 @@ void main() {
     expect(entity?.location,  'B1');
   });
 
+  test('verify payment method default of convert CheckoutOrderModel to CheckoutOrder', () {
+    CheckoutOrderModel model = CheckoutOrderModel(
+      userId: 'userId',
+      eventId: 'eventId',
+      userName: 'Marimar Luján',
+      commerce: 'ABC123DEF',
+      comments: 'Sin cebolla',
+      paymentMethod: '',
+      urlImage: 'http://www.ejemplo.com/ticket.jpg',
+      change: '200000',
+      idDeliveryAssigned: 'TRE789HJ',
+      checkoutItems: [
+      ],
+      total: 119000,
+      stageList: [
+      ],
+      id: '123',
+      location: 'B1');
+      
+    CheckoutOrder? entity = mapper.toEntity(model);
+    expect(entity?.paymentMethod, PaymentMethod.cash);
+  });
+
   test('Verify return null when model is null', () {
     CheckoutOrderModel? model;
     CheckoutOrder? entity = mapper.toEntity(model);
