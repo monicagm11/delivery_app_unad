@@ -22,7 +22,7 @@ void main() {
     expect(state.allProducts.length, 0);
     expect(state.errorMessage, isNull);
     expect(state.filteredProducts.length, 0);
-    expect(state.commerceId, isNull);
+    expect(state.commerceId, '');
     expect(state.selectedCategoryId, isNull);
   });
 
