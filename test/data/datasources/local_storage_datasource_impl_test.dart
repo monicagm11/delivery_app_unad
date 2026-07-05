@@ -16,7 +16,7 @@ void main() {
     datasource = LocalStorageDatasourceImpl();
   });
 
-  test('Verify provider of datasource', () async {
+  test('Verify provider of localStorage datasource', () async {
     container = ProviderContainer(
     );
     final datasourceInyected = container!.read(localStorageDatasourceProvider);

@@ -22,7 +22,7 @@ void main() {
     registerFallbackValue(Mocks.checkoutOrderModelMock);
   });
 
-  test('Verify provider of datasource', () async {
+  test('Verify provider of checkout datasource', () async {
     container = ProviderContainer(
       overrides: [
         firebaseFirestoreProvider.overrideWithValue(

@@ -18,7 +18,7 @@ void main() {
     datasource = UserDatasourceImpl(firestore: firestoresMock);
   });
 
-  test('Verify provider of datasource', () async {
+  test('Verify provider of User datasource', () async {
     container = ProviderContainer(
       overrides: [
         firebaseFirestoreProvider.overrideWithValue(

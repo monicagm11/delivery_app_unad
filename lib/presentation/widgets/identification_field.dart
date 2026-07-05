@@ -57,6 +57,7 @@ class _IdentificationFieldState extends State<_IdentificationField> {
       spacing: 5,
       children: [
         DropdownButton<String>(
+          key: const ValueKey('id_dropdown'),
             value: code,
             elevation: 0,
             items: codes.map((code) {
@@ -74,6 +75,7 @@ class _IdentificationFieldState extends State<_IdentificationField> {
           ),
         Expanded(
               child: TextField(
+                key: const ValueKey('id_number'),
                 controller: controller,
                 enabled: isEnabled,
                 onChanged: (_) => _update(),

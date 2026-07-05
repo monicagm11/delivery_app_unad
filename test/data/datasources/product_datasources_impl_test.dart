@@ -20,7 +20,7 @@ void main() {
     registerFallbackValue(Mocks.productModelMock);
   });
 
-  test('Verify provider of datasource', () async {
+  test('Verify provider of products datasource', () async {
     container = ProviderContainer(
       overrides: [
         firebaseFirestoreProvider.overrideWithValue(

@@ -20,7 +20,7 @@ void main() {
     registerFallbackValue(Mocks.requestEventModelMock);
   });
 
-  test('Verify provider of datasource', () async {
+  test('Verify provider of RequestEvent datasource', () async {
     container = ProviderContainer(
       overrides: [
         firebaseFirestoreProvider.overrideWithValue(

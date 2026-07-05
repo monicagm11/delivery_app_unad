@@ -58,7 +58,7 @@ class ProductNotifier extends StateNotifier<ProductState> {
       final data = items.map((e) => {...e.toMap(), 'image': e.urlImage}).toList();
       state = state.copyWith(isLoading: false, data: data);
     } catch (e) {
-      state = state.copyWith(isLoading: false, errorMessage: e.toString());
+      state = state.copyWith(isLoading: false, errorMessage: e.toString(), data: []);
     }
   }
 

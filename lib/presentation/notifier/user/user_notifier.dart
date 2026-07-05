@@ -77,7 +77,7 @@ class UserNotifier extends StateNotifier<UserState> {
       final data = items.map((e) => e.toMap()).toList();
       state = state.copyWith(isLoading: false, data: data);
     } catch (e) {
-      state = state.copyWith(isLoading: false, errorMessage: e.toString());
+      state = state.copyWith(isLoading: false, errorMessage: e.toString(), data: []);
     }
   }
 
