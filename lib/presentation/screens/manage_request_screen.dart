@@ -45,13 +45,20 @@ class _ManageRequestEventCrudScreenState extends ConsumerState<ManageRequestEven
           showUpdateOption: false,
           formConfig: [
             FormFieldConfig(
-                label: 'Selecciona el evento',
-                id: 'event',
-                enabled: true,
-                type: FormFieldType.eventSelector,
-                isRequired: true,
-                optionsData: state.globalEventOptions,
-                updateEnable: (_) => false),
+              label: 'Comercio solicitante',
+              id: 'commerceName',
+              enabled: false,
+              type: FormFieldType.textInput,
+              isRequired: true,
+              updateEnable: (_) => false),
+          FormFieldConfig(
+              label: 'Selecciona el evento',
+              id: 'event',
+              enabled: true,
+              type: FormFieldType.eventSelector,
+              isRequired: true,
+              optionsData: state.globalEventOptions,
+              updateEnable: (_) => false),
             FormFieldConfig(
               label: 'Localización de cliente',
               id: 'locationClientType',

@@ -439,6 +439,7 @@ class Mocks {
   static RequestEvent requestEventMock = RequestEvent(
       id: 'ABC123DEF',
       commerceId: 'ABCDE123',
+      commerceName: 'Pizzeria MyG',
       status: 'ACTIVO',
       eventId: '1',
       creationDate: '05/05/2026 12:00',
@@ -458,6 +459,7 @@ class Mocks {
   static RequestEventModel requestEventModelMock = RequestEventModel(
       id: 'ABC123DEF',
       commerceId: 'ABCDE123',
+      commerceName: 'Pizzeria MyG',
       status: 'ACTIVO',
       eventId: '1',
       creationDate: '05/05/2026 12:00',

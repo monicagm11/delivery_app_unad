@@ -1,6 +1,7 @@
 class RequestEvent {
   final String id;
   final String commerceId;
+  final String commerceName;
   final String status;
   final String eventId;
   final String creationDate;
@@ -10,6 +11,7 @@ class RequestEvent {
   const RequestEvent({
     required this.id,
     required this.commerceId,
+    required this.commerceName,
     required this.status,
     required this.eventId,
     required this.creationDate,
@@ -25,6 +27,7 @@ class RequestEvent {
         creationDate: map['creationDate'] as String? ?? '',
         productsIdList: List<String>.from(map['products'] as List? ?? []), 
         locationClientType: map['locationClientType'] as String? ?? 'numberedChair',
+        commerceName: map['commerceName'] as String? ?? ''
         
       );
 
@@ -35,6 +38,7 @@ class RequestEvent {
         'eventId': eventId,
         'creationDate': creationDate,
         'products': productsIdList,
-        'locationClientType': locationClientType
+        'locationClientType': locationClientType,
+        'commerceName': commerceName
       };
 }

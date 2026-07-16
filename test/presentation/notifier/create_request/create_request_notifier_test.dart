@@ -25,6 +25,7 @@ void main() {
   late final GetRequestEventsByCommerceUseCaseMock
       getRequestEventsByCommerceUseCaseMock;
   late final GetAllGlobalEventsUseCaseMock getAllGlobalEventsUseCaseMock;
+  late final GetCommerceByIdUseCaseMock getCommerceByIdUseCaseMock;
 
   setUpAll(() {
     createCreateRequestEventUseCaseMock = CreateRequestEventUseCaseMock();
@@ -34,6 +35,7 @@ void main() {
     getRequestEventsByCommerceUseCaseMock =
         GetRequestEventsByCommerceUseCaseMock();
     getAllGlobalEventsUseCaseMock = GetAllGlobalEventsUseCaseMock();
+    getCommerceByIdUseCaseMock = GetCommerceByIdUseCaseMock();
 
     notifier = CreateRequestEventNotifier(
         createUseCase: createCreateRequestEventUseCaseMock,
@@ -41,6 +43,7 @@ void main() {
         getAllUseCase: getRequestEventsByCommerceUseCaseMock,
         getProductsByCommerceUsecase: getProductsByCommerceUsecaseMock,
         getAllGlobalEventUsecase: getAllGlobalEventsUseCaseMock,
+        getCommerceByIdUseCase: getCommerceByIdUseCaseMock,
         commerceId: '123456',
         rolConfig: Rol(
             name: 'ADMINISTRADOR',

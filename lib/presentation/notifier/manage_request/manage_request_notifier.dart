@@ -152,6 +152,7 @@ class ManageRequestEventNotifier extends StateNotifier<ManageRequestState> {
           id: map['id'] as String? ?? '',
           status: map['status'] as String? ?? Constants.pendindStatus,  
           commerceId: map['commerceId'] as String,
+          commerceName: map['commerceName'] as String,
           eventId: 'event.id', 
           creationDate: 'formattedDate', 
           productsIdList: [],

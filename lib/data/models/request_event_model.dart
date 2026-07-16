@@ -3,6 +3,7 @@ class RequestEventModel{
   const RequestEventModel({
     required this.id,
     required this.commerceId,
+    required this.commerceName,
     required this.status,
     required this.eventId,
     required this.creationDate,
@@ -12,6 +13,7 @@ class RequestEventModel{
 
   final String id;
   final String commerceId;
+  final String commerceName;
   final String status;
   final String eventId;
   final String creationDate;
@@ -21,6 +23,7 @@ class RequestEventModel{
   factory RequestEventModel.fromMap(Map<String, dynamic> map) => RequestEventModel(
         id: map['id'] as String? ?? '',
         commerceId: map['commerceId'] as String? ?? '',
+        commerceName: map['commerceName'] as String? ?? '',
         status: map['status'] as String? ?? '',
         eventId: map['eventId'] as String? ?? '',
         creationDate: map['creationDate'] as String? ?? '',
@@ -32,6 +35,7 @@ class RequestEventModel{
   Map<String, dynamic> toMap() => {
         'id': id,
         'commerceId': commerceId,
+        'commerceName': commerceName,
         'status': status,
         'eventId': eventId,
         'creationDate': creationDate,

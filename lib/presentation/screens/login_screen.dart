@@ -4,10 +4,12 @@ import 'package:delivery_app/presentation/notifier/session/session_notifier.dart
 import 'package:delivery_app/presentation/screens/city_selector_screen.dart';
 import 'package:delivery_app/presentation/screens/delivery_home_screen.dart';
 import 'package:delivery_app/presentation/screens/home_screen.dart';
+import 'package:delivery_app/presentation/screens/register_screen.dart';
 import 'package:delivery_app/presentation/screens/reset_password_screen.dart';
 import 'package:delivery_app/presentation/screens/user_home_screen.dart';
+import 'package:delivery_app/presentation/template/login_template.dart';
 import 'package:delivery_app/presentation/utils/constants.dart';
-import 'package:delivery_app/presentation/widgets/left_panel.dart';
+import 'package:delivery_app/presentation/utils/image_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -75,30 +77,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       }
     });
 
-    return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          final isWide = constraints.maxWidth > 700;
-          return isWide ? _WideLayout(
-            formKey: _formKey,
-            emailController: _emailController,
-            passwordController: _passwordController,
-            obscurePassword: _obscurePassword,
-            onTogglePassword: () => setState(() => _obscurePassword = !_obscurePassword),
-            onSubmit: _submit,
-            onLoginWithGoogle: _onLoginWithGoogle,
-          ) : _NarrowLayout(
-            formKey: _formKey,
-            emailController: _emailController,
-            passwordController: _passwordController,
-            obscurePassword: _obscurePassword,
-            onTogglePassword: () => setState(() => _obscurePassword = !_obscurePassword),
-            onSubmit: _submit,
-            onLoginWithGoogle: _onLoginWithGoogle
-          );
-        },
-      ),
-    );
+    return LoginTemplate(
+        content: _LoginForm(
+      formKey: _formKey,
+      emailController: _emailController,
+      passwordController: _passwordController,
+      obscurePassword: _obscurePassword,
+      onTogglePassword: () =>
+          setState(() => _obscurePassword = !_obscurePassword),
+      onSubmit: _submit,
+      onLoginWithGoogle: _onLoginWithGoogle,
+    ));
   }
 }
 
@@ -181,7 +170,7 @@ class _LoginForm extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Align(
-                    alignment: Alignment.centerRight,
+                    alignment: Alignment.center,
                     child: TextButton(
                       onPressed: () {
                         Navigator.of(context).push(
@@ -190,6 +179,19 @@ class _LoginForm extends StatelessWidget {
                         );
                       },
                       child: const Text('Olvidé la contraseña'),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Align(
+                    alignment: Alignment.center,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (_) => const RegisterScreen()),
+                        );
+                      },
+                      child: const Text('No tengo cuenta'),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -229,7 +231,7 @@ class _LoginForm extends StatelessWidget {
                           spacing: 12,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Image.asset('assets/images/google.png'),
+                            Image.asset(ImageConstants.googleLogo),
                             const Text('Ingresar con Google',
                                     style: TextStyle(fontWeight: FontWeight.bold)),
                           ],
@@ -242,88 +244,6 @@ class _LoginForm extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-
-class _WideLayout extends StatelessWidget {
-  final GlobalKey<FormState> formKey;
-  final TextEditingController emailController;
-  final TextEditingController passwordController;
-  final bool obscurePassword;
-  final VoidCallback onTogglePassword;
-  final VoidCallback onSubmit;
-  final VoidCallback onLoginWithGoogle;
-
-  const _WideLayout({
-    required this.formKey,
-    required this.emailController,
-    required this.passwordController,
-    required this.obscurePassword,
-    required this.onTogglePassword,
-    required this.onSubmit,
-    required this.onLoginWithGoogle
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const Expanded(flex: 2, child: LeftPanel(false)),
-        Expanded(
-          flex: 3,
-          child: _LoginForm(
-            formKey: formKey,
-            emailController: emailController,
-            passwordController: passwordController,
-            obscurePassword: obscurePassword,
-            onTogglePassword: onTogglePassword,
-            onSubmit: onSubmit,
-            onLoginWithGoogle: onLoginWithGoogle,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _NarrowLayout extends StatelessWidget {
-  final GlobalKey<FormState> formKey;
-  final TextEditingController emailController;
-  final TextEditingController passwordController;
-  final bool obscurePassword;
-  final VoidCallback onTogglePassword;
-  final VoidCallback onSubmit;
-  final VoidCallback onLoginWithGoogle;
-
-  const _NarrowLayout({
-    required this.formKey,
-    required this.emailController,
-    required this.passwordController,
-    required this.obscurePassword,
-    required this.onTogglePassword,
-    required this.onSubmit,
-    required this.onLoginWithGoogle
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: 200, child: LeftPanel(true)),
-        Expanded(
-          child: _LoginForm(
-            formKey: formKey,
-            emailController: emailController,
-            passwordController: passwordController,
-            obscurePassword: obscurePassword,
-            onTogglePassword: onTogglePassword,
-            onSubmit: onSubmit,
-            onLoginWithGoogle: onLoginWithGoogle,
-          ),
-        ),
-      ],
     );
   }
 }

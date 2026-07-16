@@ -9,6 +9,7 @@ class RequestEventMapper extends BaseMapper<RequestEvent, RequestEventModel> {
     return RequestEvent(
         id: model.id,
         commerceId: model.commerceId,
+        commerceName: model.commerceName,
         status: model.status,
         eventId: model.eventId,
         creationDate: model.creationDate,
@@ -22,6 +23,7 @@ class RequestEventMapper extends BaseMapper<RequestEvent, RequestEventModel> {
     return RequestEventModel(
         id: entity.id,
         commerceId: entity.commerceId,
+        commerceName:entity.commerceName,
         status: entity.status,
         eventId: entity.eventId,
         creationDate: entity.creationDate,

@@ -95,6 +95,7 @@ void main() {
         RequestEventModel(
             id: 'ABCDE123',
             commerceId: 'ABCDE123',
+            commerceName: 'Pizzeria MyG',
             status: 'INACTIVO',
             eventId: '1',
             creationDate: '05/05/2026 12:00',

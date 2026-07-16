@@ -1,4 +1,5 @@
 import 'package:delivery_app/domain/entities/checkbox_option.dart';
+import 'package:delivery_app/domain/entities/commerce.dart';
 import 'package:delivery_app/domain/entities/global_event.dart';
 import 'package:delivery_app/domain/entities/rol.dart';
 import 'package:delivery_app/domain/entities/table_column_config.dart';
@@ -9,6 +10,7 @@ class CreateRequestState extends CrudState {
   List<GlobalEvent> globalEventOptions;
   List<GlobalEvent> globalEventAvailableOptions;
   List<CheckboxOption> productOptions; 
+  Commerce? commerce;
   CreateRequestState({
     required this.globalEventOptions,
     required super.isLoading,
@@ -18,7 +20,8 @@ class CreateRequestState extends CrudState {
     required super.data,
     required super.functionConfig,
     required this.productOptions,
-    required this.globalEventAvailableOptions
+    required this.globalEventAvailableOptions,
+    this.commerce
   });
 
   factory CreateRequestState.initial(List<TableColumnConfig> columns) => CreateRequestState(
@@ -44,6 +47,7 @@ class CreateRequestState extends CrudState {
     FunctionConfig? functionConfig,
     List<CheckboxOption>? productOptions,
     List<GlobalEvent>? globalEventAvailableOptions,
+    Commerce? commerce
   }) =>
       CreateRequestState(
         isLoading: isLoading ?? this.isLoading,
@@ -54,6 +58,7 @@ class CreateRequestState extends CrudState {
         globalEventOptions: globalEventOptions ?? this.globalEventOptions,
         functionConfig: functionConfig ?? this.functionConfig,
         productOptions: productOptions ?? this.productOptions,
-        globalEventAvailableOptions: globalEventAvailableOptions ?? this.globalEventAvailableOptions
+        globalEventAvailableOptions: globalEventAvailableOptions ?? this.globalEventAvailableOptions,
+        commerce: commerce ?? this.commerce
       );
 }

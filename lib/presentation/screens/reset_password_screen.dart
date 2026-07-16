@@ -1,7 +1,7 @@
 import 'package:delivery_app/presentation/notifier/login/auth_state.dart';
 import 'package:delivery_app/presentation/notifier/reset_password/reset_password_notifer.dart';
 import 'package:delivery_app/presentation/notifier/reset_password/reset_password_state.dart';
-import 'package:delivery_app/presentation/widgets/left_panel.dart';
+import 'package:delivery_app/presentation/template/login_template.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,7 +15,6 @@ class ResetPasswordScreen extends ConsumerStatefulWidget {
 class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
-  bool _obscurePassword = true;
 
   @override
   void dispose() {
@@ -53,41 +52,23 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
       }
     });
 
-    return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          final isWide = constraints.maxWidth > 700;
-          return isWide ? _WideLayout(
+    return LoginTemplate(content: _ResetForm(
             formKey: _formKey,
             emailController: _emailController,
-            obscurePassword: _obscurePassword,
-            onTogglePassword: () => setState(() => _obscurePassword = !_obscurePassword),
             onSubmit: _submit,
-          ) : _NarrowLayout(
-            formKey: _formKey,
-            emailController: _emailController,
-            obscurePassword: _obscurePassword,
-            onTogglePassword: () => setState(() => _obscurePassword = !_obscurePassword),
-            onSubmit: _submit,
-          );
-        },
-      ),
-    );
+          ));
   }
 }
 
 class _ResetForm extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController emailController;
-  final bool obscurePassword;
-  final VoidCallback onTogglePassword;
+
   final VoidCallback onSubmit;
 
   const _ResetForm({
     required this.formKey,
     required this.emailController,
-    required this.obscurePassword,
-    required this.onTogglePassword,
     required this.onSubmit,
   });
 
@@ -156,76 +137,6 @@ class _ResetForm extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-
-class _WideLayout extends StatelessWidget {
-  final GlobalKey<FormState> formKey;
-  final TextEditingController emailController;
-  final bool obscurePassword;
-  final VoidCallback onTogglePassword;
-  final VoidCallback onSubmit;
-
-  const _WideLayout({
-    required this.formKey,
-    required this.emailController,
-    required this.obscurePassword,
-    required this.onTogglePassword,
-    required this.onSubmit,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const Expanded(flex: 2, child: LeftPanel(false)),
-        Expanded(
-          flex: 3,
-          child: _ResetForm(
-            formKey: formKey,
-            emailController: emailController,
-            obscurePassword: obscurePassword,
-            onTogglePassword: onTogglePassword,
-            onSubmit: onSubmit,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _NarrowLayout extends StatelessWidget {
-  final GlobalKey<FormState> formKey;
-  final TextEditingController emailController;
-  final bool obscurePassword;
-  final VoidCallback onTogglePassword;
-  final VoidCallback onSubmit;
-
-  const _NarrowLayout({
-    required this.formKey,
-    required this.emailController,
-    required this.obscurePassword,
-    required this.onTogglePassword,
-    required this.onSubmit,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: 200, child: LeftPanel(true)),
-        Expanded(
-          child: _ResetForm(
-            formKey: formKey,
-            emailController: emailController,
-            obscurePassword: obscurePassword,
-            onTogglePassword: onTogglePassword,
-            onSubmit: onSubmit,
-          ),
-        ),
-      ],
     );
   }
 }

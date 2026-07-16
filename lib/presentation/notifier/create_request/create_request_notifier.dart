@@ -2,6 +2,7 @@ import 'package:delivery_app/domain/entities/checkbox_option.dart';
 import 'package:delivery_app/domain/entities/global_event.dart';
 import 'package:delivery_app/domain/entities/request_event.dart';
 import 'package:delivery_app/domain/entities/rol.dart';
+import 'package:delivery_app/domain/usecases/commerce/get_commerce_by_id_usecase.dart';
 import 'package:delivery_app/domain/usecases/create_request/create_request_event_usecase.dart';
 import 'package:delivery_app/domain/usecases/create_request/get_request_events_by_commerce_usecase.dart';
 import 'package:delivery_app/domain/usecases/create_request/update_request_event_usecase.dart';
@@ -19,8 +20,10 @@ class CreateRequestEventNotifier extends StateNotifier<CreateRequestState> {
   final UpdateRequestEventUseCase updateUseCase;
   final GetProductsByCommerceUsecase getProductsByCommerceUsecase;
   final GetAllGlobalEventsUseCase getAllGlobalEventUsecase;
+  final GetCommerceByIdUseCase getCommerceByIdUseCase;
   final Rol rolConfig;
   final String commerceId;
+
 
   CreateRequestEventNotifier(
       {required this.getAllUseCase,
@@ -28,6 +31,7 @@ class CreateRequestEventNotifier extends StateNotifier<CreateRequestState> {
       required this.updateUseCase,
       required this.getProductsByCommerceUsecase,
       required this.getAllGlobalEventUsecase,
+      required this.getCommerceByIdUseCase,
       required this.rolConfig,
       required this.commerceId
       })
@@ -36,6 +40,7 @@ class CreateRequestEventNotifier extends StateNotifier<CreateRequestState> {
   Future<void> init() async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
+      final commerce = await getCommerceByIdUseCase(commerceId);
       final products = await getProductsByCommerceUsecase(commerceId);
       final productsAvailables = products
           .where((e) => e.status == 'ACTIVO')
@@ -49,7 +54,8 @@ class CreateRequestEventNotifier extends StateNotifier<CreateRequestState> {
           functionConfig: functionConfig,
           productOptions: productsAvailables,
           globalEventAvailableOptions: globalEventsAvailable,
-          globalEventOptions: globalEvents);
+          globalEventOptions: globalEvents,
+          commerce: commerce);
       await loadAll();
     } catch (e) {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
@@ -99,6 +105,7 @@ class CreateRequestEventNotifier extends StateNotifier<CreateRequestState> {
   Future<void> updateFromTable(String id, Map<String, dynamic> map) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
+      map['commerceName'] = state.commerce?.name;
       RequestEvent model = RequestEvent.fromMap(map);
       await updateUseCase(id, model);
       await loadAll();
@@ -128,7 +135,8 @@ class CreateRequestEventNotifier extends StateNotifier<CreateRequestState> {
           eventId: event.id, 
           creationDate: formattedDate, 
           productsIdList: productIdList,
-          locationClientType: map['locationClientType']
+          locationClientType: map['locationClientType'],
+          commerceName: state.commerce?.name ?? ''
           );
   }
 }
@@ -144,6 +152,7 @@ final createRequestEventNotifierProvider =
       updateUseCase: ref.read(updateRequestEventUseCaseProvider),
       getProductsByCommerceUsecase: ref.read(getAllProductsUseCaseProvider),
       getAllGlobalEventUsecase: ref.read(getAllGlobalEventsUseCaseProvider),
+      getCommerceByIdUseCase: ref.read(getCommerceByIdUseCaseProvider),
       rolConfig: rolConfig,
       commerceId: commerceId);
 });
